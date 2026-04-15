@@ -499,7 +499,10 @@ function renderRow2(rows,cfg) {
   const ar=tI>0?tU/tI:0;
   document.getElementById('row2').innerHTML=`
     <div class="panel">
-      <div class="panel-title">Common Literacy Gaps <span>ranked by frequency</span></div>
+      <div class="panel-title">Most Frequent Literacy Skill Needing Improvement <span>higher = more students struggled here</span></div>
+      <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.55;margin-bottom:1rem;padding:0.6rem 0.75rem;background:rgba(201,168,76,0.06);border-radius:6px;border-left:3px solid rgba(201,168,76,0.4)">
+        Each bar shows how often CUBE's AI identified this literacy skill as the area most needing improvement in a student's response. A <strong style="color:var(--gold)">longer bar = more students</strong> needed coaching in this area. Use this to prioritise your whole-class teaching focus.
+      </div>
       <div class="mission-freq">${me.slice(0,9).map(([name,count])=>`
         <div class="mission-row">
           <div class="mission-name">${name}</div>
