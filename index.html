@@ -331,8 +331,18 @@ async function loadTab(name) {
   }
   if(!text || text.trim().startsWith('<!')) { klaData[name]=[]; return; }
   const rows = parseCSV(text);
-  // Debug: log actual parsed column names (visible in browser console)
-  if(rows.length>0) console.log(`[CUBE ${name}] columns:`, Object.keys(rows[0]));
+  if(rows.length>0) console.log(`[CUBE ${name}] columns:`, Object.keys(rows[0]), 'sample:', rows[0]);
+
+  // Recalculate percentages from raw scores — avoids proxy column name/format issues
+  rows.forEach(r => {
+    const awd = Number(r['Awd Mark']), qm = Number(r['Q Marks']);
+    if(!isNaN(awd) && !isNaN(qm) && qm > 0) r['Mark %'] = awd / qm;
+    const cxp = Number(r['CUBE XP']), cmax = Number(r['CUBE Max']);
+    if(!isNaN(cxp) && !isNaN(cmax) && cmax > 0) r['CUBE %'] = cxp / cmax;
+    const wxp = Number(r['Write XP']), wmax = Number(r['Write Max']);
+    if(!isNaN(wxp) && !isNaN(wmax) && wmax > 0) r['Write %'] = wxp / wmax;
+  });
+
   klaData[name] = rows.filter(r=>r.Student && r.Student!=='Test Student' && r.Student.trim()!=='');
 }
 
