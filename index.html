@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-analysis-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon-analysis-180.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CUBE Marking Coach · CubeDataAnalysis</title>
@@ -295,7 +293,7 @@ const MCOL = {
   'L — Logical Flow & Structure':'#43d9ad','Logical Flow':'#43d9ad','logicalFlow':'#43d9ad','Structure':'#43d9ad',
   'M — Modality':'#e8a030','Modality':'#e8a030','modality':'#e8a030',
   'B — Because/But/So (Causal Connectives)':'#4fc3f7','Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7',
-  'Legibility':'#6b7599','Handwriting Clarity':'#6b7599',
+  'Legibility of handwritten response':'#6b7599','Handwriting Clarity':'#6b7599',
   'Technical Vocabulary':'#6b7599','Technical Communication':'#6b7599',
   'Technical Accuracy':'#6b7599','Technical Detail':'#6b7599','Technical Precision':'#6b7599',
 };
@@ -507,25 +505,21 @@ function renderRow1(rows,cfg) {
 function renderRow2(rows,cfg) {
   const mc={};
   rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
-  const me=Object.entries(mc).sort((a,b)=>b[1]-a[1]);
-  const maxM=Math.max(...me.map(e=>e[1]));
+  // CLIMBS display order — exclude Technical Vocabulary and unknowns
+  const CLIMBS_ORDER=[
+    'C — Complex Noun Groups',
+    'L — Logical Flow & Structure',
+    'M — Modality',
+    'B — Because/But/So (Causal Connectives)',
+    'Legibility of handwritten response'
+  ];
+  const me=CLIMBS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
+  const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
   const aR=rows.filter(r=>r['Anno Ideas']!=null&&r['Anno Used']!=null);
   const tI=aR.reduce((s,r)=>s+(r['Anno Ideas']||0),0);
   const tU=aR.reduce((s,r)=>s+(r['Anno Used']||0),0);
   const ar=tI>0?tU/tI:0;
   document.getElementById('row2').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">CLIMBS Literacy Focus Areas <span>higher = more students struggled here</span></div>
-      <div style="font-size:0.8rem;color:#e8eaf0;line-height:1.55;margin-bottom:1rem;padding:0.6rem 0.75rem;background:rgba(201,168,76,0.06);border-radius:6px;border-left:3px solid rgba(201,168,76,0.4)">
-        Each bar shows how often CUBE's AI identified this <strong style="color:var(--gold)">CLIMBS</strong> skill as the area most needing improvement. <strong style="color:var(--gold)">C</strong>=Complex Noun Groups &nbsp;<strong style="color:var(--gold)">L</strong>=Logical Flow &amp; Structure &nbsp;<strong style="color:var(--gold)">M</strong>=Modality &nbsp;<strong style="color:var(--gold)">B</strong>=Because/But/So &nbsp;<em style="color:#888">I=Information &amp; S=Stimulus coming soon</em>. A longer bar = more students needed coaching here.
-      </div>
-      <div class="mission-freq">${me.slice(0,9).map(([name,count])=>`
-        <div class="mission-row">
-          <div class="mission-name">${name}</div>
-          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
-          <div class="mission-count">${count}</div>
-        </div>`).join('')}</div>
-    </div>
     <div class="panel">
       <div class="panel-title">Annotation Engagement</div>
       ${aR.length===0?'<div class="no-data">No annotation data available</div>':`
@@ -538,6 +532,18 @@ function renderRow2(rows,cfg) {
         <div class="panel-title">What does this mean?</div>
         <div style="font-size:0.82rem;color:#c8d8e8;line-height:1.65">Annotation utilisation shows whether students transfer annotated ideas into their written response. A low rate may indicate need for scaffolding to connect CUBE deconstruction to writing.</div>
       `}
+    </div>
+    <div class="panel">
+      <div class="panel-title">CLIMBS Literacy Focus Areas <span>higher = more students struggled here</span></div>
+      <div style="font-size:0.8rem;color:#e8eaf0;line-height:1.55;margin-bottom:1rem;padding:0.6rem 0.75rem;background:rgba(201,168,76,0.06);border-radius:6px;border-left:3px solid rgba(201,168,76,0.4)">
+        Each bar shows how often CUBE's AI identified this <strong style="color:var(--gold)">CLIMBS</strong> skill as the area most needing improvement. <strong style="color:var(--gold)">C</strong>=Complex Noun Groups &nbsp;<strong style="color:var(--gold)">L</strong>=Logical Flow &amp; Structure &nbsp;<strong style="color:var(--gold)">M</strong>=Modality &nbsp;<strong style="color:var(--gold)">B</strong>=Because/But/So &nbsp;<em style="color:#888">I=Information &amp; S=Stimulus coming soon</em>. A longer bar = more students needed coaching here.
+      </div>
+      <div class="mission-freq">${me.map(([name,count])=>`
+        <div class="mission-row">
+          <div class="mission-name">${name}</div>
+          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
+          <div class="mission-count">${count}</div>
+        </div>`).join('')}</div>
     </div>`;
 }
 
@@ -594,7 +600,7 @@ function normM(m){
     'logicalflow':'L — Logical Flow & Structure','logical flow':'L — Logical Flow & Structure','structure':'L — Logical Flow & Structure',
     'modality':'M — Modality',
     'causalconnectives':'B — Because/But/So (Causal Connectives)','causal connectives':'B — Because/But/So (Causal Connectives)',
-    'handwriting clarity':'Legibility','legibility and precision':'Legibility','legibility':'Legibility',
+    'handwriting clarity':'Legibility of handwritten response','legibility and precision':'Legibility of handwritten response','legibility':'Legibility of handwritten response',
     'technical communication':'Technical Vocabulary','technical accuracy':'Technical Vocabulary',
     'technical detail':'Technical Vocabulary','technical precision':'Technical Vocabulary',
     'content depth':'Content Depth','content completeness':'Content Completeness','clarity':'Clarity',
