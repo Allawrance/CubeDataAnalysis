@@ -331,20 +331,60 @@ async function loadTab(name) {
   }
   if(!text || text.trim().startsWith('<!')) { klaData[name]=[]; return; }
   const rows = parseCSV(text);
+  // Debug: log actual parsed column names (visible in browser console)
+  if(rows.length>0) console.log(`[CUBE ${name}] columns:`, Object.keys(rows[0]));
   klaData[name] = rows.filter(r=>r.Student && r.Student!=='Test Student' && r.Student.trim()!=='');
 }
 
 // ── CSV ───────────────────────────────────────────────────
+// Column aliases — maps every known variant to the canonical key
+const COL_ALIAS = {
+  'mark%':'Mark %','mark %':'Mark %',
+  'cube%':'CUBE %','cube %':'CUBE %',
+  'write%':'Write %','write %':'Write %',
+  'cubemax':'CUBE Max','cube max':'CUBE Max',
+  'writemax':'Write Max','write max':'Write Max',
+  'cubeexp':'CUBE XP','cube xp':'CUBE XP',
+  'writeexp':'Write XP','write xp':'Write XP',
+  'annoexp':'Anno XP','anno xp':'Anno XP',
+  'annoideas':'Anno Ideas','anno ideas':'Anno Ideas',
+  'annoused':'Anno Used','anno used':'Anno Used',
+  'awdmark':'Awd Mark','awd mark':'Awd Mark',
+  'qmarks':'Q Marks','q marks':'Q Marks',
+  'indband':'Ind Band','ind band':'Ind Band',
+  'w-con':'W-Con','wcon':'W-Con',
+  'w-noun':'W-Noun','wnoun':'W-Noun',
+  'w-mod':'W-Mod','wmod':'W-Mod',
+  'w-flow':'W-Flow','wflow':'W-Flow',
+  'missioncategory':'Mission Category','mission category':'Mission Category',
+  'missionfix':'Mission Fix','mission fix':'Mission Fix',
+  'studentphrase':'Student Phrase','student phrase':'Student Phrase',
+  'improvedversion':'Improved Version','improved version':'Improved Version',
+  'syllabuskw':'Syllabus Kw','syllabus kw':'Syllabus Kw',
+  'syllabuskeywords':'Syllabus Kw',
+  'totalxp':'Total XP','total xp':'Total XP',
+  'wordcount':'Word Count','word count':'Word Count',
+  'illegible?':'Illegible ?','illegible ?':'Illegible ?',
+  'qno':'Q No','q no':'Q No',
+};
+
+function cleanHeader(h) {
+  // Strip quotes, trim, normalise internal spaces
+  const s = h.replace(/^["'\s]+|["'\s]+$/g,'').replace(/\s+/g,' ');
+  return COL_ALIAS[s.toLowerCase()] || s;
+}
+
 function parseCSV(text) {
   const lines = text.split('\n').filter(l=>l.trim());
   if(lines.length<2) return [];
-  const headers = splitRow(lines[0]);
+  const headers = splitRow(lines[0]).map(cleanHeader);
   return lines.slice(1).map(line=>{
     const vals=splitRow(line), obj={};
-    headers.forEach((h,i)=>{ obj[h.trim().replace(/"/g,'')]=coerce(vals[i]); });
+    headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); });
     return obj;
   });
 }
+
 function splitRow(row) {
   const out=[]; let inQ=false,cur='';
   for(let i=0;i<row.length;i++){
@@ -357,10 +397,11 @@ function splitRow(row) {
   }
   out.push(cur); return out;
 }
+
 function coerce(v) {
   if(v==null) return null;
-  const s=String(v).replace(/^"|"$/g,'').trim();
-  if(!s) return null;
+  const s=String(v).replace(/^["'\s]+|["'\s]+$/g,'').trim();
+  if(!s||s==='#N/A'||s==='#VALUE!'||s==='#REF!') return null;
   const n=Number(s); return isNaN(n)?s:n;
 }
 
