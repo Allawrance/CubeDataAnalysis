@@ -89,12 +89,12 @@ h1 span { color: var(--gold); }
 }
 .subject-box {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
+  border: 1.5px solid var(--border-gold);
   border-radius: 16px; padding: 1.25rem 1.5rem;
   cursor: pointer;
   transition: border-color 0.25s, transform 0.2s, background 0.25s;
 }
-.subject-box:hover { border-color: #f0c030; transform: translateY(-2px); }
+.subject-box:hover { border-color: rgba(201,168,76,0.7); transform: translateY(-2px); }
 .subject-box.active[data-kla="EES"]   { border-color:var(--ees);  background:rgba(79,195,247,0.08); }
 .subject-box.active[data-kla="EngS"]  { border-color:var(--engs); background:rgba(232,160,48,0.08); }
 .subject-box.active[data-kla="BusS"]  { border-color:var(--buss); background:rgba(167,139,250,0.08); }
@@ -114,7 +114,7 @@ h1 span { color: var(--gold); }
   font-size: 1rem; font-weight: 700; color: var(--text);
   display: flex; align-items: center; gap: 0.5rem;
 }
-.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#f0c030; margin-top:0.25rem; font-weight:700; }
+.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--text-dim); margin-top:0.25rem; }
 
 /* MAIN */
 main { padding: 1.75rem 2.5rem; }
@@ -144,12 +144,12 @@ main { padding: 1.75rem 2.5rem; }
 .stat-card.c-buss::before  { background:var(--buss); }
 .stat-card.c-hltm::before  { background:var(--hltm); }
 .stat-card.c-neutral::before { background:var(--gold); }
-.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
+.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4rem; }
 .stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
 .stat-value.good { color:var(--green); }
 .stat-value.warn { color:var(--gold); }
 .stat-value.low  { color:var(--red); }
-.stat-sub { font-size:0.7rem; color:#c8d8e8; margin-top:0.2rem; }
+.stat-sub { font-size:0.7rem; color:var(--text-dim); margin-top:0.2rem; }
 
 .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
 .mb { margin-bottom:1.25rem; }
@@ -159,8 +159,6 @@ main { padding: 1.75rem 2.5rem; }
   border: 1px solid var(--border-gold); border-radius: 12px; padding: 1.25rem;
 }
 .panel-title {
-  font-size:1.05rem !important;
-  color:#f0c030 !important;
   font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
   font-size:0.58rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
   color:var(--text-dim); margin-bottom:1rem; padding-bottom:0.55rem;
@@ -170,17 +168,17 @@ main { padding: 1.75rem 2.5rem; }
 
 .bar-chart { display:flex; flex-direction:column; gap:0.55rem; }
 .bar-row { display:flex; align-items:center; gap:0.7rem; }
-.bar-label { font-size:0.82rem; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#e8eaf0; }
+.bar-label { font-size:0.75rem; width:150px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .bar-fill { height:100%; border-radius:3px; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
-.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:#e8eaf0; }
+.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:var(--text-dim); }
 
 .mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
 .mission-row { display:flex; align-items:center; gap:0.75rem; }
-.mission-name { font-size:0.78rem; flex:1; color:#e8eaf0; }
+.mission-name { font-size:0.78rem; flex:1; }
 .mission-bar-track { width:80px; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .mission-bar-fill { height:100%; border-radius:3px; }
-.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#ffffff; width:24px; text-align:right; font-weight:700; }
+.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--text-dim); width:24px; text-align:right; }
 
 .example-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.75rem; }
 .example-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-left:3px solid var(--border); border-radius:10px; padding:0.9rem 1rem; }
@@ -189,15 +187,15 @@ main { padding: 1.75rem 2.5rem; }
 .example-card.fix-flow   { border-left-color:#43d9ad; }
 .example-card.fix-mod    { border-left-color:#e8a030; }
 .example-card.fix-other  { border-left-color:#6b7599; }
-.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.35rem; }
+.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.35rem; font-weight:600; }
 .ex-before { font-size:0.77rem; color:var(--red); margin-bottom:0.3rem; }
 .ex-before::before { content:'✗ '; }
 .ex-after  { font-size:0.77rem; color:var(--green); }
 .ex-after::before  { content:'✓ '; }
-.ex-kw { font-size:0.68rem; color:var(--text-dim); margin-top:0.3rem; font-style:italic; }
+.ex-kw { font-size:0.72rem; color:#c8d8e8; margin-top:0.3rem; font-style:italic; }
 
 .student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
-.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.54rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:400; }
+.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
 .student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
 .student-table tr:last-child td { border-bottom:none; }
 .student-table tr:hover td { background:rgba(201,168,76,0.04); }
@@ -532,7 +530,7 @@ function renderRow2(rows,cfg) {
           <div style="flex:1"><div class="bar-track" style="height:8px"><div class="bar-fill" style="width:${ar*100}%;background:${cfg.color}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--text-dim);margin-top:0.35rem">${pct(ar)} utilisation</div></div>
         </div>
         <div class="panel-title">What does this mean?</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);line-height:1.65">Annotation utilisation shows whether students transfer annotated ideas into their written response. A low rate may indicate need for scaffolding to connect CUBE deconstruction to writing.</div>
+        <div style="font-size:0.82rem;color:#c8d8e8;line-height:1.65">Annotation utilisation shows whether students transfer annotated ideas into their written response. A low rate may indicate need for scaffolding to connect CUBE deconstruction to writing.</div>
       `}
     </div>`;
 }
@@ -567,12 +565,12 @@ function renderRow4(rows,cfg) {
             <td style="font-weight:600">${r.Student}</td>
             <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r['Q No']||'—'}</td>
             <td>${r.Directive||'—'}</td>
-            <td style="font-size:0.7rem;color:#e8eaf0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
+            <td style="font-size:0.7rem;color:var(--text-dim);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${pct(r['Mark %'])}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
-            <td style="font-size:0.72rem;color:#e8eaf0">${normM(r['Mission Category'])}</td>
+            <td style="font-size:0.72rem;color:var(--text-dim)">${normM(r['Mission Category'])}</td>
             <td>${pill(r['Mark %'])}</td>
           </tr>`).join('')}</tbody>
       </table></div>
