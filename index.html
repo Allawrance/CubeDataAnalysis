@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUBE Marking Coach · CubeDataAnalysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #181c27;
+  --surface2: #1f2436;
+  --border: #2a3050;
+  --text: #e8eaf0;
+  --muted: #6b7599;
+  --accent: #e8a030;
+  --green: #43d9ad;
+  --red: #ff6b6b;
+  --ees:   #4fc3f7;
+  --engs:  #e8a030;
+  --buss:  #a78bfa;
+  --hltm:  #43d9ad;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── HEADER ── */
+header {
+  padding: 1.75rem 2.5rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+}
+.eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:0.35rem; }
+h1 { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; line-height:1.1; }
+h1 span { color:var(--accent); }
+.header-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
+.sheets-form { display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+.sheets-input {
+  font-family:'IBM Plex Mono',monospace; font-size:0.72rem;
+  background:var(--surface2); border:1px solid var(--border); color:var(--text);
+  padding:0.5rem 0.75rem; border-radius:3px; width:320px; outline:none;
+  transition:border-color 0.2s;
+}
+.sheets-input:focus { border-color:var(--accent); }
+.btn-load {
+  font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+  background:var(--accent); color:#0f1117; border:none; padding:0.52rem 1.1rem;
+  border-radius:3px; cursor:pointer; font-weight:500; transition:opacity 0.2s; white-space:nowrap;
+}
+.btn-load:hover { opacity:0.85; }
+.hint { font-size:0.7rem; color:var(--muted); }
+.status-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--muted); margin-right:0.4rem; vertical-align:middle; }
+.status-dot.live { background:var(--green); box-shadow:0 0 6px var(--green); }
+.status-dot.err  { background:var(--red); }
+
+/* ── SUBJECT SELECTOR ── */
+#subject-selector {
+  display:flex; align-items:center; gap:1rem; padding:1.25rem 2.5rem;
+  border-bottom:1px solid var(--border); background:var(--surface); flex-wrap:wrap;
+}
+.selector-label { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.subject-btns { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.subject-btn {
+  font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
+  background:var(--surface2); color:var(--muted); border:1px solid var(--border);
+  padding:0.5rem 1rem; border-radius:3px; cursor:pointer; transition:all 0.2s; white-space:nowrap;
+}
+.subject-btn:hover { color:var(--text); border-color:var(--muted); }
+.subject-btn.active[data-kla="EES"]   { background:rgba(79,195,247,0.12); color:var(--ees);  border-color:var(--ees); }
+.subject-btn.active[data-kla="EngS"]  { background:rgba(232,160,48,0.12); color:var(--engs); border-color:var(--engs); }
+.subject-btn.active[data-kla="BusS"]  { background:rgba(167,139,250,0.12); color:var(--buss); border-color:var(--buss); }
+.subject-btn.active[data-kla="HlthM"] { background:rgba(67,217,173,0.12); color:var(--hltm); border-color:var(--hltm); }
+.subject-btn .row-count { font-size:0.58rem; opacity:0.7; margin-left:0.3rem; }
+
+/* ── MAIN ── */
+main { padding:1.75rem 2.5rem; }
+
+/* ── SETUP SCREEN ── */
+#setup-screen { max-width:600px; margin:4rem auto; text-align:center; }
+.setup-icon { font-size:2.5rem; margin-bottom:1rem; opacity:0.5; }
+.setup-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--muted); margin-bottom:0.75rem; }
+.setup-steps {
+  background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  padding:1.5rem; text-align:left; margin-top:1.5rem;
+}
+.step { display:flex; gap:0.75rem; margin-bottom:0.85rem; font-size:0.82rem; line-height:1.5; }
+.step:last-child { margin-bottom:0; }
+.step-num {
+  font-family:'IBM Plex Mono',monospace; font-size:0.65rem; font-weight:500;
+  background:var(--accent); color:#0f1117; width:20px; height:20px;
+  border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+}
+.step-text { color:var(--muted); }
+.step-text strong { color:var(--text); }
+code { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; background:var(--surface2); padding:0.1rem 0.4rem; border-radius:2px; color:var(--accent); }
+
+/* ── LOADING ── */
+#loading-screen { display:none; text-align:center; padding:4rem 2rem; }
+.spinner { width:36px; height:36px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1rem; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── DASHBOARD ── */
+#dashboard { display:none; }
+
+.stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:1.5rem; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:1rem 1.2rem; position:relative; overflow:hidden; }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.stat-card.c-ees::before   { background:var(--ees); }
+.stat-card.c-engs::before  { background:var(--engs); }
+.stat-card.c-buss::before  { background:var(--buss); }
+.stat-card.c-hltm::before  { background:var(--hltm); }
+.stat-card.c-neutral::before { background:var(--accent); }
+.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem; }
+.stat-value { font-family:'Playfair Display',serif; font-size:2rem; line-height:1; color:var(--text); }
+.stat-value.good { color:var(--green); }
+.stat-value.warn { color:var(--accent); }
+.stat-value.low  { color:var(--red); }
+.stat-sub { font-size:0.7rem; color:var(--muted); margin-top:0.2rem; }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
+
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:1.25rem; }
+.panel-title { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; padding-bottom:0.55rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.panel-title span { color:var(--accent); }
+
+.bar-chart { display:flex; flex-direction:column; gap:0.55rem; }
+.bar-row { display:flex; align-items:center; gap:0.7rem; }
+.bar-label { font-size:0.75rem; width:140px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-track { flex:1; height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:3px; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
+.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:var(--muted); }
+
+.mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
+.mission-row { display:flex; align-items:center; gap:0.75rem; }
+.mission-name { font-size:0.78rem; flex:1; }
+.mission-bar-track { width:80px; height:5px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.mission-bar-fill { height:100%; border-radius:3px; }
+.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--muted); width:24px; text-align:right; }
+
+.example-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.75rem; }
+.example-card { background:var(--surface2); border-radius:4px; padding:0.85rem 1rem; border-left:3px solid var(--border); }
+.example-card.fix-causal { border-left-color:#4fc3f7; }
+.example-card.fix-noun   { border-left-color:#a78bfa; }
+.example-card.fix-flow   { border-left-color:#43d9ad; }
+.example-card.fix-mod    { border-left-color:#e8a030; }
+.example-card.fix-other  { border-left-color:#6b7599; }
+.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem; }
+.ex-before { font-size:0.77rem; color:var(--red); margin-bottom:0.3rem; }
+.ex-before::before { content:'✗ '; }
+.ex-after  { font-size:0.77rem; color:var(--green); }
+.ex-after::before  { content:'✓ '; }
+.ex-kw { font-size:0.68rem; color:var(--muted); margin-top:0.3rem; font-style:italic; }
+
+.student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:400; }
+.student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(42,48,80,0.5); vertical-align:middle; }
+.student-table tr:last-child td { border-bottom:none; }
+.student-table tr:hover td { background:var(--surface2); }
+.pill { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.06em; padding:0.15rem 0.5rem; border-radius:20px; }
+.pill.high { background:rgba(67,217,173,0.15); color:var(--green); border:1px solid rgba(67,217,173,0.3); }
+.pill.mid  { background:rgba(232,160,48,0.15);  color:var(--accent); border:1px solid rgba(232,160,48,0.3); }
+.pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border:1px solid rgba(255,107,107,0.3); }
+
+.no-data { text-align:center; padding:2rem; color:var(--muted); font-size:0.82rem; font-style:italic; }
+.mb { margin-bottom:1.25rem; }
+
+@media(max-width:768px){
+  header,main{ padding:1.25rem; }
+  #subject-selector{ padding:1rem 1.25rem; }
+  .stats-row{ grid-template-columns:repeat(2,1fr); }
+  .grid-2,.grid-3{ grid-template-columns:1fr; }
+  .sheets-input{ width:220px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="eyebrow">CUBE Marking Coach · CubeDataAnalysis · Allawrance</div>
+    <h1>Teaching <span>Effectiveness</span> Tracker</h1>
+  </div>
+  <div class="header-right">
+    <button class="btn-load" onclick="loadSheets()">↻ Refresh Data</button>
+    <div class="hint">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Connecting to CUBE Usage Log…</span>
+    </div>
+  </div>
+</header>
+
+<div id="subject-selector">
+  <div class="selector-label">Select Subject</div>
+  <div class="subject-btns">
+    <button class="subject-btn" data-kla="EES"   onclick="switchKLA('EES')">Earth &amp; Env Sci <span class="row-count" id="cnt-EES"></span></button>
+    <button class="subject-btn" data-kla="EngS"  onclick="switchKLA('EngS')">Engineering Studies <span class="row-count" id="cnt-EngS"></span></button>
+    <button class="subject-btn" data-kla="BusS"  onclick="switchKLA('BusS')">Business Studies <span class="row-count" id="cnt-BusS"></span></button>
+    <button class="subject-btn" data-kla="HlthM" onclick="switchKLA('HlthM')">Health &amp; Movement <span class="row-count" id="cnt-HlthM"></span></button>
+  </div>
+</div>
+
+<main>
+  <!-- Loading -->
+  <div id="setup-screen" style="display:none"></div>
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div style="color:var(--muted);font-size:0.85rem">Loading CUBE Marking Coach data…</div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <div class="stats-row" id="stats-row"></div>
+    <div class="grid-2"    id="row1"></div>
+    <div class="grid-2"    id="row2"></div>
+    <div class="mb"        id="row3"></div>
+    <div                   id="row4"></div>
+  </div>
+</main>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+const SHEET_NAMES = ['EES','EngS','BusS','HlthM'];
+const HARDCODED_SHEET_ID = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
+
+const KLA = {
+  EES:   { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'  },
+  EngS:  { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs' },
+  BusS:  { label:'Business Studies',               color:'#a78bfa', cls:'c-buss' },
+  HlthM: { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm' },
+};
+
+const MISSION_COLORS = {
+  'Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7',
+  'Complex Noun Groups':'#a78bfa',
+  'Modality':'#e8a030','modality':'#e8a030',
+  'Logical Flow':'#43d9ad','logicalFlow':'#43d9ad',
+  'Handwriting Clarity':'#ff6b6b','Technical Communication':'#ff6b6b',
+  'Technical Accuracy':'#f59e0b','Technical Detail':'#f59e0b',
+};
+
+let klaData = {};
+let activeKLA = null;
+const sheetId = HARDCODED_SHEET_ID;
+
+// ── GOOGLE SHEETS LOADER ─────────────────────────────────
+async function loadSheets() {
+  showScreen('loading');
+  setStatus('', 'Connecting…');
+  klaData = {};
+
+  try {
+    await Promise.all(SHEET_NAMES.map(name => loadTab(name)));
+    // Update row counts
+    SHEET_NAMES.forEach(k => {
+      const el = document.getElementById('cnt-' + k);
+      if (el) el.textContent = klaData[k] ? '· ' + klaData[k].length : '';
+    });
+    setStatus('live', 'Live — ' + new Date().toLocaleTimeString());
+    showScreen('dashboard');
+    // Auto-select first tab that has data
+    const first = SHEET_NAMES.find(k => klaData[k] && klaData[k].length > 0) || 'EES';
+    switchKLA(first);
+  } catch(e) {
+    setStatus('err', 'Error: ' + e.message);
+    showScreen('setup');
+  }
+}
+
+async function loadTab(name) {
+  // Google Sheets CSV export URL — works for public sheets
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Could not load sheet "${name}" (HTTP ${res.status})`);
+  const text = await res.text();
+  if (text.trim().startsWith('<!')) throw new Error('Sheet is not public — enable "Anyone with the link can view"');
+  const rows = parseCSV(text);
+  klaData[name] = rows.filter(r => r.Student && r.Student !== 'Test Student');
+}
+
+// ── CSV PARSER ───────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length < 2) return [];
+  const headers = splitCSVRow(lines[0]);
+  return lines.slice(1).map(line => {
+    const vals = splitCSVRow(line);
+    const obj = {};
+    headers.forEach((h, i) => { obj[h.trim()] = coerce(vals[i]); });
+    return obj;
+  });
+}
+
+function splitCSVRow(row) {
+  const result = [];
+  let inQ = false, cur = '';
+  for (let i = 0; i < row.length; i++) {
+    const c = row[i];
+    if (c === '"' && !inQ) { inQ = true; }
+    else if (c === '"' && inQ && row[i+1] === '"') { cur += '"'; i++; }
+    else if (c === '"' && inQ) { inQ = false; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else cur += c;
+  }
+  result.push(cur);
+  return result;
+}
+
+function coerce(v) {
+  if (v === undefined || v === null || v === '') return null;
+  const n = Number(v);
+  if (!isNaN(n) && v !== '') return n;
+  return v;
+}
+
+// ── SCREEN MANAGEMENT ────────────────────────────────────
+function showScreen(which) {
+  document.getElementById('setup-screen').style.display   = which === 'setup'    ? 'block' : 'none';
+  document.getElementById('loading-screen').style.display = which === 'loading'  ? 'block' : 'none';
+  document.getElementById('dashboard').style.display      = which === 'dashboard'? 'block' : 'none';
+}
+
+function setStatus(type, msg) {
+  const dot = document.getElementById('status-dot');
+  dot.className = 'status-dot' + (type ? ' ' + type : '');
+  document.getElementById('status-text').textContent = msg;
+}
+
+// ── SUBJECT SWITCHING ────────────────────────────────────
+function switchKLA(kla) {
+  activeKLA = kla;
+  document.querySelectorAll('.subject-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.kla === kla);
+  });
+  renderKLA(kla);
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function renderKLA(kla) {
+  const rows = klaData[kla] || [];
+  const cfg  = KLA[kla];
+
+  if (rows.length === 0) {
+    document.getElementById('stats-row').innerHTML = `<div class="no-data" style="grid-column:1/-1">No data for ${cfg.label}</div>`;
+    ['row1','row2','row3','row4'].forEach(id => { document.getElementById(id).innerHTML = ''; });
+    return;
+  }
+  renderStats(rows, cfg);
+  renderRow1(rows, cfg);
+  renderRow2(rows, cfg);
+  renderRow3(rows, cfg);
+  renderRow4(rows, cfg);
+}
+
+function renderStats(rows, cfg) {
+  const vm = rows.filter(r => r['Mark %'] != null);
+  const avgMark  = vm.length ? avg(vm.map(r => r['Mark %'])) : null;
+  const avgCUBE  = avg(rows.filter(r => r['CUBE %']  != null).map(r => r['CUBE %']));
+  const avgWrite = avg(rows.filter(r => r['Write %'] != null).map(r => r['Write %']));
+  const students = new Set(rows.map(r => r.Student)).size;
+  const sessions = new Set(rows.map(r => r.Session).filter(Boolean)).size;
+
+  const markCls = avgMark == null ? '' : avgMark >= 0.8 ? 'good' : avgMark >= 0.6 ? 'warn' : 'low';
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card ${cfg.cls}">
+      <div class="stat-label">Submissions</div>
+      <div class="stat-value">${rows.length}</div>
+      <div class="stat-sub">${sessions} sessions</div>
+    </div>
+    <div class="stat-card ${cfg.cls}">
+      <div class="stat-label">Students</div>
+      <div class="stat-value">${students}</div>
+      <div class="stat-sub">active users</div>
+    </div>
+    <div class="stat-card c-neutral">
+      <div class="stat-label">Avg Mark</div>
+      <div class="stat-value ${markCls}">${avgMark != null ? pct(avgMark) : '—'}</div>
+      <div class="stat-sub">of available marks</div>
+    </div>
+    <div class="stat-card c-neutral">
+      <div class="stat-label">CUBE Score</div>
+      <div class="stat-value ${avgCUBE >= 0.6 ? 'good' : 'warn'}">${pct(avgCUBE)}</div>
+      <div class="stat-sub">question deconstruction</div>
+    </div>
+    <div class="stat-card c-neutral">
+      <div class="stat-label">Writing Score</div>
+      <div class="stat-value ${avgWrite >= 0.8 ? 'good' : 'warn'}">${pct(avgWrite)}</div>
+      <div class="stat-sub">literacy framework</div>
+    </div>
+  `;
+}
+
+function renderRow1(rows, cfg) {
+  const byDir = groupBy(rows.filter(r => r['Mark %'] != null), r => r.Directive || 'Unknown');
+  const dirEntries = Object.entries(byDir)
+    .map(([d,rs]) => ({ label:d, val:avg(rs.map(r => r['Mark %'])), count:rs.length }))
+    .sort((a,b) => b.val - a.val).slice(0,8);
+
+  const wItems = [
+    ['Causal Connectives', avg(rows.filter(r=>r['W-Con']  !=null).map(r=>r['W-Con'])),  '#4fc3f7', 5],
+    ['Complex Noun Groups',avg(rows.filter(r=>r['W-Noun'] !=null).map(r=>r['W-Noun'])), '#a78bfa', 5],
+    ['Modality',           avg(rows.filter(r=>r['W-Mod']  !=null).map(r=>r['W-Mod'])),  '#e8a030', 5],
+    ['Logical Flow',       avg(rows.filter(r=>r['W-Flow'] !=null).map(r=>r['W-Flow'])), '#43d9ad', 5],
+  ].filter(([,v]) => v != null && !isNaN(v));
+
+  const cubeAvg  = avg(rows.filter(r=>r['CUBE %'] !=null).map(r=>r['CUBE %']));
+  const writeAvg = avg(rows.filter(r=>r['Write %']!=null).map(r=>r['Write %']));
+
+  document.getElementById('row1').innerHTML = `
+    <div class="panel">
+      <div class="panel-title">Avg Mark % by HSC Directive <span>${dirEntries.length} directives</span></div>
+      <div class="bar-chart">
+        ${dirEntries.map(d=>`
+          <div class="bar-row">
+            <div class="bar-label" title="${d.label}">${d.label}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${d.val*100}%;background:${cfg.color}"></div></div>
+            <div class="bar-val">${pct(d.val)}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Literacy Framework Overview</div>
+      <div class="bar-chart" style="margin-bottom:1.25rem">
+        <div class="bar-row">
+          <div class="bar-label">CUBE Deconstruction</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${cubeAvg*100}%;background:#4fc3f7"></div></div>
+          <div class="bar-val">${pct(cubeAvg)}</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Writing Quality</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${writeAvg*100}%;background:#43d9ad"></div></div>
+          <div class="bar-val">${pct(writeAvg)}</div>
+        </div>
+      </div>
+      <div class="panel-title">Writing Component Scores (avg /5)</div>
+      <div class="bar-chart">
+        ${wItems.map(([label,val,color,max])=>`
+          <div class="bar-row">
+            <div class="bar-label">${label}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${(val/max)*100}%;background:${color}"></div></div>
+            <div class="bar-val">${val.toFixed(1)}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderRow2(rows, cfg) {
+  // Mission frequency
+  const mc = {};
+  rows.forEach(r => { const m = normMission(r['Mission Category']); mc[m]=(mc[m]||0)+1; });
+  const mEntries = Object.entries(mc).sort((a,b)=>b[1]-a[1]);
+  const maxM = Math.max(...mEntries.map(e=>e[1]));
+
+  // Annotation
+  const aRows = rows.filter(r=>r['Anno Ideas']!=null && r['Anno Used']!=null);
+  const totI = aRows.reduce((s,r)=>s+(r['Anno Ideas']||0),0);
+  const totU = aRows.reduce((s,r)=>s+(r['Anno Used'] ||0),0);
+  const aRate = totI > 0 ? totU/totI : 0;
+
+  document.getElementById('row2').innerHTML = `
+    <div class="panel">
+      <div class="panel-title">Common Literacy Gaps <span>ranked by frequency</span></div>
+      <div class="mission-freq">
+        ${mEntries.slice(0,9).map(([name,count])=>`
+          <div class="mission-row">
+            <div class="mission-name">${name}</div>
+            <div class="mission-bar-track">
+              <div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MISSION_COLORS[name]||'#6b7599'}"></div>
+            </div>
+            <div class="mission-count">${count}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Annotation Engagement</div>
+      ${aRows.length===0 ? '<div class="no-data">No annotation data available</div>' : `
+        <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.25rem">
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent)">${totU}</div>
+            <div style="font-size:0.68rem;color:var(--muted)">ideas used</div>
+          </div>
+          <div style="color:var(--muted)">/</div>
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--text)">${totI}</div>
+            <div style="font-size:0.68rem;color:var(--muted)">annotated</div>
+          </div>
+          <div style="flex:1">
+            <div class="bar-track" style="height:8px">
+              <div class="bar-fill" style="width:${aRate*100}%;background:${cfg.color}"></div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);margin-top:0.35rem">${pct(aRate)} utilisation rate</div>
+          </div>
+        </div>
+        <div class="panel-title">What does this mean?</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.6">
+          Annotation utilisation shows whether students are transferring annotated ideas into their written response.
+          A low rate may indicate students need scaffolding to connect CUBE deconstruction to their writing.
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function renderRow3(rows, cfg) {
+  const examples = rows.filter(r =>
+    r['Student Phrase'] && r['Improved Version'] &&
+    !String(r['Student Phrase']).includes('illegible') &&
+    r['Mission Category']
+  ).slice(0,6);
+
+  if (!examples.length) { document.getElementById('row3').innerHTML=''; return; }
+
+  function mCls(m) {
+    const n=(m||'').toLowerCase();
+    if(n.includes('causal')) return 'fix-causal';
+    if(n.includes('noun'))   return 'fix-noun';
+    if(n.includes('flow'))   return 'fix-flow';
+    if(n.includes('modal'))  return 'fix-mod';
+    return 'fix-other';
+  }
+
+  document.getElementById('row3').innerHTML = `
+    <div class="panel">
+      <div class="panel-title">Student Writing Improvements <span>AI-generated rewrites via CUBE framework</span></div>
+      <div class="example-grid">
+        ${examples.map(r=>`
+          <div class="example-card ${mCls(r['Mission Category'])}">
+            <div class="ex-label">${normMission(r['Mission Category'])} · ${r['Directive']||''}</div>
+            <div class="ex-before">${r['Student Phrase']}</div>
+            <div class="ex-after">${r['Improved Version']}</div>
+            <div class="ex-kw">${r['Syllabus Kw']||''}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderRow4(rows, cfg) {
+  const tRows = rows
+    .filter(r=>r['Mark %']!=null)
+    .sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp))
+    .slice(0,25);
+
+  const bandPill = p => p>=0.85
+    ? '<span class="pill high">High</span>'
+    : p>=0.6
+    ? '<span class="pill mid">Mid</span>'
+    : '<span class="pill low">Low</span>';
+
+  document.getElementById('row4').innerHTML = `
+    <div class="panel">
+      <div class="panel-title">Submission Log <span>Most recent ${tRows.length} entries</span></div>
+      <div style="overflow-x:auto">
+        <table class="student-table">
+          <thead><tr>
+            <th>Student</th><th>Q No</th><th>Directive</th>
+            <th>Syllabus Keywords</th><th>Mark</th><th>Mark %</th>
+            <th>CUBE %</th><th>Write %</th><th>Literacy Focus</th><th>Band</th>
+          </tr></thead>
+          <tbody>
+            ${tRows.map(r=>`
+              <tr>
+                <td style="font-weight:500">${r.Student}</td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r['Q No']||'—'}</td>
+                <td>${r.Directive||'—'}</td>
+                <td style="font-size:0.7rem;color:var(--muted);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
+                <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
+                <td style="font-family:'IBM Plex Mono',monospace">${pct(r['Mark %'])}</td>
+                <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
+                <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
+                <td style="font-size:0.72rem;color:var(--muted)">${normMission(r['Mission Category'])}</td>
+                <td>${bandPill(r['Mark %'])}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// ── UTILITIES ────────────────────────────────────────────
+function avg(arr) { return arr.length ? arr.reduce((s,v)=>s+v,0)/arr.length : 0; }
+function pct(v)   { return Math.round((v||0)*100)+'%'; }
+function groupBy(arr, fn) {
+  return arr.reduce((acc,item)=>{ const k=fn(item); if(!acc[k])acc[k]=[]; acc[k].push(item); return acc; },{});
+}
+function normMission(m) {
+  if(!m) return 'Other';
+  const map = {
+    'causalconnectives':'Causal Connectives','logicalflow':'Logical Flow',
+    'modality':'Modality','complex noun groups':'Complex Noun Groups',
+    'handwriting clarity':'Handwriting Clarity','technical communication':'Technical Communication',
+    'technical accuracy':'Technical Accuracy','technical detail':'Technical Detail',
+    'content depth':'Content Depth','content completeness':'Content Completeness',
+    'clarity':'Clarity','technical precision':'Technical Precision',
+  };
+  return map[m.toLowerCase()] || m;
+}
+
+// Auto-load on page open
+showScreen('loading');
+loadSheets();
+</script>
+</body>
+</html>
