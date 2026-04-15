@@ -89,12 +89,12 @@ h1 span { color: var(--gold); }
 }
 .subject-box {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid var(--border-gold);
+  border: 1.5px solid rgba(240,192,48,0.7);
   border-radius: 16px; padding: 1.25rem 1.5rem;
   cursor: pointer;
   transition: border-color 0.25s, transform 0.2s, background 0.25s;
 }
-.subject-box:hover { border-color: rgba(201,168,76,0.7); transform: translateY(-2px); }
+.subject-box:hover { border-color: #f0c030; transform: translateY(-2px); }
 .subject-box.active[data-kla="EES"]   { border-color:var(--ees);  background:rgba(79,195,247,0.08); }
 .subject-box.active[data-kla="EngS"]  { border-color:var(--engs); background:rgba(232,160,48,0.08); }
 .subject-box.active[data-kla="BusS"]  { border-color:var(--buss); background:rgba(167,139,250,0.08); }
@@ -114,7 +114,7 @@ h1 span { color: var(--gold); }
   font-size: 1rem; font-weight: 700; color: var(--text);
   display: flex; align-items: center; gap: 0.5rem;
 }
-.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--text-dim); margin-top:0.25rem; }
+.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#f0c030; margin-top:0.25rem; font-weight:700; }
 
 /* MAIN */
 main { padding: 1.75rem 2.5rem; }
@@ -144,12 +144,12 @@ main { padding: 1.75rem 2.5rem; }
 .stat-card.c-buss::before  { background:var(--buss); }
 .stat-card.c-hltm::before  { background:var(--hltm); }
 .stat-card.c-neutral::before { background:var(--gold); }
-.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.4rem; }
+.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
 .stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
 .stat-value.good { color:var(--green); }
 .stat-value.warn { color:var(--gold); }
 .stat-value.low  { color:var(--red); }
-.stat-sub { font-size:0.7rem; color:var(--text-dim); margin-top:0.2rem; }
+.stat-sub { font-size:0.7rem; color:#c8d8e8; margin-top:0.2rem; }
 
 .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
 .mb { margin-bottom:1.25rem; }
@@ -160,25 +160,25 @@ main { padding: 1.75rem 2.5rem; }
 }
 .panel-title {
   font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-  font-size:0.58rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
-  color:var(--text-dim); margin-bottom:1rem; padding-bottom:0.55rem;
+  font-size:0.87rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
+  color:#f0c030; margin-bottom:1rem; padding-bottom:0.55rem;
   border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;
 }
-.panel-title span { color:var(--gold); font-weight:400; }
+.panel-title span { color:#ffffff; font-weight:600; }
 
 .bar-chart { display:flex; flex-direction:column; gap:0.55rem; }
 .bar-row { display:flex; align-items:center; gap:0.7rem; }
-.bar-label { font-size:0.75rem; width:150px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-label { font-size:0.82rem; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#e8eaf0; }
 .bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .bar-fill { height:100%; border-radius:3px; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
-.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:var(--text-dim); }
+.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:#e8eaf0; }
 
 .mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
 .mission-row { display:flex; align-items:center; gap:0.75rem; }
-.mission-name { font-size:0.78rem; flex:1; }
+.mission-name { font-size:0.78rem; flex:1; color:#e8eaf0; }
 .mission-bar-track { width:80px; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .mission-bar-fill { height:100%; border-radius:3px; }
-.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--text-dim); width:24px; text-align:right; }
+.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#ffffff; width:24px; text-align:right; font-weight:700; }
 
 .example-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.75rem; }
 .example-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-left:3px solid var(--border); border-radius:10px; padding:0.9rem 1rem; }
@@ -187,15 +187,15 @@ main { padding: 1.75rem 2.5rem; }
 .example-card.fix-flow   { border-left-color:#43d9ad; }
 .example-card.fix-mod    { border-left-color:#e8a030; }
 .example-card.fix-other  { border-left-color:#6b7599; }
-.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.35rem; }
+.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.35rem; font-weight:600; }
 .ex-before { font-size:0.77rem; color:var(--red); margin-bottom:0.3rem; }
 .ex-before::before { content:'✗ '; }
 .ex-after  { font-size:0.77rem; color:var(--green); }
 .ex-after::before  { content:'✓ '; }
-.ex-kw { font-size:0.68rem; color:var(--text-dim); margin-top:0.3rem; font-style:italic; }
+.ex-kw { font-size:0.72rem; color:#c8d8e8; margin-top:0.3rem; font-style:italic; }
 
 .student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
-.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.54rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:400; }
+.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
 .student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
 .student-table tr:last-child td { border-bottom:none; }
 .student-table tr:hover td { background:rgba(201,168,76,0.04); }
@@ -290,12 +290,12 @@ const KLA = {
 };
 const MCOL = {
   'C — Complex Noun Groups':'#a78bfa','Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa',
-  'L — Logical Flow & Structure':'#43d9ad','Logical Flow':'#43d9ad','logicalFlow':'#43d9ad','Structure':'#43d9ad','structure':'#43d9ad',
+  'L — Logical Flow & Structure':'#43d9ad','Logical Flow':'#43d9ad','logicalFlow':'#43d9ad','Structure':'#43d9ad',
   'M — Modality':'#e8a030','Modality':'#e8a030','modality':'#e8a030',
-  'B — Because But So':'#4fc3f7','Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7',
-  'Handwriting Clarity':'#6b7599','Technical Communication':'#6b7599',
-  'Technical Accuracy':'#6b7599','Technical Detail':'#6b7599',
-  'Legibility and Precision':'#6b7599','Technical Precision':'#6b7599',
+  'B — Because/But/So (Causal Connectives)':'#4fc3f7','Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7',
+  'Legibility':'#6b7599','Handwriting Clarity':'#6b7599',
+  'Technical Vocabulary':'#6b7599','Technical Communication':'#6b7599',
+  'Technical Accuracy':'#6b7599','Technical Detail':'#6b7599','Technical Precision':'#6b7599',
 };
 
 let klaData = {}, activeKLA = null;
@@ -469,7 +469,7 @@ function renderRow1(rows,cfg) {
   const byDir=groupBy(rows.filter(r=>r['Mark %']!=null),r=>r.Directive||'Unknown');
   const dirs=Object.entries(byDir).map(([d,rs])=>({label:d,val:avg(rs.map(r=>r['Mark %'])),count:rs.length})).sort((a,b)=>b.val-a.val).slice(0,8);
   const wi=[
-    ['B — Because But So',avg(rows.filter(r=>r['W-Con']!=null).map(r=>r['W-Con'])),'#4fc3f7'],
+    ['B — Because/But/So',avg(rows.filter(r=>r['W-Con']!=null).map(r=>r['W-Con'])),'#4fc3f7'],
     ['C — Complex Noun Groups',avg(rows.filter(r=>r['W-Noun']!=null).map(r=>r['W-Noun'])),'#a78bfa'],
     ['M — Modality',avg(rows.filter(r=>r['W-Mod']!=null).map(r=>r['W-Mod'])),'#e8a030'],
     ['L — Logical Flow & Structure',avg(rows.filter(r=>r['W-Flow']!=null).map(r=>r['W-Flow'])),'#43d9ad'],
@@ -514,7 +514,7 @@ function renderRow2(rows,cfg) {
   document.getElementById('row2').innerHTML=`
     <div class="panel">
       <div class="panel-title">CLIMBS Literacy Focus Areas <span>higher = more students struggled here</span></div>
-      <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.55;margin-bottom:1rem;padding:0.6rem 0.75rem;background:rgba(201,168,76,0.06);border-radius:6px;border-left:3px solid rgba(201,168,76,0.4)">
+      <div style="font-size:0.8rem;color:#e8eaf0;line-height:1.55;margin-bottom:1rem;padding:0.6rem 0.75rem;background:rgba(201,168,76,0.06);border-radius:6px;border-left:3px solid rgba(201,168,76,0.4)">
         Each bar shows how often CUBE's AI identified this <strong style="color:var(--gold)">CLIMBS</strong> skill as the area most needing improvement. <strong style="color:var(--gold)">C</strong>=Complex Noun Groups &nbsp;<strong style="color:var(--gold)">L</strong>=Logical Flow &amp; Structure &nbsp;<strong style="color:var(--gold)">M</strong>=Modality &nbsp;<strong style="color:var(--gold)">B</strong>=Because/But/So &nbsp;<em style="color:#888">I=Information &amp; S=Stimulus coming soon</em>. A longer bar = more students needed coaching here.
       </div>
       <div class="mission-freq">${me.slice(0,9).map(([name,count])=>`
@@ -534,7 +534,7 @@ function renderRow2(rows,cfg) {
           <div style="flex:1"><div class="bar-track" style="height:8px"><div class="bar-fill" style="width:${ar*100}%;background:${cfg.color}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--text-dim);margin-top:0.35rem">${pct(ar)} utilisation</div></div>
         </div>
         <div class="panel-title">What does this mean?</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);line-height:1.65">Annotation utilisation shows whether students transfer annotated ideas into their written response. A low rate may indicate need for scaffolding to connect CUBE deconstruction to writing.</div>
+        <div style="font-size:0.82rem;color:#c8d8e8;line-height:1.65">Annotation utilisation shows whether students transfer annotated ideas into their written response. A low rate may indicate need for scaffolding to connect CUBE deconstruction to writing.</div>
       `}
     </div>`;
 }
@@ -569,12 +569,12 @@ function renderRow4(rows,cfg) {
             <td style="font-weight:600">${r.Student}</td>
             <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r['Q No']||'—'}</td>
             <td>${r.Directive||'—'}</td>
-            <td style="font-size:0.7rem;color:var(--text-dim);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
+            <td style="font-size:0.7rem;color:#e8eaf0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${pct(r['Mark %'])}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
-            <td style="font-size:0.72rem;color:var(--text-dim)">${normM(r['Mission Category'])}</td>
+            <td style="font-size:0.72rem;color:#e8eaf0">${normM(r['Mission Category'])}</td>
             <td>${pill(r['Mark %'])}</td>
           </tr>`).join('')}</tbody>
       </table></div>
@@ -591,11 +591,11 @@ function normM(m){
     'complex noun groups':'C — Complex Noun Groups','complexnoungroups':'C — Complex Noun Groups',
     'logicalflow':'L — Logical Flow & Structure','logical flow':'L — Logical Flow & Structure','structure':'L — Logical Flow & Structure',
     'modality':'M — Modality',
-    'causalconnectives':'B — Because But So','causal connectives':'B — Because But So',
-    'handwriting clarity':'Handwriting Clarity','technical communication':'Technical Communication',
-    'technical accuracy':'Technical Accuracy','technical detail':'Technical Detail',
-    'content depth':'Content Depth','content completeness':'Content Completeness',
-    'clarity':'Clarity','technical precision':'Technical Precision','legibility and precision':'Legibility and Precision',
+    'causalconnectives':'B — Because/But/So (Causal Connectives)','causal connectives':'B — Because/But/So (Causal Connectives)',
+    'handwriting clarity':'Legibility','legibility and precision':'Legibility','legibility':'Legibility',
+    'technical communication':'Technical Vocabulary','technical accuracy':'Technical Vocabulary',
+    'technical detail':'Technical Vocabulary','technical precision':'Technical Vocabulary',
+    'content depth':'Content Depth','content completeness':'Content Completeness','clarity':'Clarity',
   };
   return map[m.toLowerCase()]||m;
 }
