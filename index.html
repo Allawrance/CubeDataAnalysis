@@ -619,7 +619,7 @@ function renderRow1(rows,cfg) {
       <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.5rem">Handwriting clarity</div>
       <div style="display:flex;align-items:center;gap:0.75rem">
         <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:${legibilityCount>0?'#ff6b6b':'#43d9ad'}">${legibilityCount}</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">${legibilityCount===0?'No submissions flagged —<br>good handwriting across the class':legibilityCount===1?'1 submission flagged<br>as priority for improvement':legibilityCount+' submissions flagged<br>as priority for improvement'}</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">${legibilityCount===0?'of '+rows.length+' submissions flagged —<br>good handwriting across the class':'of '+rows.length+' submissions flagged<br>as priority for improvement'}</div>
       </div>
 
     </div>`;
