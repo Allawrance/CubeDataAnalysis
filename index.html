@@ -536,7 +536,7 @@ function renderRow1(rows,cfg) {
     ['Logical Flow & Structure', compPct(rows,'W-Flow','W-Flow Max'), '#43d9ad'],
   ].filter(([,v])=>v!=null&&!isNaN(v));
 
-  // ── e. Literacy focus areas ───────────────────────────────────────────────
+  // ── e. Literacy focus areas (4 core tools only) + legibility count separate
   const mc={};
   rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
   const FOCUS_ORDER=[
@@ -544,10 +544,10 @@ function renderRow1(rows,cfg) {
     'Complex Noun Groups',
     'Modality',
     'Logical Flow & Structure',
-    'Legibility of handwritten response',
   ];
   const me=FOCUS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
   const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
+  const legibilityCount=mc['Legibility of handwritten response']||0;
 
   document.getElementById('row1').innerHTML=`
     <div class="panel">
@@ -559,12 +559,21 @@ function renderRow1(rows,cfg) {
           <div class="bar-val">${pct(d.val)}</div>
         </div>`).join('')}</div>
       <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Writing component scores (% of max)</div>
-      <div class="bar-chart">${wi.length?wi.map(([label,val,color])=>`
+      <div class="bar-chart" style="margin-bottom:1.25rem">${wi.length?wi.map(([label,val,color])=>`
         <div class="bar-row">
           <div class="bar-label">${label}</div>
           <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
           <div class="bar-val">${pct(val)}</div>
         </div>`).join(''):'<div class="no-data" style="padding:0.5rem 0">No writing component data yet</div>'}</div>
+      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Literacy focus areas <span style="font-size:0.6rem;color:var(--text-dim);font-weight:400;letter-spacing:0">higher = more students needed coaching here</span></div>
+      ${me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data yet</div>':`
+      <div class="mission-freq">${me.map(([name,count])=>`
+        <div class="mission-row">
+          <div class="mission-name">${name}</div>
+          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
+          <div class="mission-count">${count}</div>
+        </div>`).join('')}
+      </div>`}
     </div>
     <div class="panel">
       <div class="panel-title">Question Deconstruction with CUBE</div>
@@ -607,15 +616,11 @@ function renderRow1(rows,cfg) {
           </div>
         </div>
       `}
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Literacy focus areas <span style="font-size:0.6rem;color:var(--text-dim);font-weight:400;letter-spacing:0">higher = more students needed coaching here</span></div>
-      ${me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data yet</div>':`
-      <div class="mission-freq">${me.map(([name,count])=>`
-        <div class="mission-row">
-          <div class="mission-name">${name}</div>
-          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
-          <div class="mission-count">${count}</div>
-        </div>`).join('')}
-      </div>`}
+      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.5rem">Handwriting clarity</div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.5rem;font-weight:800;color:${legibilityCount>0?'#ff6b6b':'#43d9ad'}">${legibilityCount}</div>
+        <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.5">${legibilityCount===0?'No submissions flagged — good handwriting clarity across the class':legibilityCount===1?'1 submission flagged as priority for improvement':legibilityCount+' submissions flagged as priority for improvement'}</div>
+      </div>
     </div>`;
 }
 
