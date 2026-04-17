@@ -205,7 +205,7 @@ main { padding: 1.75rem 2.5rem; }
 
 .mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
 .mission-row { display:flex; align-items:center; gap:0.75rem; }
-.mission-name { font-size:0.78rem; width:200px; flex-shrink:0; color:#e8eaf0; }
+.mission-name { font-size:0.78rem; width:180px; flex-shrink:0; color:#e8eaf0; }
 .mission-bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .mission-bar-fill { height:100%; border-radius:3px; }
 .mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#ffffff; width:24px; text-align:right; font-weight:700; }
@@ -511,7 +511,7 @@ function renderRow1(rows,cfg) {
   const cubeRows=rows.filter(r=>r['CUBE XP']!=null);
   const cubeAttempted=cubeRows.filter(r=>r['CUBE XP']>0).length;
   const cubePctAttempt=cubeRows.length>0?cubeAttempted/cubeRows.length:0;
-  const cA=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));  // avg accuracy
+  const cA=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));
 
   // ── c. Annotations ────────────────────────────────────────────────────────
   const aR=rows.filter(r=>r['Anno Ideas']!=null&&r['Anno Used']!=null);
@@ -520,8 +520,6 @@ function renderRow1(rows,cfg) {
   const ar=tI>0?tU/tI:0;
 
   // ── d. Writing component scores — normalised using per-row max ────────────
-  // For each component, compute score/max per row (only rows that have both).
-  // Falls back gracefully for legacy rows without max columns (uses /5 then).
   function compPct(rows, scoreCol, maxCol) {
     const valid = rows.filter(r => r[scoreCol] != null && !isNaN(r[scoreCol]));
     if (!valid.length) return null;
@@ -531,23 +529,42 @@ function renderRow1(rows,cfg) {
     }));
   }
   const wA=avg(rows.filter(r=>r['Write %']!=null).map(r=>r['Write %']));
-
   const wi=[
-    ['Causal Connectives', compPct(rows,'W-Con','W-Con Max'), '#4fc3f7'],
-    ['Complex Noun Groups', compPct(rows,'W-Noun','W-Noun Max'), '#a78bfa'],
-    ['Modality',            compPct(rows,'W-Mod','W-Mod Max'), '#e8a030'],
+    ['Causal Connectives',       compPct(rows,'W-Con','W-Con Max'),   '#4fc3f7'],
+    ['Complex Noun Groups',      compPct(rows,'W-Noun','W-Noun Max'), '#a78bfa'],
+    ['Modality',                 compPct(rows,'W-Mod','W-Mod Max'),   '#e8a030'],
     ['Logical Flow & Structure', compPct(rows,'W-Flow','W-Flow Max'), '#43d9ad'],
   ].filter(([,v])=>v!=null&&!isNaN(v));
+
+  // ── e. Literacy focus areas ───────────────────────────────────────────────
+  const mc={};
+  rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
+  const FOCUS_ORDER=[
+    'Causal Connectives',
+    'Complex Noun Groups',
+    'Modality',
+    'Logical Flow & Structure',
+    'Legibility of handwritten response',
+  ];
+  const me=FOCUS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
+  const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
 
   document.getElementById('row1').innerHTML=`
     <div class="panel">
       <div class="panel-title">Avg Mark % by HSC Directive <span>${dirs.length} directives</span></div>
-      <div class="bar-chart">${dirs.map(d=>`
+      <div class="bar-chart" style="margin-bottom:1.5rem">${dirs.map(d=>`
         <div class="bar-row">
           <div class="bar-label" title="${d.label}">${d.label}</div>
           <div class="bar-track"><div class="bar-fill" style="width:${d.val*100}%;background:${cfg.color}"></div></div>
           <div class="bar-val">${pct(d.val)}</div>
         </div>`).join('')}</div>
+      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Writing component scores (% of max)</div>
+      <div class="bar-chart">${wi.length?wi.map(([label,val,color])=>`
+        <div class="bar-row">
+          <div class="bar-label">${label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
+          <div class="bar-val">${pct(val)}</div>
+        </div>`).join(''):'<div class="no-data" style="padding:0.5rem 0">No writing component data yet</div>'}</div>
     </div>
     <div class="panel">
       <div class="panel-title">Question Deconstruction with CUBE</div>
@@ -573,8 +590,8 @@ function renderRow1(rows,cfg) {
         </div>
       </div>
       <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Question annotations</div>
-      ${aR.length===0?'<div class="no-data" style="padding:0.75rem 0">No annotation data available</div>':`
-        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
+      ${aR.length===0?'<div class="no-data" style="padding:0.5rem 0">No annotation data available</div>':`
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
           <div style="text-align:center">
             <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.5rem;font-weight:800">${tI}</div>
             <div style="font-size:0.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em">annotated</div>
@@ -590,41 +607,21 @@ function renderRow1(rows,cfg) {
           </div>
         </div>
       `}
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Writing component scores (% of max)</div>
-      <div class="bar-chart">${wi.map(([label,val,color])=>`
-        <div class="bar-row">
-          <div class="bar-label">${label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
-          <div class="bar-val">${pct(val)}</div>
-        </div>`).join('')}</div>
-    </div>`;
-}
-
-function renderRow2(rows,cfg) {
-  const mc={};
-  rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
-  // Core agreed literacy tools only — no CLIMBS, no letter prefixes
-  const FOCUS_ORDER=[
-    'Causal Connectives',
-    'Complex Noun Groups',
-    'Modality',
-    'Logical Flow & Structure',
-    'Legibility of handwritten response',
-  ];
-  const me=FOCUS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
-  const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
-  document.getElementById('row2').innerHTML=`
-    <div class="panel" style="grid-column:1/-1">
-      <div class="panel-title">Literacy Focus Areas <span>higher = more students identified here as priority for improvement</span></div>
-      ${me.length===0?'<div class="no-data">No literacy focus data available yet</div>':`
+      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Literacy focus areas <span style="font-size:0.6rem;color:var(--text-dim);font-weight:400;letter-spacing:0">higher = more students needed coaching here</span></div>
+      ${me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data yet</div>':`
       <div class="mission-freq">${me.map(([name,count])=>`
         <div class="mission-row">
           <div class="mission-name">${name}</div>
-          <div class="mission-bar-track" style="flex:1;width:auto"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
+          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
           <div class="mission-count">${count}</div>
         </div>`).join('')}
       </div>`}
     </div>`;
+}
+
+function renderRow2(rows,cfg) {
+  // Row2 is now empty — all content consolidated into row1
+  document.getElementById('row2').innerHTML='';
 }
 
 function renderRow3(rows,cfg) {
