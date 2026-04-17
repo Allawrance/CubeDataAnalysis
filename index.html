@@ -1,705 +1,659 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-analysis-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon-analysis-180.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CUBE Marking Coach - Effectiveness Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="/cube-app/favicon-home-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/cube-app/favicon-home-180.png">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CUBE Marking Coach — HSC Learning Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #040d18;
-  --navy-mid: #0a1628;
-  --surface: #0e1e34;
-  --surface2: #141e30;
-  --border: rgba(255,255,255,0.08);
-  --border-gold: rgba(201,168,76,0.3);
-  --text: #e8eaf0;
-  --text-dim: #7a9ab8;
   --gold: #c9a84c;
   --gold-light: #e8c96a;
-  --green: #43d9ad;
-  --red: #ff6b6b;
-  --ees:   #4fc3f7;
-  --engs:  #e8a030;
-  --buss:  #a78bfa;
-  --hltm:  #43d9ad;
+  --navy: #040d18;
+  --navy-mid: #0a1628;
+  --navy-light: #0e1e34;
+  --blue-accent: #1565c0;
+  --purple: #6c63ff;
+  --green: #2e7d32;
+  --text: #e8eaf0;
+  --text-dim: #7a9ab8;
+  --border: rgba(255,255,255,0.08);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
+  background: var(--navy);
   color: var(--text);
-  min-height: 100vh;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* HEADER */
-header {
-  padding: 1.5rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  background: rgba(4,13,24,0.96);
+h1,h2,h3,h4 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(4,13,24,0.95);
   backdrop-filter: blur(12px);
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-  position: sticky; top: 0; z-index: 50;
-}
-/* eyebrow matches "HOW IT WORKS" — Helvetica Neue 700 uppercase */
-.eyebrow {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.62rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.3rem;
-}
-/* h1 matches hero "Get instant feedback" — Helvetica Neue 800 */
-h1 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.75rem; font-weight: 800; line-height: 1.1; color: var(--text);
-}
-h1 span { color: var(--gold); }
-.header-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
-.btn-refresh {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: #040d18; border: none; padding: 0.55rem 1.25rem;
-  border-radius: 8px; cursor: pointer; font-weight: 700;
-  box-shadow: 0 4px 16px rgba(201,168,76,0.25);
-  transition: opacity 0.2s;
-}
-.btn-refresh:hover { opacity: 0.85; }
-.status-line { font-size: 0.7rem; color: var(--text-dim); display:flex; align-items:center; gap:0.4rem; }
-.dot { width:7px; height:7px; border-radius:50%; background:var(--text-dim); display:inline-block; flex-shrink:0; }
-.dot.live { background:var(--green); box-shadow:0 0 6px var(--green); }
-.dot.err  { background:var(--red); }
-
-/* SUBJECT SELECTOR */
-#subject-selector {
-  padding: 2rem 2.5rem;
   border-bottom: 1px solid var(--border);
-  background: var(--navy-mid);
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
 }
-.selector-label {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1.25rem;
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-badge {
+  background: var(--gold); color: var(--navy);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 800;
+  font-size: 13px; padding: 4px 12px; border-radius: 6px;
+  letter-spacing: 1px;
 }
-.subject-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+.nav-title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 15px; color: var(--text); }
+.nav-sub { font-size: 11px; color: var(--text-dim); }
+.nav-links { display: flex; gap: 16px; }
+.nav-links a { color: var(--text-dim); text-decoration: none; font-size: 12px; transition: color 0.2s; white-space: nowrap; }
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--navy);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700;
+  font-size: 13px; padding: 8px 18px; border-radius: 8px;
+  text-decoration: none; transition: background 0.2s;
 }
-.subject-box {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
-  border-radius: 16px; padding: 1.25rem 1.5rem;
-  cursor: pointer;
-  transition: border-color 0.25s, transform 0.2s, background 0.25s;
-}
-.subject-box.active .subj-name { color: #ffffff; }
-.subject-box.active .kla-tag::after {
-  content: ' · SELECTED';
-  font-size: 0.55rem;
-  opacity: 0.85;
-  letter-spacing: 0.12em;
-}
-.subject-box { transition: border-color 0.25s, transform 0.2s, background 0.25s, box-shadow 0.25s; }
-.subject-box:hover { border-color: #f0c030; transform: translateY(-2px); }
-.subject-box.active[data-kla="EES"]   {
-  border-color: var(--ees); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(79,195,247,0.22), rgba(79,195,247,0.10));
-  box-shadow: 0 0 0 3px rgba(79,195,247,0.18), 0 6px 24px rgba(79,195,247,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="EngS"]  {
-  border-color: var(--engs); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(232,160,48,0.22), rgba(232,160,48,0.10));
-  box-shadow: 0 0 0 3px rgba(232,160,48,0.18), 0 6px 24px rgba(232,160,48,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="BusS"]  {
-  border-color: var(--buss); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(167,139,250,0.22), rgba(167,139,250,0.10));
-  box-shadow: 0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="HlthM"] {
-  border-color: var(--hltm); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(67,217,173,0.22), rgba(67,217,173,0.10));
-  box-shadow: 0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.kla-tag {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  margin-bottom: 0.35rem;
-}
-.subject-box[data-kla="EES"]   .kla-tag { color: var(--ees); }
-.subject-box[data-kla="EngS"]  .kla-tag { color: var(--engs); }
-.subject-box[data-kla="BusS"]  .kla-tag { color: var(--buss); }
-.subject-box[data-kla="HlthM"] .kla-tag { color: var(--hltm); }
-.subj-name {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1rem; font-weight: 700; color: var(--text);
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#f0c030; margin-top:0.25rem; font-weight:700; }
+.nav-cta:hover { background: var(--gold-light); }
 
-/* MAIN */
-main { padding: 1.75rem 2.5rem; }
-
-/* LOADING */
-#loading-screen { display:none; text-align:center; padding:5rem 2rem; }
-.spinner { width:36px; height:36px; border:2px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1rem; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* ERROR */
-#error-screen { display:none; text-align:center; padding:4rem 2rem; }
-.error-box { max-width:520px; margin:0 auto; background:rgba(255,107,107,0.07); border:1px solid rgba(255,107,107,0.25); border-radius:12px; padding:2rem; }
-.error-title { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:800; font-size:1rem; color:var(--red); margin-bottom:0.75rem; }
-.error-msg { font-size:0.82rem; color:var(--text-dim); line-height:1.7; }
-
-/* DASHBOARD */
-#dashboard { display:none; }
-.stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:1.5rem; }
-.stat-card {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1px solid var(--border-gold); border-radius: 10px;
-  padding: 1rem 1.2rem; position: relative; overflow: hidden;
+/* ── HERO ── */
+.hero {
+  min-height: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 80%, rgba(108,99,255,0.08) 0%, transparent 50%),
+    var(--navy);
+  display: flex; align-items: center;
+  padding: 20px 5% 24px;
+  position: relative; overflow: hidden;
 }
-.stat-card::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; }
-.stat-card.c-ees::before   { background:var(--ees); }
-.stat-card.c-engs::before  { background:var(--engs); }
-.stat-card.c-buss::before  { background:var(--buss); }
-.stat-card.c-hltm::before  { background:var(--hltm); }
-.stat-card.c-neutral::before { background:var(--gold); }
-.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
-.stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
-.stat-value.good { color:var(--green); }
-.stat-value.warn { color:var(--gold); }
-.stat-value.low  { color:var(--red); }
-.stat-sub { font-size:0.7rem; color:#c8d8e8; margin-top:0.2rem; }
-
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
-.mb { margin-bottom:1.25rem; }
-
-.panel {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1px solid var(--border-gold); border-radius: 12px; padding: 1.25rem;
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
 }
-.panel-title {
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-  font-size:0.87rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
-  color:#f0c030; margin-bottom:1rem; padding-bottom:0.55rem;
-  border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;
+.hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px; padding: 4px 14px; margin-bottom: 20px;
+  font-size: 12px; color: var(--gold); font-weight: 500; letter-spacing: 0.5px;
 }
-.panel-title span { color:#ffffff; font-weight:600; }
-
-.bar-chart { display:flex; flex-direction:column; gap:0.55rem; }
-.bar-row { display:flex; align-items:center; gap:0.7rem; }
-.bar-label { font-size:0.82rem; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#e8eaf0; }
-.bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
-.bar-fill { height:100%; border-radius:3px; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
-.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:#e8eaf0; }
-
-.mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
-.mission-row { display:flex; align-items:center; gap:0.75rem; }
-.mission-name { font-size:0.78rem; width:180px; flex-shrink:0; color:#e8eaf0; }
-.mission-bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
-.mission-bar-fill { height:100%; border-radius:3px; }
-.mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#ffffff; width:24px; text-align:right; font-weight:700; }
-
-.example-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.75rem; }
-.example-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-left:3px solid var(--border); border-radius:10px; padding:0.9rem 1rem; }
-.example-card.fix-causal { border-left-color:#4fc3f7; }
-.example-card.fix-noun   { border-left-color:#a78bfa; }
-.example-card.fix-flow   { border-left-color:#43d9ad; }
-.example-card.fix-mod    { border-left-color:#e8a030; }
-.example-card.fix-other  { border-left-color:#6b7599; }
-.ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.35rem; font-weight:600; }
-.ex-before { font-size:0.77rem; color:var(--red); margin-bottom:0.3rem; }
-.ex-before::before { content:'✗ '; }
-.ex-after  { font-size:0.77rem; color:var(--green); }
-.ex-after::before  { content:'✓ '; }
-.ex-kw { font-size:0.72rem; color:#c8d8e8; margin-top:0.3rem; font-style:italic; }
-
-.student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
-.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
-.student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
-.student-table tr:last-child td { border-bottom:none; }
-.student-table tr:hover td { background:rgba(201,168,76,0.04); }
-.pill { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.06em; padding:0.15rem 0.5rem; border-radius:20px; }
-.pill.high { background:rgba(67,217,173,0.15); color:var(--green);  border:1px solid rgba(67,217,173,0.3); }
-.pill.mid  { background:rgba(201,168,76,0.15);  color:var(--gold);   border:1px solid rgba(201,168,76,0.3); }
-.pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border:1px solid rgba(255,107,107,0.3); }
-.no-data { text-align:center; padding:2rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
-
-@media(max-width:768px){
-  header,main{ padding:1.25rem; }
-  #subject-selector{ padding:1.25rem; }
-  .stats-row{ grid-template-columns:repeat(2,1fr); }
-  .grid-2{ grid-template-columns:1fr; }
-  .subject-grid{ grid-template-columns:1fr 1fr; }
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800; line-height: 1.1;
+  color: var(--text); margin-bottom: 20px;
 }
-@media(max-width:480px){
-  .subject-grid{ grid-template-columns:1fr; }
+.hero h1 span { color: var(--gold); }
+.hero-desc { font-size: 16px; color: #c8daea; line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700;
+  font-size: 14px; padding: 12px 24px; border-radius: 10px;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
 }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.4); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  font-size: 14px; padding: 12px 24px; border-radius: 10px;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color 0.2s;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+
+/* Hero visual */
+.hero-visual {
+  background: linear-gradient(135deg, #0e1e34, #141e30);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 16px; padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  position: relative;
+}
+.hv-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.hv-badge { background: var(--gold); color: var(--navy); font-family: 'Syne',sans-serif; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: 4px; }
+.hv-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.hv-sub { font-size: 10px; color: var(--text-dim); }
+.steps-row { display: flex; align-items: center; gap: 0; margin-bottom: 20px; }
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne',sans-serif; font-weight: 800; font-size: 12px;
+  flex-shrink: 0; position: relative;
+}
+.step-dot.done { background: #2e7d32; color: white; }
+.step-dot.done::after { content: '✓'; position: absolute; top: -2px; right: -2px; background: #69f0ae; color: #003300; width: 12px; height: 12px; border-radius: 50%; font-size: 7px; display: flex; align-items: center; justify-content: center; }
+.step-dot.active { background: var(--gold); color: var(--navy); }
+.step-dot.inactive { background: rgba(255,255,255,0.06); color: var(--text-dim); border: 1.5px solid var(--border); }
+.step-line { flex: 1; height: 2px; background: rgba(201,168,76,0.3); }
+.step-line.done { background: #2e7d32; }
+.steps-labels { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.step-label { font-size: 9px; color: var(--text-dim); text-align: center; width: 32px; }
+.step-label.active { color: var(--gold); font-weight: 700; }
+.step-label.done { color: #69f0ae; }
+.cube-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 10px; padding: 14px; margin-bottom: 12px;
+}
+.cube-q { font-family: 'Courier New', monospace; font-size: 11px; color: #c8d8e8; line-height: 1.6; margin-bottom: 10px; }
+.cube-q .c { color: #ff8a80; text-decoration: underline; font-weight: 700; }
+.cube-q .u { color: #90caf9; border-bottom: 2px solid #2196f3; }
+.cube-q .b { color: #a5d6a7; border: 1px solid #4caf50; border-radius: 2px; padding: 0 2px; }
+.xp-row { display: flex; align-items: center; justify-content: space-between; }
+.xp-pill { background: rgba(108,99,255,0.2); border: 1px solid rgba(108,99,255,0.4); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: #a89fff; }
+.xp-score { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 20px; color: var(--gold); }
+
+/* ── SECTION WRAPPER ── */
+section { padding: 80px 5%; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  font-size: 11px; font-weight: 700; color: var(--gold);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
+}
+.section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 16px; color: #f0c030; }
+.section-desc { color: #dce8f0; font-size: 16px; max-width: 560px; line-height: 1.7; }
+
+/* ── HOW IT WORKS ── */
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+.how-card {
+  background: linear-gradient(135deg, #0e1e34, #0a1628);
+  border: 1.5px solid rgba(201,168,76,0.4); border-radius: 16px; padding: 28px 24px;
+  position: relative; transition: border-color 0.3s, transform 0.3s;
+}
+.how-card:hover { border-color: rgba(201,168,76,0.8); transform: translateY(-3px); }
+.how-num {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 800;
+  color: var(--gold); position: absolute; top: 14px; right: 18px;
+  line-height: 1; opacity: 0.9;
+}
+.how-icon { font-size: 32px; margin-bottom: 16px; }
+.how-title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 8px; color: #f0c030; }
+.how-desc { font-size: 15px; color: #dce8f0; line-height: 1.6; }
+
+/* ── PHOTO GUIDE ── */
+.photo-section { background: linear-gradient(135deg, #080f1c, #0a1220); padding-top: 48px !important; }
+.photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+.photo-col h3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.photo-col h3.good { color: #69f0ae; }
+.photo-col h3.bad { color: #ff5252; }
+.photo-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: rgba(255,255,255,0.03); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.photo-item.good { border-left: 3px solid #69f0ae; }
+.photo-item.bad { border-left: 3px solid #ff5252; }
+.photo-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.photo-text { font-size: 15px; color: #dce8f0; line-height: 1.5; }
+.photo-text strong { color: #f0c030; display: block; margin-bottom: 2px; font-size: 17px; }
+
+/* Mock photo examples */
+.mock-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.mock-photo {
+  border-radius: 12px; overflow: hidden; position: relative;
+  aspect-ratio: 4/3;
+}
+.mock-photo .overlay {
+  position: absolute; inset: 0; display: flex; align-items: flex-end;
+  padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+}
+.mock-photo-label { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.mock-photo-label.good { color: #69f0ae; }
+.mock-photo-label.bad { color: #ff5252; }
+
+/* Illustrated worksheet previews */
+.ws-good { background: #f5f0e8; border-radius: 8px; padding: 12px; }
+.ws-bad { background: #f5f0e8; border-radius: 8px; padding: 12px; transform: rotate(90deg) scale(0.7); }
+.ws-line { height: 2px; background: #ccc; margin: 4px 0; border-radius: 1px; }
+.ws-dot-line { border-bottom: 2px dotted #bbb; margin: 4px 0; }
+.ws-q { font-family: 'Courier New'; font-size: 9px; color: #333; font-weight: 700; margin-bottom: 4px; }
+.ws-text { font-size: 8px; color: #555; line-height: 1.4; }
+
+/* ── LIMITATIONS ── */
+.limits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+.limit-card {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; display: flex; gap: 14px;
+}
+.limit-icon { font-size: 22px; flex-shrink: 0; }
+.limit-title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 4px; color: #f0c030; }
+.limit-desc { font-size: 15px; color: #dce8f0; line-height: 1.6; }
+
+/* ── SUBJECTS ── */
+.subjects-section { background: linear-gradient(180deg, var(--navy) 0%, #080f1c 100%); }
+.faculty-block { margin-bottom: 40px; }
+.faculty-label {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+}
+.faculty-text {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 800;
+  letter-spacing: 1px; color: var(--gold); white-space: nowrap; font-size: 13px;
+}
+.faculty-line { flex: 1; height: 1px; background: rgba(201,168,76,0.15); }
+.subjects-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.subj-card {
+  background: linear-gradient(135deg, #0e1e34, #0a1628);
+  border: 1.5px solid var(--border); border-radius: 14px;
+  padding: 20px 16px; text-align: center; cursor: pointer;
+  transition: all 0.25s; text-decoration: none; display: block;
+}
+.subj-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.subj-card.ees { border-color: rgba(46,125,50,0.4); }
+.subj-card.ees:hover { border-color: rgba(46,125,50,0.8); box-shadow: 0 8px 24px rgba(46,125,50,0.2); }
+.subj-card.bus { border-color: rgba(21,101,192,0.4); }
+.subj-card.bus:hover { border-color: rgba(21,101,192,0.8); box-shadow: 0 8px 24px rgba(21,101,192,0.2); }
+.subj-card.hlth { border-color: rgba(0,105,92,0.4); }
+.subj-card.hlth:hover { border-color: rgba(0,105,92,0.8); box-shadow: 0 8px 24px rgba(0,105,92,0.2); }
+.subj-card.engs { border-color: rgba(191,54,12,0.4); }
+.subj-card.engs:hover { border-color: rgba(191,54,12,0.8); box-shadow: 0 8px 24px rgba(191,54,12,0.2); }
+.subj-card.soon { opacity: 0.35; cursor: default; }
+.subj-card.soon:hover { transform: none; box-shadow: none; }
+.subj-emoji { font-size: 28px; margin-bottom: 10px; }
+.subj-name { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.subj-code { font-size: 10px; color: var(--text-dim); font-family: monospace; }
+.subj-soon { font-size: 9px; color: var(--text-dim); margin-top: 4px; font-style: italic; }
+
+/* ── STAFF CALLOUT ── */
+.staff-callout {
+  background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.04));
+  border: 1px solid rgba(201,168,76,0.2); border-radius: 16px;
+  padding: 32px; margin-top: 48px;
+  display: flex; gap: 24px; align-items: flex-start;
+}
+.staff-icon { font-size: 32px; flex-shrink: 0; }
+.staff-title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 16px; color: var(--gold); margin-bottom: 8px; }
+.staff-desc { font-size: 15px; color: #dce8f0; line-height: 1.6; }
+.staff-desc a { color: var(--gold); text-decoration: none; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border); padding: 32px 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--text-dim);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+  .how-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr; }
+  .limits-grid { grid-template-columns: 1fr; }
+  .subjects-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .staff-callout { flex-direction: column; }
+}
+
+/* anchor offset removed */
 </style>
 </head>
-<body>
+<body id="top">
 
-<header>
-  <div>
-    <div class="eyebrow">CUBE Marking Coach</div>
-    <h1><span>Effectiveness</span> Tracker</h1>
-  </div>
-  <div class="header-right">
-    <button class="btn-refresh" onclick="loadSheets()">↻ Refresh Data</button>
-    <div class="status-line">
-      <span class="dot" id="sdot"></span>
-      <span id="stxt">Connecting…</span>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-badge">CUBE</div>
+    <div>
+      <div class="nav-title">Marking Coach</div>
+      <div class="nav-sub">AI-powered HSC feedback</div>
     </div>
   </div>
-</header>
+  <div class="nav-links">
+    <a href="#top">Home</a>
+    <a href="#how">How it works</a>
+    <a href="#research">Supporting Research</a>
+    <a href="#photos">Photo guide</a>
+    <a href="#limits">Limitations</a>
+    <a href="#privacy">Privacy</a>
+  </div>
 
-<div id="subject-selector">
-  <div class="selector-label">Select Your Subject</div>
-  <div class="subject-grid">
-    <div class="subject-box" data-kla="EES" onclick="switchKLA('EES')">
-      <div class="kla-tag">Science</div>
-      <div class="subj-name">🌏 Earth &amp; Enviro Sci</div>
-      <div class="subj-count" id="cnt-EES">Loading…</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>Get instant feedback on your <span>HSC answers</span></h1>
+      <p class="hero-desc">
+        The CUBE Marking Coach uses AI to analyse your written responses, check your CUBE annotations, and give you personalised feedback — instantly, any time.
+      </p>
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:28px;margin-top:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Select your subject</div>
+        <div id="subjects" style="width:100%;">
+          <div style="display:flex;gap:10px;margin-bottom:10px;">
+            <a href="https://allawrance.github.io/cube-app/app/?subject=EES" target="_blank" class="subj-card ees" style="border-color:rgba(46,125,50,0.6);text-align:left;padding:12px;flex:1;min-height:64px;">
+              <div style="font-size:9px;font-weight:700;color:#69f0ae;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Science</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;">🌏 Earth &amp; Environmental Sci.</div>
+            </a>
+            <a href="https://allawrance.github.io/cube-app/app/?subject=BusS" target="_blank" class="subj-card bus" style="border-color:rgba(21,101,192,0.6);text-align:left;padding:12px;flex:1;min-height:64px;">
+              <div style="font-size:9px;font-weight:700;color:#64b5f6;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">HISE</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;">📊 Business Studies</div>
+            </a>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <a href="https://allawrance.github.io/cube-app/app/?subject=HlthM" target="_blank" class="subj-card hlth" style="border-color:rgba(0,105,92,0.6);text-align:left;padding:12px;flex:1;min-height:64px;">
+              <div style="font-size:9px;font-weight:700;color:#80cbc4;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">PDHPE</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;">🏃 Health &amp; Movement Sci.</div>
+            </a>
+            <a href="https://allawrance.github.io/cube-app/app/?subject=EngS" target="_blank" class="subj-card engs" style="border-color:rgba(191,54,12,0.6);text-align:left;padding:12px;flex:1;min-height:64px;">
+              <div style="font-size:9px;font-weight:700;color:#ffab91;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">TAS</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;">⚙️ Engineering Studies</div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="subject-box" data-kla="BusS" onclick="switchKLA('BusS')">
-      <div class="kla-tag">HSIE</div>
-      <div class="subj-name">📊 Business Studies</div>
-      <div class="subj-count" id="cnt-BusS">Loading…</div>
-    </div>
-    <div class="subject-box" data-kla="HlthM" onclick="switchKLA('HlthM')">
-      <div class="kla-tag">PDHPE</div>
-      <div class="subj-name">🏃 Health &amp; Movement</div>
-      <div class="subj-count" id="cnt-HlthM">Loading…</div>
-    </div>
-    <div class="subject-box" data-kla="EngS" onclick="switchKLA('EngS')">
-      <div class="kla-tag">TAS</div>
-      <div class="subj-name">⚙️ Engineering Studies</div>
-      <div class="subj-count" id="cnt-EngS">Loading…</div>
+    <div class="hero-visual">
+      <div class="hv-header">
+        <div class="hv-badge">CUBE</div>
+        <div>
+          <div class="hv-title">CUBE Marking Coach</div>
+          <div class="hv-sub">Earth &amp; Environmental Science</div>
+        </div>
+      </div>
+      <div class="steps-row">
+        <div class="step-dot done">1</div>
+        <div class="step-line done"></div>
+        <div class="step-dot done">2</div>
+        <div class="step-line done"></div>
+        <div class="step-dot done">3</div>
+        <div class="step-line done"></div>
+        <div class="step-dot active">4</div>
+        <div class="step-line"></div>
+        <div class="step-dot inactive">5</div>
+        <div class="step-line"></div>
+        <div class="step-dot inactive">6</div>
+        <div class="step-line"></div>
+        <div class="step-dot inactive" style="font-size:14px">🏆</div>
+      </div>
+      <div class="steps-labels">
+        <div class="step-label done">Upload</div>
+        <div class="step-label done">CUBE</div>
+        <div class="step-label done">Plan</div>
+        <div class="step-label active">Script</div>
+        <div class="step-label">Rubric</div>
+        <div class="step-label">Feed&shy;back</div>
+        <div class="step-label">Score</div>
+      </div>
+      <div class="cube-card">
+        <div class="cube-q">
+          <span class="c">Evaluate</span> the effectiveness of technology used to predict volcanic eruptions, using a <span class="b">named example</span>, in saving <span class="u">infrastructure</span> and <span class="u">human life</span>.
+        </div>
+        <div style="font-size:10px;color:#9aabb8;margin-bottom:6px;font-style:italic;">Student response recognised — marking in progress…</div>
+        <div class="xp-row">
+          <div class="xp-pill">⚡ CUBE + Annotation</div>
+          <div class="xp-score">17 XP</div>
+        </div>
+      </div>
+      <div style="background:rgba(105,240,174,0.08);border:1px solid rgba(105,240,174,0.2);border-radius:8px;padding:10px 12px;font-size:11px;color:#81c784;line-height:1.5;">
+        🏅 <strong>Strength:</strong> Strong use of BECAUSE to link SO₂ emissions to aerosol formation — excellent causal reasoning.
+      </div>
     </div>
   </div>
 </div>
 
-<main>
-  <div id="loading-screen">
-    <div class="spinner"></div>
-    <div style="color:var(--text-dim);font-size:0.85rem">Loading CUBE Marking Coach data…</div>
-  </div>
-  <div id="error-screen">
-    <div class="error-box">
-      <div class="error-title">⚠ Could not load data</div>
-      <div class="error-msg" id="errmsg"></div>
+<!-- RESEARCH STRIP -->
+<section id="research" style="background:linear-gradient(135deg,rgba(108,99,255,0.12),rgba(108,99,255,0.06));border-top:1px solid rgba(108,99,255,0.2);border-bottom:1px solid rgba(108,99,255,0.2);padding:60px 5%;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-size:11px;font-weight:700;color:#a89fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Supporting Research</div>
+    <h2 style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#f0c030;margin-bottom:20px;">Research supporting timely feedback</h2>
+    <div style="font-size:16px;color:#b8cce0;line-height:1.85;max-width:900px;">
+      <p style="margin-bottom:18px;">Timely feedback is critical for improving HSC responses because it allows students to act on advice while their thinking is still fresh, correcting errors before misconceptions become embedded and applying improvements immediately.</p>
+      <p style="margin-bottom:18px;">Research consistently identifies feedback as one of the highest-impact strategies in education — the Education Endowment Foundation (2021) reports it can advance learning by several months' worth of progress on average, with benefits especially pronounced in science subjects.</p>
+      <p style="margin-bottom:18px;">Students who receive prompt, specific feedback score significantly higher on assessments than those who do not, and also show improved engagement and confidence in their learning (Oliver, 2025). Crucially, immediate feedback produces significantly larger performance gains than delayed feedback on the same material (Stenger, 2014).</p>
+      <p style="margin-bottom:18px;">Without timely feedback, students risk embedding incorrect understanding and compounding gaps in their knowledge (Boxer, 2020; Indiana University Center for Innovative Teaching and Learning, 2023). Emerging research also confirms that AI-generated feedback can meaningfully improve students' revision quality, motivation, and cognitive outcomes (Meyer et al., 2024).</p>
+      <p>The CUBE Marking Coach applies these principles directly — providing immediate, targeted feedback on how well students analyse the question and construct their response, making the thinking process visible and actionable. Rather than simply seeing a Band, students understand exactly what to change and why, building habits of accurate question breakdown, clearer reasoning, and continuous improvement across HSC-style responses.</p>
     </div>
   </div>
-  <div id="dashboard">
-    <div class="stats-row" id="stats-row"></div>
-    <div class="grid-2 mb" id="row1"></div>
-    <div class="mb"        id="row2"></div>
-    <div class="mb"        id="row3"></div>
-    <div                   id="row4"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="padding-top:48px !important;padding-bottom:36px !important;">
+  <div class="section-inner">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-title">Three steps to better HSC answers</h2>
+    <p class="section-desc">CUBE Marking Coach provides you with immediate and personalised feedback to improve your responses.</p>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">1</div>
+        <div class="how-icon">✏️</div>
+        <div class="how-title">CUBE &amp; Answer</div>
+        <div class="how-desc">Circle the directive verb, Underline syllabus keywords, Box constraints and scope words. Then write your response. The AI checks whether you identified the right elements.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">2</div>
+        <div class="how-icon">📸</div>
+        <div class="how-title">Photo your work</div>
+        <div class="how-desc">Take a clear, upright photo of your worksheet showing both the question and your written answer. Upload it directly in the app. No scanning needed.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">3</div>
+        <div class="how-icon">⚡</div>
+        <div class="how-title">Get instant feedback</div>
+        <div class="how-desc">Receive detailed feedback on your CUBE marking, annotation ideas, writing quality, causal connectives, noun groups and more — with an XP score to track improvement.</div>
+      </div>
+    </div>
   </div>
-</main>
+</section>
+
+<!-- PHOTO GUIDE -->
+<section id="photos" class="photo-section">
+  <div class="section-inner">
+    <div class="section-tag">Photo guide</div>
+    <h2 class="section-title">Getting your photo right</h2>
+    <p class="section-desc">Photo quality directly affects marking accuracy. Take 10 seconds to get it right and you'll get much better feedback.</p>
+
+    <div class="photo-grid" style="margin-top:16px;">
+      <div class="photo-col">
+        <h3 class="good">✅ Do this</h3>
+        <div class="photo-item good">
+          <div class="photo-icon">📐</div>
+          <div class="photo-text"><strong>Flat on desk, any orientation</strong>Place the worksheet flat, hold your phone directly above it, shooting straight down. Portrait or landscape both work fine.</div>
+        </div>
+        <div class="photo-item good">
+          <div class="photo-icon">💡</div>
+          <div class="photo-text"><strong>Good, even lighting</strong>Near a window or under a ceiling light. Avoid harsh shadows across the page.</div>
+        </div>
+        <div class="photo-item good">
+          <div class="photo-icon">🔍</div>
+          <div class="photo-text"><strong>Whole question + whole answer visible</strong>Both the printed question text and all of your handwritten response must be in frame.</div>
+        </div>
+        <div class="photo-item good">
+          <div class="photo-icon">🖊️</div>
+          <div class="photo-text"><strong>Clear pen marks on the question</strong>Your CUBE circles, underlines and boxes need to be clearly visible — use dark pen, press firmly.</div>
+        </div>
+        <div class="photo-item good">
+          <div class="photo-icon">📄</div>
+          <div class="photo-text"><strong>Dotted or dashed writing lines</strong>These are perfect — the AI can easily distinguish them from your solid pen underlines.</div>
+        </div>
+      </div>
+      <div class="photo-col">
+        <h3 class="bad">❌ Avoid this</h3>
+        <div class="photo-item bad">
+          <div class="photo-icon">✂️</div>
+          <div class="photo-text"><strong>Answer without the question</strong>The AI needs to see the printed question to know what to mark. Don't crop it out.</div>
+        </div>
+        <div class="photo-item bad">
+          <div class="photo-icon">🌑</div>
+          <div class="photo-text"><strong>Dark, shadowed or glary images</strong>A phone torch pointing down creates glare. Shadows hide words and make handwriting illegible.</div>
+        </div>
+        <div class="photo-item bad">
+          <div class="photo-icon">📝</div>
+          <div class="photo-text"><strong>Pencil or very light pen</strong>Faint marks are hard for the AI to detect. Use a dark ballpoint or gel pen for CUBE marks.</div>
+        </div>
+        <div class="photo-item bad">
+          <div class="photo-icon">📋</div>
+          <div class="photo-text"><strong>Multiple questions in one photo</strong>Select the question number in the app — but try to have the target question clearly visible.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIMITATIONS -->
+<section id="limits">
+  <div class="section-inner">
+    <div class="section-tag">What to know</div>
+    <h2 class="section-title">Limitations &amp; honest expectations</h2>
+    <p class="section-desc">This tool is designed to support your learning — not replace your teacher, and here is what it can and can't do.</p>
+
+    <div class="limits-grid">
+      <div class="limit-card">
+        <div class="limit-icon">🎯</div>
+        <div>
+          <div class="limit-title">Best for printed HSC-style questions</div>
+          <div class="limit-desc">Works best with typed/printed questions in HSC format. Handwritten questions or unusual formats may not be recognised correctly.</div>
+        </div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">✍️</div>
+        <div>
+          <div class="limit-title">Handwriting must be legible</div>
+          <div class="limit-desc">Very messy handwriting may be partially misread. Words the AI can't read are flagged with [?] so you can check your photo.</div>
+        </div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🤖</div>
+        <div>
+          <div class="limit-title">AI marking is not infallible</div>
+          <div class="limit-desc">The feedback is AI-generated and aligned to NSW HSC criteria, but may occasionally miss nuance. Use it as a guide, not a final grade.</div>
+        </div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🔒</div>
+        <div>
+          <div class="limit-title">Privacy — first name + initial only</div>
+          <div class="limit-desc">Only your first name and surname initial are stored. Photos are processed and not retained. No full names or student IDs are collected.</div>
+        </div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">📡</div>
+        <div>
+          <div class="limit-title">Requires internet connection</div>
+          <div class="limit-desc">The app sends your photo to an AI model for marking. A stable wifi or 4G connection is needed.</div>
+        </div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">👩‍🏫</div>
+        <div>
+          <div class="limit-title">Supplement — not replace — teacher feedback</div>
+          <div class="limit-desc">This tool gives you practice feedback between lessons. Your teacher's feedback on assessments remains the authoritative source.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- PRIVACY -->
+<section id="privacy" style="background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02));border-top:1px solid rgba(201,168,76,0.15);padding-top:40px !important;padding-bottom:40px !important;">
+  <div class="section-inner">
+    <div class="section-tag">Privacy &amp; compliance</div>
+    <h2 class="section-title">Privacy &amp; NSW Department of Education Guidelines</h2>
+    <p style="font-size:15px;color:#dce8f0;line-height:1.6;margin-bottom:20px;max-width:820px;">This tool has been developed and is maintained by Mr Lawrance to support student learning. It is designed to align with NSW Department of Education guidance on the use of AI, including data minimisation, de-identification, and secure processing of student work.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+
+      <!-- What IS collected -->
+      <div style="background:rgba(105,240,174,0.05);border:1px solid rgba(105,240,174,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#69f0ae;letter-spacing:0.5px;margin-bottom:8px;">✅ What is collected and used</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>Student submissions consist of images of written work only (e.g. handwritten responses)</li>
+          <li>Submissions must not include names, faces, or any identifying features</li>
+          <li>Only first name and surname initial (e.g. "Steve L") may be used to personalise feedback and display class progress</li>
+        </ul>
+      </div>
+
+      <!-- What is NOT collected -->
+      <div style="background:rgba(255,82,82,0.05);border:1px solid rgba(255,82,82,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#ff8a80;letter-spacing:0.5px;margin-bottom:8px;">🚫 What is NOT collected or stored</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>No student photos showing faces</li>
+          <li>No full names</li>
+          <li>No student ID numbers</li>
+          <li>No class lists</li>
+          <li>No identifying personal information</li>
+          <li>No full student responses are retained after processing</li>
+        </ul>
+      </div>
+
+      <!-- How data is handled -->
+      <div style="background:rgba(100,181,246,0.05);border:1px solid rgba(100,181,246,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#64b5f6;letter-spacing:0.5px;margin-bottom:8px;">🔄 How data is handled</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>Student work is securely transmitted to an external AI service to generate feedback</li>
+          <li>Images and responses are not stored after processing is complete</li>
+          <li>The only data retained is first name and surname initial for classroom use (e.g. feedback display or leaderboard)</li>
+        </ul>
+      </div>
+
+      <!-- De-identification -->
+      <div style="background:rgba(255,171,64,0.05);border:1px solid rgba(255,171,64,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#ffab40;letter-spacing:0.5px;margin-bottom:8px;">🪪 De-identification requirement</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>All submitted work must be de-identified before upload</li>
+          <li>Teachers and students are responsible for ensuring no identifying information is visible</li>
+        </ul>
+      </div>
+
+      <!-- Security -->
+      <div style="background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#a89fff;letter-spacing:0.5px;margin-bottom:8px;">🔐 Security</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>All API access is managed securely server-side</li>
+          <li>No API keys or system credentials are exposed to students</li>
+        </ul>
+      </div>
+
+      <!-- Consent -->
+      <div style="background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13px;color:#c9a84c;letter-spacing:0.5px;margin-bottom:8px;">📋 Consent</div>
+        <ul style="font-size:15px;color:#dce8f0;line-height:1.6;padding-left:16px;margin:0;">
+          <li>This tool is used for educational purposes to improve student writing and feedback</li>
+          <li>Parent/carer consent should be obtained prior to use</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="nav-badge" style="font-size:11px;padding:2px 8px;">CUBE</div>
+    <span>CUBE Marking Coach — HSC Learning Support Tool</span>
+  </div>
+  <div>Built by Mr Lawrance · NSW HSC aligned</div>
+</footer>
 
 <script>
-const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM'];
-const KLA = {
-  EES:   { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'  },
-  EngS:  { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs' },
-  BusS:  { label:'Business Studies',               color:'#a78bfa', cls:'c-buss' },
-  HlthM: { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm' },
-};
-const MCOL = {
-  'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
-  'C — Complex Noun Groups':'#a78bfa',
-  'Logical Flow & Structure':'#43d9ad','logicalFlow':'#43d9ad','logicalflow':'#43d9ad','Structure':'#43d9ad',
-  'L — Logical Flow & Structure':'#43d9ad',
-  'Modality':'#e8a030','modality':'#e8a030',
-  'M — Modality':'#e8a030',
-  'Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7','causalconnectives':'#4fc3f7',
-  'B — Because/But/So (Causal Connectives)':'#4fc3f7',
-  'Legibility of handwritten response':'#6b7599','Handwriting Clarity':'#6b7599',
-  'Technical Vocabulary':'#6b7599','Technical Communication':'#6b7599',
-  'Technical Accuracy':'#6b7599','Technical Detail':'#6b7599','Technical Precision':'#6b7599',
-};
-
-let klaData = {}, activeKLA = null;
-
-// ── LOAD ─────────────────────────────────────────────────
-async function loadSheets() {
-  showScreen('loading'); setDot('','Connecting…');
-  klaData = {};
-  try {
-    await Promise.all(SHEET_NAMES.map(loadTab));
-    SHEET_NAMES.forEach(k => {
-      const n = (klaData[k]||[]).length;
-      const el = document.getElementById('cnt-'+k);
-      if(el) el.textContent = n ? n+' submissions' : 'No data yet';
-    });
-    setDot('live','Live · '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
-    showScreen('dashboard');
-    const first = SHEET_NAMES.find(k=>(klaData[k]||[]).length>0)||'EES';
-    switchKLA(activeKLA || first);
-  } catch(e) {
-    setDot('err', e.message);
-    document.getElementById('errmsg').textContent = e.message +
-      ' — Make sure the Google Sheet is set to "Anyone with the link → Viewer" and try refreshing.';
-    showScreen('error');
-  }
+// Tell Google Sites iframe the full document height so it removes the internal scrollbar
+function sendHeight() {
+  const h = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'setHeight', height: h }, '*');
 }
-
-async function loadTab(name) {
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
-  const proxy  = `https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`;
-  let text = null;
-  // Try proxy first (needed on GitHub Pages due to CORS)
-  try { const r = await fetch(proxy,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
-  // Fallback direct (works locally)
-  if(!text || text.trim().startsWith('<!')) {
-    try { const r = await fetch(csvUrl,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
-  }
-  if(!text || text.trim().startsWith('<!')) { klaData[name]=[]; return; }
-  const rows = parseCSV(text);
-  if(rows.length>0) console.log(`[CUBE ${name}] columns:`, Object.keys(rows[0]), 'sample:', rows[0]);
-
-  // Recalculate percentages from raw scores — avoids proxy column name/format issues
-  rows.forEach(r => {
-    const awd = Number(r['Awd Mark']), qm = Number(r['Q Marks']);
-    if(!isNaN(awd) && !isNaN(qm) && qm > 0) r['Mark %'] = awd / qm;
-    const cxp = Number(r['CUBE XP']), cmax = Number(r['CUBE Max']);
-    if(!isNaN(cxp) && !isNaN(cmax) && cmax > 0) r['CUBE %'] = cxp / cmax;
-    const wxp = Number(r['Write XP']), wmax = Number(r['Write Max']);
-    if(!isNaN(wxp) && !isNaN(wmax) && wmax > 0) r['Write %'] = wxp / wmax;
-  });
-
-  klaData[name] = rows.filter(r=>r.Student && r.Student!=='Test Student' && r.Student.trim()!=='');
-}
-
-// ── CSV ───────────────────────────────────────────────────
-// Column aliases — maps every known variant to the canonical key
-const COL_ALIAS = {
-  'mark%':'Mark %','mark %':'Mark %',
-  'cube%':'CUBE %','cube %':'CUBE %',
-  'write%':'Write %','write %':'Write %',
-  'cubemax':'CUBE Max','cube max':'CUBE Max',
-  'writemax':'Write Max','write max':'Write Max',
-  'cubeexp':'CUBE XP','cube xp':'CUBE XP',
-  'writeexp':'Write XP','write xp':'Write XP',
-  'annoexp':'Anno XP','anno xp':'Anno XP',
-  'annoideas':'Anno Ideas','anno ideas':'Anno Ideas',
-  'annoused':'Anno Used','anno used':'Anno Used',
-  'awdmark':'Awd Mark','awd mark':'Awd Mark',
-  'qmarks':'Q Marks','q marks':'Q Marks',
-  'indband':'Ind Band','ind band':'Ind Band',
-  'w-con':'W-Con','wcon':'W-Con',
-  'w-con max':'W-Con Max','wconmax':'W-Con Max',
-  'w-noun':'W-Noun','wnoun':'W-Noun',
-  'w-noun max':'W-Noun Max','wnounmax':'W-Noun Max',
-  'w-mod':'W-Mod','wmod':'W-Mod',
-  'w-mod max':'W-Mod Max','wmodmax':'W-Mod Max',
-  'w-flow':'W-Flow','wflow':'W-Flow',
-  'w-flow max':'W-Flow Max','wflowmax':'W-Flow Max',
-  'missioncategory':'Mission Category','mission category':'Mission Category',
-  'missionfix':'Mission Fix','mission fix':'Mission Fix',
-  'studentphrase':'Student Phrase','student phrase':'Student Phrase',
-  'improvedversion':'Improved Version','improved version':'Improved Version',
-  'syllabuskw':'Syllabus Kw','syllabus kw':'Syllabus Kw',
-  'syllabuskeywords':'Syllabus Kw',
-  'totalxp':'Total XP','total xp':'Total XP',
-  'wordcount':'Word Count','word count':'Word Count',
-  'illegible?':'Illegible ?','illegible ?':'Illegible ?',
-  'qno':'Q No','q no':'Q No',
-};
-
-function cleanHeader(h) {
-  // Strip quotes, trim, normalise internal spaces
-  const s = h.replace(/^["'\s]+|["'\s]+$/g,'').replace(/\s+/g,' ');
-  return COL_ALIAS[s.toLowerCase()] || s;
-}
-
-function parseCSV(text) {
-  const lines = text.split('\n').filter(l=>l.trim());
-  if(lines.length<2) return [];
-  const headers = splitRow(lines[0]).map(cleanHeader);
-  return lines.slice(1).map(line=>{
-    const vals=splitRow(line), obj={};
-    headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); });
-    return obj;
-  });
-}
-
-function splitRow(row) {
-  const out=[]; let inQ=false,cur='';
-  for(let i=0;i<row.length;i++){
-    const c=row[i];
-    if(c==='"'&&!inQ){inQ=true;}
-    else if(c==='"'&&inQ&&row[i+1]==='"'){cur+='"';i++;}
-    else if(c==='"'&&inQ){inQ=false;}
-    else if(c===','&&!inQ){out.push(cur);cur='';}
-    else cur+=c;
-  }
-  out.push(cur); return out;
-}
-
-function coerce(v) {
-  if(v==null) return null;
-  const s=String(v).replace(/^["'\s]+|["'\s]+$/g,'').trim();
-  if(!s||s==='#N/A'||s==='#VALUE!'||s==='#REF!') return null;
-  const n=Number(s); return isNaN(n)?s:n;
-}
-
-// ── UI ────────────────────────────────────────────────────
-function showScreen(w) {
-  document.getElementById('loading-screen').style.display = w==='loading' ?'block':'none';
-  document.getElementById('error-screen').style.display   = w==='error'   ?'block':'none';
-  document.getElementById('dashboard').style.display      = w==='dashboard'?'block':'none';
-}
-function setDot(cls,msg) {
-  document.getElementById('sdot').className='dot'+(cls?' '+cls:'');
-  document.getElementById('stxt').textContent=msg;
-}
-function switchKLA(kla) {
-  activeKLA=kla;
-  document.querySelectorAll('.subject-box').forEach(b=>b.classList.toggle('active',b.dataset.kla===kla));
-  renderKLA(kla);
-}
-
-// ── RENDER ────────────────────────────────────────────────
-function renderKLA(kla) {
-  const rows=klaData[kla]||[], cfg=KLA[kla];
-  if(!rows.length){
-    document.getElementById('stats-row').innerHTML=
-      `<div class="no-data" style="grid-column:1/-1">No data yet for ${cfg.label}. Data will appear as students use CUBE Marking Coach.</div>`;
-    ['row1','row2','row3','row4'].forEach(id=>{document.getElementById(id).innerHTML='';});
-    return;
-  }
-  renderStats(rows,cfg); renderRow1(rows,cfg); renderRow2(rows,cfg); renderRow3(rows,cfg); renderRow4(rows,cfg);
-}
-
-function renderStats(rows,cfg) {
-  const vm=rows.filter(r=>r['Mark %']!=null);
-  const aM=vm.length?avg(vm.map(r=>r['Mark %'])):null;
-  const aC=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));
-  const aW=avg(rows.filter(r=>r['Write %']!=null).map(r=>r['Write %']));
-  const stu=new Set(rows.map(r=>r.Student)).size;
-  const ses=new Set(rows.map(r=>r.Session).filter(Boolean)).size;
-  const mc=aM==null?'':aM>=0.8?'good':aM>=0.6?'warn':'low';
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card ${cfg.cls}"><div class="stat-label">Submissions</div><div class="stat-value">${rows.length}</div><div class="stat-sub">${ses} sessions</div></div>
-    <div class="stat-card ${cfg.cls}"><div class="stat-label">Students</div><div class="stat-value">${stu}</div><div class="stat-sub">active users</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">Avg Mark</div><div class="stat-value ${mc}">${aM!=null?pct(aM):'—'}</div><div class="stat-sub">of available marks</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">CUBE Score</div><div class="stat-value ${aC>=0.6?'good':'warn'}">${pct(aC)}</div><div class="stat-sub">question deconstruction</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">Writing Score</div><div class="stat-value ${aW>=0.8?'good':'warn'}">${pct(aW)}</div><div class="stat-sub">literacy framework</div></div>
-  `;
-}
-
-function renderRow1(rows,cfg) {
-  // ── a. Avg mark by directive ──────────────────────────────────────────────
-  const byDir=groupBy(rows.filter(r=>r['Mark %']!=null),r=>r.Directive||'Unknown');
-  const dirs=Object.entries(byDir).map(([d,rs])=>({label:d,val:avg(rs.map(r=>r['Mark %'])),count:rs.length})).sort((a,b)=>b.val-a.val).slice(0,8);
-
-  // ── b. CUBE: % submissions where CUBE was attempted (CUBE XP > 0) ────────
-  const cubeRows=rows.filter(r=>r['CUBE XP']!=null);
-  const cubeAttempted=cubeRows.filter(r=>r['CUBE XP']>0).length;
-  const cubePctAttempt=cubeRows.length>0?cubeAttempted/cubeRows.length:0;
-  const cA=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));
-
-  // ── c. Annotations ────────────────────────────────────────────────────────
-  const aR=rows.filter(r=>r['Anno Ideas']!=null&&r['Anno Used']!=null);
-  const tI=aR.reduce((s,r)=>s+(r['Anno Ideas']||0),0);
-  const tU=aR.reduce((s,r)=>s+(r['Anno Used']||0),0);
-  const ar=tI>0?tU/tI:0;
-  const annoSubmissions=aR.filter(r=>(r['Anno Ideas']||0)>0).length; // submissions with any annotations
-
-  // ── d. Writing component scores — normalised using per-row max ────────────
-  function compPct(rows, scoreCol, maxCol) {
-    const valid = rows.filter(r => r[scoreCol] != null && !isNaN(r[scoreCol]));
-    if (!valid.length) return null;
-    return avg(valid.map(r => {
-      const mx = (r[maxCol] != null && !isNaN(r[maxCol]) && r[maxCol] > 0) ? r[maxCol] : 5;
-      return Math.min(r[scoreCol], mx) / mx;
-    }));
-  }
-  const wi=[
-    ['Causal Connectives',       compPct(rows,'W-Con','W-Con Max'),   '#4fc3f7'],
-    ['Complex Noun Groups',      compPct(rows,'W-Noun','W-Noun Max'), '#a78bfa'],
-    ['Modality',                 compPct(rows,'W-Mod','W-Mod Max'),   '#e8a030'],
-    ['Logical Flow & Structure', compPct(rows,'W-Flow','W-Flow Max'), '#43d9ad'],
-  ].filter(([,v])=>v!=null&&!isNaN(v));
-
-  // ── e. Literacy focus areas (4 core tools only) + legibility count separate
-  const mc={};
-  rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
-  const FOCUS_ORDER=[
-    'Causal Connectives',
-    'Complex Noun Groups',
-    'Modality',
-    'Logical Flow & Structure',
-  ];
-  const me=FOCUS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
-  const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
-  const legibilityCount=mc['Legibility of handwritten response']||0;
-
-  document.getElementById('row1').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Avg Mark % by HSC Directive <span>${dirs.length} directives</span></div>
-      <div class="bar-chart" style="margin-bottom:1.5rem">${dirs.map(d=>`
-        <div class="bar-row">
-          <div class="bar-label" title="${d.label}">${d.label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${d.val*100}%;background:${cfg.color}"></div></div>
-          <div class="bar-val">${pct(d.val)}</div>
-        </div>`).join('')}</div>
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Writing component scores (% of max)</div>
-      <div class="bar-chart" style="margin-bottom:1.25rem">${wi.length?wi.map(([label,val,color])=>`
-        <div class="bar-row">
-          <div class="bar-label">${label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
-          <div class="bar-val">${pct(val)}</div>
-        </div>`).join(''):'<div class="no-data" style="padding:0.5rem 0">No writing component data yet</div>'}</div>
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Literacy focus areas <span style="font-size:0.6rem;color:var(--text-dim);font-weight:400;letter-spacing:0">higher = more students needed coaching here</span></div>
-      ${me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data yet</div>':`
-      <div class="mission-freq">${me.map(([name,count])=>`
-        <div class="mission-row">
-          <div class="mission-name">${name}</div>
-          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
-          <div class="mission-count">${count}</div>
-        </div>`).join('')}
-      </div>`}
-    </div>
-    <div class="panel">
-      <div class="panel-title">Question Deconstruction with CUBE</div>
-
-      <div style="margin-bottom:1.25rem">
-        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">CUBE attempted</div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-          <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#4fc3f7">${Math.round(cubePctAttempt*100)}%</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of submissions<br>had CUBE markings</div>
-        </div>
-        <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${cubePctAttempt*100}%;background:#4fc3f7"></div></div>
-      </div>
-
-      <div style="margin-bottom:1.25rem">
-        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">CUBE effectiveness</div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-          <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#4fc3f7">${pct(cA)}</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">avg accuracy of<br>CUBE markings</div>
-        </div>
-        <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${cA*100}%;background:#4fc3f7"></div></div>
-      </div>
-
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Question annotations</div>
-      ${aR.length===0?'<div class="no-data" style="padding:0.5rem 0">No annotation data available</div>':`
-        <div style="margin-bottom:1rem">
-          <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">Questions annotated</div>
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-            <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#c9a84c">${annoSubmissions}</div>
-            <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of ${aR.length} submissions<br>had planning notes</div>
-          </div>
-          <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${aR.length>0?(annoSubmissions/aR.length)*100:0}%;background:#c9a84c"></div></div>
-        </div>
-        <div style="margin-bottom:1.25rem">
-          <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">Annotations used in response</div>
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-            <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#c9a84c">${pct(ar)}</div>
-            <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of annotated ideas<br>used in written response</div>
-          </div>
-          <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${ar*100}%;background:#c9a84c"></div></div>
-        </div>
-      `}
-
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.5rem">Handwriting clarity</div>
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:${legibilityCount>0?'#ff6b6b':'#43d9ad'}">${legibilityCount}</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">${legibilityCount===0?'of '+rows.length+' submissions flagged —<br>good handwriting across the class':'of '+rows.length+' submissions flagged<br>as priority for improvement'}</div>
-      </div>
-
-    </div>`;
-}
-
-function renderRow2(rows,cfg) {
-  // Row2 is now empty — all content consolidated into row1
-  document.getElementById('row2').innerHTML='';
-}
-
-function renderRow3(rows,cfg) {
-  const ex=rows.filter(r=>r['Student Phrase']&&r['Improved Version']&&!String(r['Student Phrase']).includes('illegible')&&r['Mission Category']).slice(0,6);
-  if(!ex.length){document.getElementById('row3').innerHTML='';return;}
-  const mCls=m=>{const n=(m||'').toLowerCase();if(n.includes('causal'))return'fix-causal';if(n.includes('noun'))return'fix-noun';if(n.includes('flow'))return'fix-flow';if(n.includes('modal'))return'fix-mod';return'fix-other';};
-  document.getElementById('row3').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Student Writing Improvements <span>AI-generated rewrites via CUBE framework</span></div>
-      <div class="example-grid">${ex.map(r=>`
-        <div class="example-card ${mCls(r['Mission Category'])}">
-          <div class="ex-label">${normM(r['Mission Category'])} · ${r['Directive']||''}</div>
-          <div class="ex-before">${r['Student Phrase']}</div>
-          <div class="ex-after">${r['Improved Version']}</div>
-          <div class="ex-kw">${r['Syllabus Kw']||''}</div>
-        </div>`).join('')}</div>
-    </div>`;
-}
-
-function renderRow4(rows,cfg) {
-  const tr=rows.filter(r=>r['Mark %']!=null).sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp)).slice(0,25);
-  const pill=p=>p>=0.85?'<span class="pill high">High</span>':p>=0.6?'<span class="pill mid">Mid</span>':'<span class="pill low">Low</span>';
-  document.getElementById('row4').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Submission Log <span>Most recent ${tr.length} entries</span></div>
-      <div style="overflow-x:auto"><table class="student-table">
-        <thead><tr><th>Student</th><th>Q No</th><th>Directive</th><th>Syllabus Keywords</th><th>Mark</th><th>Mark %</th><th>CUBE %</th><th>Write %</th><th>Literacy Focus</th><th>Band</th></tr></thead>
-        <tbody>${tr.map(r=>`
-          <tr>
-            <td style="font-weight:600">${r.Student}</td>
-            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r['Q No']||'—'}</td>
-            <td>${r.Directive||'—'}</td>
-            <td style="font-size:0.7rem;color:#e8eaf0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${pct(r['Mark %'])}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
-            <td style="font-size:0.72rem;color:#e8eaf0">${normM(r['Mission Category'])}</td>
-            <td>${pill(r['Mark %'])}</td>
-          </tr>`).join('')}</tbody>
-      </table></div>
-    </div>`;
-}
-
-// ── UTILS ─────────────────────────────────────────────────
-function avg(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:0;}
-function pct(v){return Math.round((v||0)*100)+'%';}
-function groupBy(a,fn){return a.reduce((acc,i)=>{const k=fn(i);if(!acc[k])acc[k]=[];acc[k].push(i);return acc;},{});}
-function normM(m){
-  if(!m)return'Other';
-  const map={
-    // Raw AI outputs → clean display labels
-    'complex noun groups':'Complex Noun Groups','complexnoungroups':'Complex Noun Groups',
-    'c — complex noun groups':'Complex Noun Groups',
-    'logicalflow':'Logical Flow & Structure','logical flow':'Logical Flow & Structure',
-    'l — logical flow & structure':'Logical Flow & Structure','structure':'Logical Flow & Structure',
-    'modality':'Modality',
-    'm — modality':'Modality',
-    'causalconnectives':'Causal Connectives','causal connectives':'Causal Connectives',
-    'b — because/but/so (causal connectives)':'Causal Connectives',
-    'handwriting clarity':'Legibility of handwritten response',
-    'legibility and precision':'Legibility of handwritten response',
-    'legibility':'Legibility of handwritten response',
-    'technical communication':'Technical Vocabulary','technical accuracy':'Technical Vocabulary',
-    'technical detail':'Technical Vocabulary','technical precision':'Technical Vocabulary',
-    'content depth':'Content Depth','content completeness':'Content Completeness','clarity':'Clarity',
-  };
-  return map[m.toLowerCase()]||m;
-}
-
-showScreen('loading');
-loadSheets();
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+// Also send after fonts/images load
+setTimeout(sendHeight, 500);
+setTimeout(sendHeight, 1500);
 </script>
 </body>
 </html>
