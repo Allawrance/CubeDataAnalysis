@@ -96,11 +96,39 @@ h1 span { color: var(--gold); }
   cursor: pointer;
   transition: border-color 0.25s, transform 0.2s, background 0.25s;
 }
+.subject-box.active .subj-name { color: #ffffff; }
+.subject-box.active .kla-tag::after {
+  content: ' · SELECTED';
+  font-size: 0.55rem;
+  opacity: 0.85;
+  letter-spacing: 0.12em;
+}
+.subject-box { transition: border-color 0.25s, transform 0.2s, background 0.25s, box-shadow 0.25s; }
 .subject-box:hover { border-color: #f0c030; transform: translateY(-2px); }
-.subject-box.active[data-kla="EES"]   { border-color:var(--ees);  background:rgba(79,195,247,0.08); }
-.subject-box.active[data-kla="EngS"]  { border-color:var(--engs); background:rgba(232,160,48,0.08); }
-.subject-box.active[data-kla="BusS"]  { border-color:var(--buss); background:rgba(167,139,250,0.08); }
-.subject-box.active[data-kla="HlthM"] { border-color:var(--hltm); background:rgba(67,217,173,0.08); }
+.subject-box.active[data-kla="EES"]   {
+  border-color: var(--ees); border-width: 2.5px;
+  background: linear-gradient(135deg, rgba(79,195,247,0.22), rgba(79,195,247,0.10));
+  box-shadow: 0 0 0 3px rgba(79,195,247,0.18), 0 6px 24px rgba(79,195,247,0.15);
+  transform: translateY(-3px) scale(1.02);
+}
+.subject-box.active[data-kla="EngS"]  {
+  border-color: var(--engs); border-width: 2.5px;
+  background: linear-gradient(135deg, rgba(232,160,48,0.22), rgba(232,160,48,0.10));
+  box-shadow: 0 0 0 3px rgba(232,160,48,0.18), 0 6px 24px rgba(232,160,48,0.15);
+  transform: translateY(-3px) scale(1.02);
+}
+.subject-box.active[data-kla="BusS"]  {
+  border-color: var(--buss); border-width: 2.5px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.22), rgba(167,139,250,0.10));
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15);
+  transform: translateY(-3px) scale(1.02);
+}
+.subject-box.active[data-kla="HlthM"] {
+  border-color: var(--hltm); border-width: 2.5px;
+  background: linear-gradient(135deg, rgba(67,217,173,0.22), rgba(67,217,173,0.10));
+  box-shadow: 0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15);
+  transform: translateY(-3px) scale(1.02);
+}
 .kla-tag {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.6rem; font-weight: 700;
@@ -435,7 +463,6 @@ function switchKLA(kla) {
   activeKLA=kla;
   document.querySelectorAll('.subject-box').forEach(b=>b.classList.toggle('active',b.dataset.kla===kla));
   renderKLA(kla);
-  document.getElementById('dashboard').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 // ── RENDER ────────────────────────────────────────────────
