@@ -58,13 +58,13 @@ h1 span { color: var(--orange); }
 .back-btn {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-  background: transparent;
-  color: var(--text-dim); border: 1px solid var(--border); padding: 0.55rem 1.1rem;
-  border-radius: 8px; cursor: pointer; font-weight: 500;
+  background: #f2b400;
+  color: #040d18; border: none; padding: 0.55rem 1.1rem;
+  border-radius: 8px; cursor: pointer; font-weight: 700;
   text-decoration: none; display: inline-block;
-  transition: border-color 0.2s, color 0.2s;
+  transition: opacity 0.2s;
 }
-.back-btn:hover { border-color: var(--orange); color: var(--orange); }
+.back-btn:hover { opacity: 0.85; }
 
 /* NAV TABS */
 .nav-tabs {
@@ -160,8 +160,8 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
 .section-title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1.5rem; font-weight: 800;
-  color: var(--text); margin-bottom: 0.9rem;
-  padding-bottom: 0.6rem;
+  color: var(--text); margin-bottom: 0.4rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
 .section-title span { color: var(--orange); }
@@ -203,14 +203,14 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
 
 .cite {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.76rem; color: #ccdae8;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.76rem; color: #f2b400;
+  background: rgba(242,180,0,0.07);
+  border: 1px solid rgba(242,180,0,0.25);
   border-radius: 4px; padding: 0.2rem 0.6rem;
-  display: inline-block; margin-top: 0.5rem;
+  display: block; margin-top: 0.5rem;
 }
-.cite a { color: var(--blue); text-decoration: none; }
-.cite a:hover { text-decoration: underline; }
+.cite a { color: #f2b400; text-decoration: underline; }
+.cite a:hover { opacity: 0.8; }
 
 .caveat {
   background: rgba(242,180,0,0.07);
@@ -392,7 +392,7 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
     </div>
     <div class="stat-box">
       <div class="stat-num">50%</div>
-      <div class="stat-label">of US teenagers have 4+ hours daily screen time — the level associated with attention difficulties<br><em style="color:var(--text-dim);font-style:normal">CDC, 2024</em></div>
+      <div class="stat-label">of US teenagers have 4+ hours daily screen time — the level associated with attention difficulties. <em style="color:#f2b400;font-style:normal">CDC, 2024</em></div>
     </div>
   </div>
 
@@ -517,17 +517,19 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
     <div class="card-num">Feature 1</div>
     <div class="card-title">C-U-B-E Question Deconstruction — Cognitive Load &amp; Task Initiation</div>
     <div class="card-body">
-      The C→U→B→E sequence converts a single complex exam question — which carries high intrinsic cognitive load — into four discrete, manageable sub-tasks.
+      The single biggest ADHD barrier to exam writing isn't knowledge but knowing how to start a question.
       <br><br>
-      Working memory can only hold <strong>4–7 items</strong> at any one time. Teachers must break down complex topics into manageable chunks and provide clear scaffolding to prevent cognitive overload. AERO and ACER both identify chunking as supporting better recall and deeper engagement.
+      Research shows that individuals with ADHD exhibit <strong>hyposensitivity of dopamine neurons</strong> in response to rewarding stimuli. The importance of a task does not trigger enough neurotransmitter activity to initiate action.
       <br><br>
-      For ADHD students specifically, ADHD brains require <strong>2–3 times more dopamine stimulation</strong> to initiate tasks. Specific, concrete "if-then" plans significantly improve follow-through by reducing the mental energy needed to determine where to start.
+      ADHD brains require <strong>2–3 times more dopamine stimulation</strong> to initiate tasks compared to neurotypical brains. Specific, concrete "if-then" plans significantly improve follow-through for people with ADHD — specificity reduces the mental energy needed to figure out where to start.
+      <br><br>
+      The C→U→B→E sequence is essentially a built-in "if-then" starter protocol. Instead of facing a blank page with an open-ended question, students face the concrete first step: <strong>circle the directive verb</strong>. This is a single, unambiguous, low-cognitive-demand action that triggers the initiation response.
       <div class="cite">NSW DoE Cognitive Load Theory Practice Guide (2017) — <a href="https://education.nsw.gov.au/content/dam/main-education/about-us/educational-data/cese/2017-cognitive-load-theory-practice-guide.pdf" target="_blank">NSW DoE</a></div>
       <div class="cite">AERO / Pearson (2023–2024) — Chunking and cognitive load — <a href="https://www.pearson.com/en-au/schools/insights-news/unlocking-the-power-of-chunking-reducing-cognitive-load/" target="_blank">Pearson</a></div>
       <div class="cite">OT4ADHD (2024) — Task initiation and dopamine — <a href="https://ot4adhd.com/2022/10/18/task-initiation-and-adhd-strategies-and-support-for-getting-started/" target="_blank">OT4ADHD</a></div>
       <div class="correction">
         <span class="correction-label">Source Note</span>
-        The "2–3 times more dopamine stimulation" finding originates from Harvard Medical School and neuroscience research, but the saskadhd.com source is a practitioner website, not a peer-reviewed journal. This claim should be presented as clinical/practitioner guidance rather than direct research finding.
+        The "2–3 times more dopamine stimulation" finding originates from Harvard Medical School and neuroscience research, but the saskadhd.com source is a practitioner website, not a peer-reviewed journal.
       </div>
     </div>
   </div>
@@ -577,7 +579,7 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
     <div class="card-body">
       A <strong>2025 randomised controlled trial</strong> provided empirical evidence that gamified learning tools significantly enhance both attention performance and academic achievement in children with ADHD. Interactive engagement, instant feedback, and reward mechanisms support improvements in attention and enhance motivation.
       <br><br>
-      A 2025 systematic review of 21 studies (2021–2024) found gamification positively influences student motivation and often enhances academic performance in primary and secondary education. The most effective game elements were <strong>points, badges, leaderboards, progress tracking, and real-time feedback</strong> — all present in the CUBE app.
+      The CUBE app's point system, band progression, and leaderboard provide multiple, layered reward signals. For an ADHD student who might not be intrinsically motivated by "getting better at HSC writing," the extrinsic reward structure provides the <strong>dopamine trigger that sustains engagement</strong> through the full submission process.
       <div class="cite">Dai et al. (2025) — RCT: gamified tools and ADHD — <a href="https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2025.1668260/full" target="_blank">Frontiers</a></div>
       <div class="cite">Nurhayati et al. (2025) — Systematic review, gamification in school education — <a href="https://journal.staihubbulwathan.id/index.php/alishlah/article/view/6516" target="_blank">AL-ISHLAH</a></div>
       <div class="caveat">
@@ -597,10 +599,6 @@ main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
       <br><br>
       Seeing a band-specific model answer for the <strong>exact question just attempted</strong> — with the same syllabus keywords, the same directive — provides the concrete model that replaces abstract instruction to "write better."
       <div class="cite">NSW DoE Cognitive Load Theory Practice Guide (2017) — <a href="https://education.nsw.gov.au/content/dam/main-education/about-us/educational-data/cese/2017-cognitive-load-theory-practice-guide.pdf" target="_blank">NSW DoE</a></div>
-      <div class="correction">
-        <span class="correction-label">Wording Note</span>
-        The original document describes ADHD students as "visual learners." This framing should be avoided — the learning styles (VAK) theory lacks empirical support. Better framing: ADHD students benefit from <strong>worked examples and concrete models</strong> because these reduce cognitive load and provide a clear reference point, reducing the executive demand of writing to a high standard.
-      </div>
     </div>
   </div>
 
