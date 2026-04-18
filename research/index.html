@@ -1,1 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUBE Marking Coach — Research Evidence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #040d18;
+  --navy-mid: #0a1628;
+  --surface: #0e1e34;
+  --surface2: #141e30;
+  --border: rgba(255,255,255,0.08);
+  --border-gold: rgba(201,168,76,0.3);
+  --text: #e8eaf0;
+  --text-dim: #b0c8e0;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --green: #43d9ad;
+  --red: #e8621a;
+  --orange: #e8621a;
+  --orange-light: #f0873a;
+  --blue: #4fc3f7;
+  --purple: #a78bfa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  line-height: 1.7;
+}
+
+/* HEADER */
+header {
+  padding: 1.5rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(4,13,24,0.96);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  position: sticky; top: 0; z-index: 50;
+}
+.eyebrow {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 0.3rem;
+}
+h1 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem; font-weight: 800; line-height: 1.1; color: var(--text);
+}
+h1 span { color: var(--orange); }
+.back-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent;
+  color: var(--text-dim); border: 1px solid var(--border); padding: 0.5rem 1rem;
+  border-radius: 8px; cursor: pointer; font-weight: 500;
+  text-decoration: none; display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.back-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+/* NAV TABS */
+.nav-tabs {
+  background: var(--navy-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2.5rem;
+  display: flex; gap: 0;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #b0c8e0;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer; white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+/* MAIN */
+main { padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+
+/* SECTION */
+.section { display: none; }
+.section.active { display: block; }
+
+/* QUICK SUMMARY TABLE */
+.summary-intro {
+  background: linear-gradient(135deg, rgba(232,98,26,0.08), rgba(201,168,76,0.05));
+  border: 1px solid rgba(232,98,26,0.25);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.88rem;
+  color: #b8cce0;
+  line-height: 1.7;
+}
+.summary-intro strong { color: var(--orange); }
+
+.quick-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-size: 0.82rem;
+}
+.quick-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold);
+  background: var(--navy-mid);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-gold);
+}
+.quick-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text);
+  line-height: 1.5;
+}
+.quick-table tr:hover td { background: rgba(255,255,255,0.02); }
+.quick-table td:first-child {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--orange);
+  white-space: normal;
+  width: 15%;
+}
+.quick-table td:nth-child(2) { width: 40%; }
+.quick-table td:last-child { width: 45%; color: #b0c8e0; font-size: 0.78rem; }
+.badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 0.2rem 0.5rem;
+  border-radius: 4px; margin-top: 0.3rem;
+}
+.badge-strong { background: rgba(67,217,173,0.15); color: var(--green); border: 1px solid rgba(67,217,173,0.3); }
+.badge-moderate { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+.badge-emerging { background: rgba(167,139,250,0.15); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); }
+
+/* RESEARCH CARDS */
+.section-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 0.5rem; margin-top: 2rem;
+}
+.section-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.3rem; font-weight: 800;
+  color: var(--text); margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-title span { color: var(--orange); }
+
+.research-card {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+.research-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--gold));
+}
+.card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 0.4rem;
+}
+.card-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem; font-weight: 800; color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.card-body { font-size: 0.86rem; color: #b8cce0; line-height: 1.75; }
+.card-body strong { color: var(--text); }
+.card-body em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+.cube-link { color: var(--orange); font-size: 0.84rem; line-height: 1.7; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.cube-link-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--orange); display: block; margin-bottom: 0.3rem;
+}
+
+.cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem; color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.15rem 0.5rem;
+  display: inline-block; margin-top: 0.5rem;
+}
+.cite a { color: var(--blue); text-decoration: none; }
+.cite a:hover { text-decoration: underline; }
+
+.caveat {
+  background: rgba(232,98,26,0.07);
+  border: 1px solid rgba(232,98,26,0.2);
+  border-radius: 8px; padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem; color: #d4b896; line-height: 1.6;
+}
+.caveat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  display: block; margin-bottom: 0.25rem; color: var(--orange);
+}
+
+/* ADHD MECHANISM TABLE */
+.mechanism-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.82rem;
+}
+.mechanism-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--blue);
+  background: var(--navy-mid);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(79,195,247,0.3);
+}
+.mechanism-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.mechanism-table td:first-child { color: var(--red); font-weight: 600; width: 35%; }
+.mechanism-table td:last-child { color: var(--green); width: 65%; }
+
+/* STAT CALLOUT */
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin: 1.5rem 0; }
+.stat-box {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1px solid var(--border-gold);
+  border-radius: 10px; padding: 1rem 1.25rem;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 2rem; font-weight: 800; color: var(--orange);
+}
+.stat-label { font-size: 0.72rem; color: #b0c8e0; margin-top: 0.25rem; line-height: 1.4; }
+
+/* CORRECTION BANNER */
+.correction {
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 8px; padding: 0.6rem 1rem;
+  font-size: 0.78rem; color: var(--gold); margin-top: 0.5rem;
+  line-height: 1.6;
+}
+.correction-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  display: block; margin-bottom: 0.2rem;
+}
+
+@media(max-width:700px){
+  main { padding: 1.25rem 1rem; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .quick-table td:first-child { width: 35%; }
+  header { padding: 1rem 1rem; }
+  .nav-tabs { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">CUBE Marking Coach</div>
+    <h1><span>Research</span> Evidence Base</h1>
+  </div>
+  <a class="back-btn" href="../index.html">← Back to Tracker</a>
+</header>
+
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab('summary')">Quick Summary</button>
+  <button class="tab-btn" onclick="showTab('attention')">Attention in Classrooms</button>
+  <button class="tab-btn" onclick="showTab('adhd')">ADHD &amp; Writing</button>
+  <button class="tab-btn" onclick="showTab('features')">App Features</button>
+</div>
+
+<main>
+
+<!-- ═══════════════ TAB 1: QUICK SUMMARY ═══════════════ -->
+<div class="section active" id="tab-summary">
+
+  <div class="section-label" style="margin-top:0">For Teachers</div>
+  <div class="section-title">At a Glance — <span>Why the CUBE App Works</span></div>
+
+  <div class="summary-intro">
+    This page summarises the peer-reviewed research underpinning each feature of the CUBE Marking Coach. It is intended for teachers wanting to understand the evidence base, communicate it to colleagues, or use it in professional learning contexts. Click any tab above for deeper detail.
+  </div>
+
+  <table class="quick-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>What the Evidence Says</th>
+        <th>Key Research Finding &amp; Evidence Strength</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>C-U-B-E Question Deconstruction</td>
+        <td>Breaking a complex exam question into four concrete steps (Circle, Underline, Box, Evidence) reduces cognitive load and directly addresses the ADHD barrier of task initiation.</td>
+        <td>NSW DoE Cognitive Load Theory Practice Guide supports step-by-step task breakdown. ADHD brains require significantly more dopamine stimulation to initiate tasks; concrete "if-then" protocols improve follow-through.<br><span class="badge badge-strong">Strong — NSW DoE + Clinical Research</span></td>
+      </tr>
+      <tr>
+        <td>Syllabus Keyword Identification (U Step)</td>
+        <td>Explicitly teaching academic vocabulary provides a language foundation for discipline-specific writing. As words become automatic, cognitive effort shifts to content.</td>
+        <td>Explicit academic vocabulary instruction is a well-established evidence-based practice for improving disciplinary literacy in secondary students.<br><span class="badge badge-strong">Strong — Multiple Systematic Reviews</span></td>
+      </tr>
+      <tr>
+        <td>Causal Connectives Scoring</td>
+        <td>Scoring the use of because, so, but, however targets a measurable marker of higher-quality academic writing that develops during secondary schooling.</td>
+        <td>Research on academic language development confirms causal and adversative connectives are key discriminators between basic and advanced secondary writing.<br><span class="badge badge-strong">Strong — Academic Language Research</span></td>
+      </tr>
+      <tr>
+        <td>Planning / Annotation Tab</td>
+        <td>Forces a structured pre-writing planning phase — the step that students with ADHD most commonly skip, directly causing weaker responses.</td>
+        <td>ADHD students spend significantly less time planning, which directly causes omission of fundamental components. Structured pre-writing strategy instruction markedly improves essay quality and planning time in ADHD students.<br><span class="badge badge-strong">Strong — ADHD Writing Research (Rodríguez, 2015)</span></td>
+      </tr>
+      <tr>
+        <td>Immediate AI Feedback</td>
+        <td>Feedback within seconds rather than days or weeks is neurologically compatible with ADHD and evidence-based for all learners as formative assessment.</td>
+        <td>ADHD involves reduced dopamine reward pathway activation — delayed feedback provides no signal at the moment of effort. AI-generated formative feedback positively impacts writing structure, organisation, and fluency.<br><span class="badge badge-strong">Strong for ADHD; Moderate–Strong for general learners</span></td>
+      </tr>
+      <tr>
+        <td>Model Answers (Band Response Generator)</td>
+        <td>Seeing a worked example at each band level for the exact question just attempted provides a concrete reference that replaces abstract success criteria.</td>
+        <td>The "worked example effect" is described by cognitive load theorists as their most important finding. Students given model answers perform significantly better than those attempting without models. NSW DoE Practice Guide endorsed.<br><span class="badge badge-strong">Very Strong — Cognitive Load Theory</span></td>
+      </tr>
+      <tr>
+        <td>Gamification (XP, Bands, Streaks, Leaderboard)</td>
+        <td>Points, badges, leaderboards and progress tracking increase motivation and engagement. For ADHD students, these provide the dopamine signal that sustained effort requires.</td>
+        <td>2025 systematic review: gamification positively influences motivation and academic performance especially in primary and secondary education. 2025 RCT: gamified tools significantly enhance attention and academic achievement in ADHD.<br><span class="badge badge-moderate">Moderate — Stronger for engagement than achievement at secondary level</span></td>
+      </tr>
+      <tr>
+        <td>Teacher Analytics Dashboard</td>
+        <td>Class-level data on band distributions, CUBE accuracy, literacy focus areas, and submission patterns enables data-informed adjustments to teaching practice.</td>
+        <td>Data-informed teaching is consistently identified as a high-impact strategy. The AERO Evidence-Based Practices report (Level 4 — Very High confidence) supports monitoring student outcomes and adjusting practice accordingly.<br><span class="badge badge-strong">Strong — AERO 2025</span></td>
+      </tr>
+      <tr>
+        <td>ADHD &amp; Technology-Affected Attention — Same Strategies Work</td>
+        <td>6–10% of Australian adolescents have diagnosed ADHD. A growing number show ADHD-like symptoms from excessive social media use. Both groups benefit from the same structured, low-distraction, high-engagement design.</td>
+        <td>WHO data: 11% of adolescents show problematic social media use. USC longitudinal study: heavy digital media users are twice as likely to develop ADHD symptoms. UDL research: structured supports designed for students at the edges benefit all learners.<br><span class="badge badge-moderate">Moderate — Bidirectional causation limits certainty</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════ TAB 2: ATTENTION ═══════════════ -->
+<div class="section" id="tab-attention">
+
+  <div class="section-label" style="margin-top:0">Context</div>
+  <div class="section-title">Attention Difficulties in <span>Today's Classroom</span></div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num">6–10%</div>
+      <div class="stat-label">of Australian adolescents have ADHD<br><em style="color:var(--text-dim);font-style:normal">Australian Child &amp; Adolescent Survey</em></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">11%</div>
+      <div class="stat-label">of adolescents globally show problematic social media use (up from 7% in 2018)<br><em style="color:var(--text-dim);font-style:normal">WHO / HBSC Study, 2024 — 280,000 participants</em></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">50%</div>
+      <div class="stat-label">of US teenagers have 4+ hours daily screen time — the level associated with attention difficulties<br><em style="color:var(--text-dim);font-style:normal">CDC, 2024</em></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Group 1</div>
+    <div class="card-title">Students with Diagnosed ADHD</div>
+    <div class="card-body">
+      ADHD is a <strong>neurological, neurodevelopmental disorder</strong> that is largely genetic, with heritability estimated at 70–80%. It is characterised by persistent inattention, hyperactivity, and impulsivity that are present across multiple settings from before age 12, and are lifelong. In Australia, <strong>6–10% of adolescents</strong> are estimated to have ADHD, with the inattentive presentation being the most common.
+      <br><br>
+      These students need structured supports not because their environment shaped their attention, but because their neurological profile means that unstructured, high-demand tasks — like open-ended exam questions — generate executive function overload.
+      <div class="cite">Australian ADHD Clinical Practice Guideline (2026) — <a href="https://www.aadpa.com.au" target="_blank">AADPA</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Group 2</div>
+    <div class="card-title">Students with Technology-Related Attention Impairment</div>
+    <div class="card-body">
+      A growing number of students show <strong>ADHD-like symptoms</strong> — impaired attention, reduced working memory, and diminished executive functioning — as a result of excessive social media and digital media use. Critically, it is not total screen time but <strong>media multitasking</strong> and short-video consumption that drives this effect.
+      <br><br>
+      A major longitudinal study tracked 2,587 teenagers aged 15–16 without pre-existing ADHD symptoms over 24 months. Those using 14 high-frequency digital media activities showed a <strong>10.5% rate of developing ADHD symptoms</strong>, compared to only 4.6% in those with no high-frequency media use — more than doubling the rate.
+      <div class="cite">Ra et al., JAMA (2018) — <a href="https://pubmed.ncbi.nlm.nih.gov/30027248/" target="_blank">PubMed</a></div>
+      <div class="cite">Uncapher et al. (2021) — Media multitasking driving factor — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8598050/" target="_blank">PMC</a></div>
+      <div class="caveat">
+        <span class="caveat-label">Important Caveat</span>
+        The relationship is bidirectional — students with ADHD are also more likely to use digital media heavily. Research cannot yet cleanly establish what proportion of classroom attention difficulties are caused by vs. correlated with heavy media use.
+      </div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Key Finding</div>
+    <div class="card-title">Same Classroom Strategies Benefit Both Groups</div>
+    <div class="card-body">
+      Whether attention difficulties are neurologically based (ADHD) or environmentally conditioned (technology habits), the research evidence supports the same classroom response: <strong>structured, low-distraction, high-engagement design</strong>.
+      <br><br>
+      Universal Design for Learning (UDL) research is explicit on this: when instruction is designed for students at the edges of the population — including those with ADHD — all students benefit. Flexible seating arrangements, structured activity sequences, and explicit task protocols support not only students with ADHD diagnoses but the entire class.
+      <div class="cite">NC State / DELTA (2024) — UDL and neurodivergent students — <a href="https://news.delta.ncsu.edu" target="_blank">delta.ncsu.edu</a></div>
+      <div class="cite">Tandfonline (2025) — Micro-level classroom practices benefit whole class — <a href="https://www.tandfonline.com/doi/full/10.1080/13632752.2025.2517519" target="_blank">Link</a></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ TAB 3: ADHD & WRITING ═══════════════ -->
+<div class="section" id="tab-adhd">
+
+  <div class="section-label" style="margin-top:0">The Problem</div>
+  <div class="section-title">Why Exam Writing is Hard for <span>ADHD Students</span></div>
+
+  <div class="research-card">
+    <div class="card-title">Working Memory, Planning, and Writing Quality</div>
+    <div class="card-body">
+      A systematic review found that <strong>attention, short-term memory, working memory, and executive function deficits</strong> are the primary drivers of high-order writing difficulties in students with ADHD. Writing quality and the writing process — particularly planning and editing — are more challenging for ADHD students than writing productivity.
+      <br><br>
+      Early identification and intervention in writing difficulties is essential to preventing academic failure.
+      <div class="cite">Cheng et al. (2022) — Systematic review, ADHD and high-order writing — <a href="https://www.sciencedirect.com/science/article/abs/pii/S0891422222000105" target="_blank">ScienceDirect</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-title">Similar Length, Worse Quality</div>
+    <div class="card-body">
+      A controlled study of 84 students with ADHD and 135 matched controls found that ADHD students wrote texts of <strong>similar length</strong> to peers but with significantly <strong>poorer structure, coherence, and ideation</strong>. An ADHD diagnosis explained 6.7% of variance in writing quality after controlling for IQ and age — with half of that effect directly attributable to <strong>working memory and sustained attention deficits</strong>.
+      <br><br>
+      Critically, ADHD students spent significantly less time on <strong>planning</strong> — using writing processes that were very basic and fixed — which directly caused the omission of fundamental components in their responses.
+      <div class="cite">Rodríguez et al. (2015) — ADHD and writing quality — <a href="https://digibuo.uniovi.es/dspace/bitstream/handle/10651/58954/JADposprint.pdf?sequence=1" target="_blank">PDF</a></div>
+      <div class="cite">Rodríguez et al. (2015) — Planning deficits — <a href="https://files.eric.ed.gov/fulltext/EJ1088269.pdf" target="_blank">ERIC</a></div>
+    </div>
+  </div>
+
+  <div class="section-label">The ADHD–Writing Mechanism Map</div>
+
+  <table class="mechanism-table">
+    <thead>
+      <tr>
+        <th>ADHD Neurological Challenge</th>
+        <th>How the CUBE App Addresses It</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Task initiation / blank page paralysis</td>
+        <td>C→U→B→E gives a concrete first micro-step (circle the verb) — converting an overwhelming open question into a single unambiguous action</td>
+      </tr>
+      <tr>
+        <td>Working memory overload</td>
+        <td>Annotations physically externalise planning onto the question, removing the need to hold "keywords / constraints / evidence" simultaneously in working memory</td>
+      </tr>
+      <tr>
+        <td>Skipping the planning phase</td>
+        <td>The Planning Tab is a forced, separate, scored step before writing can begin — making planning concrete and rewarding (XP-linked)</td>
+      </tr>
+      <tr>
+        <td>Need for immediate reward to sustain effort</td>
+        <td>AI marking returns feedback in seconds — closing the reward loop at the moment of effort rather than days later</td>
+      </tr>
+      <tr>
+        <td>Dopamine deficit → low motivation</td>
+        <td>XP, band scores, leaderboard, and streaks provide layered, immediate, visible reward signals that activate the reward pathway</td>
+      </tr>
+      <tr>
+        <td>Abstract success criteria ("write better")</td>
+        <td>Band-specific model answers for the exact question just attempted provide a concrete, comparable worked example</td>
+      </tr>
+      <tr>
+        <td>Poor structure and ideation in responses</td>
+        <td>Directive verb scoring, connective scoring, and writing scaffold coaching target the specific structural weaknesses found in ADHD writing research</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════ TAB 4: APP FEATURES ═══════════════ -->
+<div class="section" id="tab-features">
+
+  <div class="section-label" style="margin-top:0">Feature by Feature</div>
+  <div class="section-title">Research Behind Each <span>App Feature</span></div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 1</div>
+    <div class="card-title">C-U-B-E Question Deconstruction — Cognitive Load &amp; Task Initiation</div>
+    <div class="card-body">
+      The C→U→B→E sequence converts a single complex exam question — which carries high intrinsic cognitive load — into four discrete, manageable sub-tasks.
+      <br><br>
+      Working memory can only hold <strong>4–7 items</strong> at any one time. Teachers must break down complex topics into manageable chunks and provide clear scaffolding to prevent cognitive overload. AERO and ACER both identify chunking as supporting better recall and deeper engagement.
+      <br><br>
+      For ADHD students specifically, ADHD brains require <strong>2–3 times more dopamine stimulation</strong> to initiate tasks. Specific, concrete "if-then" plans significantly improve follow-through by reducing the mental energy needed to determine where to start.
+      <div class="cite">NSW DoE Cognitive Load Theory Practice Guide (2017) — <a href="https://education.nsw.gov.au/content/dam/main-education/about-us/educational-data/cese/2017-cognitive-load-theory-practice-guide.pdf" target="_blank">NSW DoE</a></div>
+      <div class="cite">AERO / Pearson (2023–2024) — Chunking and cognitive load — <a href="https://www.pearson.com/en-au/schools/insights-news/unlocking-the-power-of-chunking-reducing-cognitive-load/" target="_blank">Pearson</a></div>
+      <div class="cite">OT4ADHD (2024) — Task initiation and dopamine — <a href="https://ot4adhd.com/2022/10/18/task-initiation-and-adhd-strategies-and-support-for-getting-started/" target="_blank">OT4ADHD</a></div>
+      <div class="correction">
+        <span class="correction-label">Source Note</span>
+        The "2–3 times more dopamine stimulation" finding originates from Harvard Medical School and neuroscience research, but the saskadhd.com source is a practitioner website, not a peer-reviewed journal. This claim should be presented as clinical/practitioner guidance rather than direct research finding.
+      </div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 2</div>
+    <div class="card-title">Working Memory Offloading via Physical Annotation</div>
+    <div class="card-body">
+      ADHD is consistently associated with <strong>moderate weaknesses in working memory</strong> — the system that temporarily stores and manipulates information while performing complex tasks. Meta-analysis confirms working memory as a core deficit in ADHD.
+      <br><br>
+      The four-step CUBE annotation process externalises the planning process that working memory normally must hold. Instead of keeping "what does this question want, what are the keywords, what are the constraints, what evidence do I need" all active simultaneously, each element is <strong>physically marked on the page</strong> — offloading that cognitive burden entirely.
+      <div class="cite">Willcutt et al. (2005) meta-analysis — ADHD and working memory — via <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4425416/" target="_blank">PMC</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 3</div>
+    <div class="card-title">Planning / Annotation Tab — Structured Pre-Writing</div>
+    <div class="card-body">
+      Students with ADHD spend very little time planning and use writing processes that are basic and fixed, which directly causes the omission of fundamental components in their responses.
+      <br><br>
+      A study using the Self-Regulated Strategy Development model with <strong>high school students with ADHD</strong> showed a marked improvement in the number of essay elements, length, and holistic quality of essays after explicit planning strategy instruction. Crucially, <strong>planning time also increased</strong>, and students maintained gains at three-week follow-up.
+      <br><br>
+      The Planning Tab forces this phase to occur as a concrete, separate, visible, scored step — making it rewarding rather than abstract.
+      <div class="cite">Rodríguez et al. (2015) — ADHD planning deficits — <a href="https://files.eric.ed.gov/fulltext/EJ1088269.pdf" target="_blank">ERIC</a></div>
+      <div class="cite">Johnson &amp; Reid (2011) — SRSD writing strategy for ADHD high school students — <a href="https://www.researchgate.net/publication/233111090" target="_blank">ResearchGate</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 4</div>
+    <div class="card-title">Immediate AI Feedback — The Dopamine Fix</div>
+    <div class="card-body">
+      Neuroimaging research found that individuals with ADHD show <strong>decreased activity of the dopamine reward pathway</strong>, including reduced activation of the ventral striatum in response to both immediate and delayed rewards. This translates directly into problems engaging in activities that are not inherently rewarding.
+      <br><br>
+      Traditional marking — where a student submits work and receives feedback days or weeks later — is <strong>almost entirely incompatible with ADHD neurology</strong>. The delayed reward provides no dopamine signal at the moment of effort. The CUBE app's immediate AI feedback closes that loop within seconds.
+      <br><br>
+      For all learners, a 2024 systematic review (37 empirical investigations) found that AI can enhance customisation, deliver immediate feedback, and increase student engagement. Formative assessment with timely, specific feedback improves conceptual understanding, reduces anxiety, and enhances academic performance.
+      <div class="cite">Volkow et al. (2010) — Dopamine reward pathway in ADHD — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3010326/" target="_blank">PMC</a></div>
+      <div class="cite">Frontiers in Education (2025) — AI feedback systematic review — <a href="https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2025.1704820/full" target="_blank">Frontiers</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 5</div>
+    <div class="card-title">Gamification — XP, Bands, Streaks, Leaderboard</div>
+    <div class="card-body">
+      A <strong>2025 randomised controlled trial</strong> provided empirical evidence that gamified learning tools significantly enhance both attention performance and academic achievement in children with ADHD. Interactive engagement, instant feedback, and reward mechanisms support improvements in attention and enhance motivation.
+      <br><br>
+      A 2025 systematic review of 21 studies (2021–2024) found gamification positively influences student motivation and often enhances academic performance in primary and secondary education. The most effective game elements were <strong>points, badges, leaderboards, progress tracking, and real-time feedback</strong> — all present in the CUBE app.
+      <div class="cite">Dai et al. (2025) — RCT: gamified tools and ADHD — <a href="https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2025.1668260/full" target="_blank">Frontiers</a></div>
+      <div class="cite">Nurhayati et al. (2025) — Systematic review, gamification in school education — <a href="https://journal.staihubbulwathan.id/index.php/alishlah/article/view/6516" target="_blank">AL-ISHLAH</a></div>
+      <div class="caveat">
+        <span class="caveat-label">Nuance</span>
+        A 2023 meta-analysis found gamification effect sizes are larger in higher education (g = 0.869) than secondary school (g = 0.014). This suggests that at secondary level, design matters more than gamification alone — the CUBE app's focus on personal improvement (XP progression, band movement) alongside competition is well-aligned with what works at this level.
+      </div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 6</div>
+    <div class="card-title">Model Answers — The Worked Example Effect</div>
+    <div class="card-body">
+      The <strong>worked example effect</strong> is described by cognitive load theorists as their most important finding. Students given model answers to study before writing perform <strong>significantly better</strong> than those who attempt the problem themselves without models. Asking students to write extended answers without worked examples "unnecessarily adds problem-solving search to the interacting elements, thus imposing an extraneous cognitive load."
+      <br><br>
+      NSW DoE's Cognitive Load Theory Practice Guide explicitly endorses worked examples as a primary evidence-based strategy: students learn new content more effectively when given worked examples than when required to solve problems independently.
+      <br><br>
+      Seeing a band-specific model answer for the <strong>exact question just attempted</strong> — with the same syllabus keywords, the same directive — provides the concrete model that replaces abstract instruction to "write better."
+      <div class="cite">NSW DoE Cognitive Load Theory Practice Guide (2017) — <a href="https://education.nsw.gov.au/content/dam/main-education/about-us/educational-data/cese/2017-cognitive-load-theory-practice-guide.pdf" target="_blank">NSW DoE</a></div>
+      <div class="correction">
+        <span class="correction-label">Wording Note</span>
+        The original document describes ADHD students as "visual learners." This framing should be avoided — the learning styles (VAK) theory lacks empirical support. Better framing: ADHD students benefit from <strong>worked examples and concrete models</strong> because these reduce cognitive load and provide a clear reference point, reducing the executive demand of writing to a high standard.
+      </div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 7</div>
+    <div class="card-title">Syllabus Keyword Identification (U Step) — Explicit Academic Vocabulary</div>
+    <div class="card-body">
+      Explicit instruction in academic vocabulary provides a language foundation for understanding texts across all subject areas. As discipline-specific words become automatic, students can shift their mental effort toward content, making vocabulary instruction an <strong>essential scaffold for disciplinary literacy</strong>.
+      <br><br>
+      The CUBE app's U step explicitly trains students to identify and use syllabus-specific vocabulary. Research on academic language development in secondary students confirms that the use of academic word-list vocabulary is a measurable discriminator between basic and more advanced student writing.
+      <div class="cite">Savvas Insights (2026) — Academic vocabulary and disciplinary literacy — <a href="https://www.savvas.com/resource-center/blogs-and-podcasts/savvas-insights/2026/importance-of-academic-vocabulary" target="_blank">Savvas</a></div>
+      <div class="cite">Kim &amp; Graham (2022) — Academic language in secondary writing — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12068036/" target="_blank">PMC</a></div>
+    </div>
+  </div>
+
+  <div class="research-card">
+    <div class="card-num">Feature 8</div>
+    <div class="card-title">Teacher Analytics Dashboard — Data-Informed Teaching</div>
+    <div class="card-body">
+      The Analytics Dashboard provides class-level data on band distributions, CUBE accuracy, literacy focus areas, and submission patterns. This enables teachers to actively monitor student outcomes and adjust teaching practice accordingly.
+      <br><br>
+      The AERO <em>Evidence-Based Practices in School Settings for Student Wellbeing</em> report (2025) assigns its highest confidence rating — <strong>Level 4: Very High</strong> — to strategies that involve teachers monitoring and responding to student data. Data-informed teaching is consistently identified as among the highest-impact educational practices.
+      <div class="cite">AERO (2025) — Evidence-Based Practices in School Settings — <a href="https://www.edresearch.edu.au" target="_blank">edresearch.edu.au</a></div>
+      <div class="correction">
+        <span class="correction-label">Citation Note</span>
+        The original document cites Mpolomoka (2025) for this point. That study focuses on AI assessment in African higher education — a useful reference but context-specific. The AERO (2025) report is a stronger and more directly relevant citation for an Australian secondary school context.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
 
