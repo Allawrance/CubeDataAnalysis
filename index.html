@@ -245,11 +245,11 @@ main { padding: 1.75rem 2.5rem; }
 .pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border:1px solid rgba(255,107,107,0.3); }
 .no-data { text-align:center; padding:2rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
 
-.week-nav{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:0.6rem 1rem;}
-.week-nav-btn{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:6px;padding:0.3rem 0.7rem;cursor:pointer;font-size:0.85rem;font-weight:700;transition:background 0.15s;line-height:1;}
-.week-nav-btn:hover{background:rgba(201,168,76,0.25);}
-.week-nav-btn:disabled{opacity:0.3;cursor:default;}
-.week-label{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#e8eaf0;flex:1;text-align:center;font-weight:600;}
+.week-nav{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:0.7rem 1.2rem;}
+.week-nav-btn{background:rgba(201,168,76,0.18);border:2px solid rgba(201,168,76,0.55);color:var(--gold-light);border-radius:8px;padding:0.4rem 1rem;cursor:pointer;font-size:1.1rem;font-weight:900;transition:all 0.15s;line-height:1;letter-spacing:0.05em;}
+.week-nav-btn:hover{background:rgba(201,168,76,0.35);border-color:var(--gold-light);color:#fff;}
+.week-nav-btn:disabled{opacity:0.25;cursor:default;}
+.week-label{font-family:'IBM Plex Mono',monospace;font-size:1rem;letter-spacing:0.06em;color:#ffffff;flex:1;text-align:center;font-weight:700;}
 .week-badge{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:20px;padding:0.2rem 0.6rem;}
 .trophy-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;}
 .trophy-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
@@ -337,10 +337,10 @@ main { padding: 1.75rem 2.5rem; }
   </div>
   <div id="dashboard">
     <div class="week-nav">
-      <button class="week-nav-btn" id="btn-week-prev" onclick="changeWeek(-1)">&#8592;</button>
+      <button class="week-nav-btn" id="btn-week-prev" onclick="changeWeek(-1)">&#8592; Prev</button>
       <span class="week-label" id="week-label">Loading...</span>
       <span class="week-badge" id="week-badge">This week</span>
-      <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>&#8594;</button>
+      <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>Next &#8594;</button>
     </div>
     <div id="trophy-banner"></div>
     <div class="stats-row" id="stats-row"></div>
@@ -378,15 +378,19 @@ let klaData = {}, activeKLA = null;
 let weekOffset = 0;
 
 function getWeekBounds(offset) {
+  // Week runs from Friday 3pm AEST to the following Friday 3pm AEST.
+  // Find the most recent Friday 3pm AEST as the START of the current week.
   var now = new Date();
   var aestNow = new Date(now.getTime() + 10 * 3600 * 1000);
-  var day = aestNow.getUTCDay();
+  var day = aestNow.getUTCDay();         // 0=Sun .. 5=Fri .. 6=Sat
   var hourFrac = aestNow.getUTCHours() + aestNow.getUTCMinutes()/60;
-  var daysSince = (day - 5 + 7) % 7;
-  if (day === 5 && hourFrac < 15) daysSince = 7;
-  var endMs = Date.UTC(aestNow.getUTCFullYear(), aestNow.getUTCMonth(), aestNow.getUTCDate(), 5, 0, 0, 0)
-              - daysSince * 86400000;
-  var startMs = endMs - 7 * 86400000;
+  // Days elapsed since the most recent Friday 3pm
+  var daysSince = (day - 5 + 7) % 7;    // days since last Friday (by date)
+  if (day === 5 && hourFrac < 15) daysSince = 7; // Friday before 3pm -> still last week
+  // startMs = most recent Friday 3pm UTC (15:00 AEST = 05:00 UTC)
+  var startMs = Date.UTC(aestNow.getUTCFullYear(), aestNow.getUTCMonth(), aestNow.getUTCDate(), 5, 0, 0, 0)
+                - daysSince * 86400000;
+  var endMs = startMs + 7 * 86400000;   // end = 7 days later (next Friday 3pm)
   return { start: new Date(startMs + offset * 7 * 86400000), end: new Date(endMs + offset * 7 * 86400000) };
 }
 
@@ -617,7 +621,7 @@ function renderStats(rows, allRows, cfg) {
   var xpMap={};
   rows.forEach(function(r){
     var s=r.Student; if(!s) return;
-    var xp=Number(r['Total XP'])||0;
+    var xp=Math.round(Number(r['Total XP'])||0);
     xpMap[s]=(xpMap[s]||0)+xp;
   });
   var top3=Object.entries(xpMap).map(function(e){return{name:e[0],xp:e[1]};}).sort(function(a,b){return b.xp-a.xp;}).slice(0,3);
@@ -667,7 +671,7 @@ function renderStats(rows, allRows, cfg) {
       '<div class="stat-label">Total XP</div>'+
       '<div class="stat-value clr-green">'+(totalXP||'&mdash;')+'</div>'+
       '<div class="stat-sub">class XP this week</div>'+
-      rankList(rows.filter(function(r){return r['Total XP']!=null;}), function(r){return Number(r['Total XP'])||0;}, function(s){return s.val+' XP';})+
+      rankList(rows.filter(function(r){return r['Total XP']!=null;}), function(r){return Number(r['Total XP'])||0;}, function(s){return Math.round(s.val)+' XP';})+
     '</div>';
 }
 
