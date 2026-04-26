@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -245,6 +245,28 @@ main { padding: 1.75rem 2.5rem; }
 .pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border:1px solid rgba(255,107,107,0.3); }
 .no-data { text-align:center; padding:2rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
 
+.week-nav{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:0.6rem 1rem;}
+.week-nav-btn{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:6px;padding:0.3rem 0.7rem;cursor:pointer;font-size:0.85rem;font-weight:700;transition:background 0.15s;line-height:1;}
+.week-nav-btn:hover{background:rgba(201,168,76,0.25);}
+.week-nav-btn:disabled{opacity:0.3;cursor:default;}
+.week-label{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#e8eaf0;flex:1;text-align:center;font-weight:600;}
+.week-badge{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:20px;padding:0.2rem 0.6rem;}
+.trophy-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;}
+.trophy-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+.trophy-row{display:flex;gap:0.75rem;flex-wrap:wrap;}
+.trophy-card{flex:1;min-width:140px;display:flex;align-items:center;gap:0.6rem;background:rgba(0,0,0,0.2);border-radius:8px;padding:0.6rem 0.9rem;border:1px solid rgba(255,255,255,0.07);}
+.trophy-medal{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.trophy-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:0.85rem;color:#fff;}
+.trophy-xp{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--gold);margin-top:0.1rem;}
+.stat-value.clr-green{color:#39ff6e;}
+.stat-value.clr-amber{color:#ffb830;}
+.stat-value.clr-red{color:#ff4f4f;}
+.rank-list{margin-top:0.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:0.6rem;display:flex;flex-direction:column;gap:0.28rem;}
+.rank-row{display:flex;align-items:center;gap:0.4rem;}
+.rank-num{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--text-dim);width:14px;flex-shrink:0;}
+.rank-name{font-size:0.72rem;color:#e8eaf0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rank-val{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--gold);flex-shrink:0;font-weight:700;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.25rem;align-items:start;}
 @media(max-width:768px){
   header,main{ padding:1.25rem; }
   #subject-selector{ padding:1.25rem; }
@@ -314,6 +336,13 @@ main { padding: 1.75rem 2.5rem; }
     </div>
   </div>
   <div id="dashboard">
+    <div class="week-nav">
+      <button class="week-nav-btn" id="btn-week-prev" onclick="changeWeek(-1)">&#8592;</button>
+      <span class="week-label" id="week-label">Loading...</span>
+      <span class="week-badge" id="week-badge">This week</span>
+      <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>&#8594;</button>
+    </div>
+    <div id="trophy-banner"></div>
     <div class="stats-row" id="stats-row"></div>
     <div class="grid-2 mb" id="row1"></div>
     <div class="mb"        id="row2"></div>
@@ -346,6 +375,47 @@ const MCOL = {
 };
 
 let klaData = {}, activeKLA = null;
+let weekOffset = 0;
+
+function getWeekBounds(offset) {
+  var now = new Date();
+  var aestNow = new Date(now.getTime() + 10 * 3600 * 1000);
+  var day = aestNow.getUTCDay();
+  var hourFrac = aestNow.getUTCHours() + aestNow.getUTCMinutes()/60;
+  var daysSince = (day - 5 + 7) % 7;
+  if (day === 5 && hourFrac < 15) daysSince = 7;
+  var endMs = Date.UTC(aestNow.getUTCFullYear(), aestNow.getUTCMonth(), aestNow.getUTCDate(), 5, 0, 0, 0)
+              - daysSince * 86400000;
+  var startMs = endMs - 7 * 86400000;
+  return { start: new Date(startMs + offset * 7 * 86400000), end: new Date(endMs + offset * 7 * 86400000) };
+}
+
+function filterByWeek(rows, offset) {
+  var b = getWeekBounds(offset);
+  return rows.filter(function(r){
+    if(!r.Timestamp) return false;
+    var ts = new Date(r.Timestamp);
+    return ts >= b.start && ts < b.end;
+  });
+}
+
+function weekLabel(offset) {
+  var b = getWeekBounds(offset);
+  var fmt = function(d){ return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',timeZone:'Australia/Sydney'}); };
+  return fmt(b.start) + ' \u2013 ' + fmt(new Date(b.end.getTime()-1));
+}
+
+function changeWeek(delta) {
+  weekOffset += delta;
+  if (weekOffset > 0) weekOffset = 0;
+  var lbl=document.getElementById('week-label');
+  var bdg=document.getElementById('week-badge');
+  var nxt=document.getElementById('btn-week-next');
+  if(lbl) lbl.textContent=weekLabel(weekOffset);
+  if(bdg) bdg.textContent=weekOffset===0?'This week':weekOffset===-1?'Last week':Math.abs(weekOffset)+' weeks ago';
+  if(nxt) nxt.disabled=weekOffset>=0;
+  if(activeKLA) renderKLA(activeKLA);
+}
 
 // ── LOAD ─────────────────────────────────────────────────
 async function loadSheets() {
@@ -488,31 +558,117 @@ function switchKLA(kla) {
 
 // ── RENDER ────────────────────────────────────────────────
 function renderKLA(kla) {
-  const rows=klaData[kla]||[], cfg=KLA[kla];
-  if(!rows.length){
+  var allRows=klaData[kla]||[], cfg=KLA[kla];
+  var lbl=document.getElementById('week-label');
+  if(lbl&&lbl.textContent==='Loading...') { lbl.textContent=weekLabel(weekOffset); }
+  var rows=filterByWeek(allRows, weekOffset);
+  if(!allRows.length){
+    document.getElementById('trophy-banner').innerHTML='';
     document.getElementById('stats-row').innerHTML=
-      `<div class="no-data" style="grid-column:1/-1">No data yet for ${cfg.label}. Data will appear as students use CUBE Marking Coach.</div>`;
-    ['row1','row2','row3','row4'].forEach(id=>{document.getElementById(id).innerHTML='';});
+      '<div class="no-data" style="grid-column:1/-1">No data yet for '+cfg.label+'. Data will appear as students use CUBE Marking Coach.</div>';
+    ['row1','row2','row3','row4'].forEach(function(id){document.getElementById(id).innerHTML='';});
     return;
   }
-  renderStats(rows,cfg); renderRow1(rows,cfg); renderRow2(rows,cfg); renderRow3(rows,cfg); renderRow4(rows,cfg);
+  renderStats(rows, allRows, cfg);
+  renderRow1(allRows,cfg);
+  renderRow2(allRows,cfg);
+  renderRow3(allRows,cfg);
+  renderRow4(allRows,cfg);
 }
 
-function renderStats(rows,cfg) {
-  const vm=rows.filter(r=>r['Mark %']!=null);
-  const aM=vm.length?avg(vm.map(r=>r['Mark %'])):null;
-  const aC=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));
-  const aW=avg(rows.filter(r=>r['Write %']!=null).map(r=>r['Write %']));
-  const stu=new Set(rows.map(r=>r.Student)).size;
-  const ses=new Set(rows.map(r=>r.Session).filter(Boolean)).size;
-  const mc=aM==null?'':aM>=0.8?'good':aM>=0.6?'warn':'low';
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card ${cfg.cls}"><div class="stat-label">Submissions</div><div class="stat-value">${rows.length}</div><div class="stat-sub">${ses} sessions</div></div>
-    <div class="stat-card ${cfg.cls}"><div class="stat-label">Students</div><div class="stat-value">${stu}</div><div class="stat-sub">active users</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">Avg Mark</div><div class="stat-value ${mc}">${aM!=null?pct(aM):'—'}</div><div class="stat-sub">of available marks</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">CUBE Score</div><div class="stat-value ${aC>=0.6?'good':'warn'}">${pct(aC)}</div><div class="stat-sub">question deconstruction</div></div>
-    <div class="stat-card c-neutral"><div class="stat-label">Writing Score</div><div class="stat-value ${aW>=0.8?'good':'warn'}">${pct(aW)}</div><div class="stat-sub">literacy framework</div></div>
-  `;
+function colourCls(val, hi, mid) {
+  if(val==null||isNaN(val)) return '';
+  if(val>=hi) return 'clr-green';
+  if(val>=mid) return 'clr-amber';
+  return 'clr-red';
+}
+
+function rankList(students, valueFn, fmt, limit) {
+  limit = limit||8;
+  var map={};
+  students.forEach(function(r){
+    var s=r.Student; if(!s) return;
+    if(!map[s]) map[s]={name:s,vals:[]};
+    var v=valueFn(r); if(v!=null&&!isNaN(v)) map[s].vals.push(Number(v));
+  });
+  var ranked=Object.values(map)
+    .filter(function(s){return s.vals.length>0;})
+    .map(function(s){return{name:s.name,val:avg(s.vals)};})
+    .sort(function(a,b){return b.val-a.val;})
+    .slice(0,limit);
+  if(!ranked.length) return '<div style="font-size:0.68rem;color:var(--text-dim);padding-top:0.5rem">No data this week</div>';
+  return '<div class="rank-list">'+ranked.map(function(s,i){
+    return '<div class="rank-row"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+s.name+'">'+s.name+'</span><span class="rank-val">'+fmt(s)+'</span></div>';
+  }).join('')+'</div>';
+}
+
+function rankListCount(students, limit) {
+  limit = limit||8;
+  var map={};
+  students.forEach(function(r){var s=r.Student; if(!s) return; map[s]=(map[s]||0)+1;});
+  var ranked=Object.entries(map).map(function(e){return{name:e[0],count:e[1]};}).sort(function(a,b){return b.count-a.count;}).slice(0,limit);
+  if(!ranked.length) return '<div style="font-size:0.68rem;color:var(--text-dim);padding-top:0.5rem">No submissions this week</div>';
+  return '<div class="rank-list">'+ranked.map(function(s,i){
+    return '<div class="rank-row"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+s.name+'">'+s.name+'</span><span class="rank-val">'+s.count+'</span></div>';
+  }).join('')+'</div>';
+}
+
+function renderStats(rows, allRows, cfg) {
+  var xpMap={};
+  rows.forEach(function(r){
+    var s=r.Student; if(!s) return;
+    var xp=Number(r['Total XP'])||0;
+    xpMap[s]=(xpMap[s]||0)+xp;
+  });
+  var top3=Object.entries(xpMap).map(function(e){return{name:e[0],xp:e[1]};}).sort(function(a,b){return b.xp-a.xp;}).slice(0,3);
+  var medals=['&#127947;','&#129352;','&#129353;'];
+  document.getElementById('trophy-banner').innerHTML = top3.length ? (
+    '<div class="trophy-banner">'+
+      '<div class="trophy-title">&#127942; This Week\'s Top 3 &mdash; Total XP</div>'+
+      '<div class="trophy-row">'+top3.map(function(s,i){
+        return '<div class="trophy-card"><div class="trophy-medal">'+medals[i]+'</div><div><div class="trophy-name">'+s.name+'</div><div class="trophy-xp">'+s.xp+' XP</div></div></div>';
+      }).join('')+'</div>'+
+    '</div>'
+  ) : '<div class="trophy-banner" style="text-align:center;color:var(--text-dim);font-size:0.8rem;padding:0.8rem 1.25rem">No submissions this week yet.</div>';
+
+  var vm=rows.filter(function(r){return r['Mark %']!=null;});
+  var aM=vm.length?avg(vm.map(function(r){return r['Mark %'];})):null;
+  var aC=avg(rows.filter(function(r){return r['CUBE %']!=null;}).map(function(r){return r['CUBE %'];}));
+  var aW=avg(rows.filter(function(r){return r['Write %']!=null;}).map(function(r){return r['Write %'];}));
+  var stu=new Set(rows.map(function(r){return r.Student;})).size;
+  var totalXP=Object.values(xpMap).reduce(function(a,b){return a+b;},0);
+
+  document.getElementById('stats-row').innerHTML=
+    '<div class="stat-card '+cfg.cls+'">'+
+      '<div class="stat-label">Submissions</div>'+
+      '<div class="stat-value">'+rows.length+'</div>'+
+      '<div class="stat-sub">'+stu+' student'+(stu!==1?'s':'')+' this week</div>'+
+      rankListCount(rows)+
+    '</div>'+
+    '<div class="stat-card c-neutral">'+
+      '<div class="stat-label">Avg Mark</div>'+
+      '<div class="stat-value '+colourCls(aM,0.75,0.5)+'">'+(aM!=null?pct(aM):'&mdash;')+'</div>'+
+      '<div class="stat-sub">of available marks</div>'+
+      rankList(rows.filter(function(r){return r['Mark %']!=null;}), function(r){return r['Mark %'];}, function(s){return pct(s.val);})+
+    '</div>'+
+    '<div class="stat-card c-neutral">'+
+      '<div class="stat-label">CUBE Score</div>'+
+      '<div class="stat-value '+colourCls(aC,0.7,0.45)+'">'+(rows.length?pct(aC):'&mdash;')+'</div>'+
+      '<div class="stat-sub">question deconstruction</div>'+
+      rankList(rows.filter(function(r){return r['CUBE %']!=null;}), function(r){return r['CUBE %'];}, function(s){return pct(s.val);})+
+    '</div>'+
+    '<div class="stat-card c-neutral">'+
+      '<div class="stat-label">Writing Score</div>'+
+      '<div class="stat-value '+colourCls(aW,0.75,0.5)+'">'+(rows.length?pct(aW):'&mdash;')+'</div>'+
+      '<div class="stat-sub">literacy framework</div>'+
+      rankList(rows.filter(function(r){return r['Write %']!=null;}), function(r){return r['Write %'];}, function(s){return pct(s.val);})+
+    '</div>'+
+    '<div class="stat-card c-neutral">'+
+      '<div class="stat-label">Total XP</div>'+
+      '<div class="stat-value clr-green">'+(totalXP||'&mdash;')+'</div>'+
+      '<div class="stat-sub">class XP this week</div>'+
+      rankList(rows.filter(function(r){return r['Total XP']!=null;}), function(r){return Number(r['Total XP'])||0;}, function(s){return s.val+' XP';})+
+    '</div>';
 }
 
 function renderRow1(rows,cfg) {
