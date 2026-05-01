@@ -25,6 +25,7 @@
   --engs:  #e8a030;
   --buss:  #a78bfa;
   --hltm:  #43d9ad;
+  --comfam:#f472b6;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -99,6 +100,31 @@ h1 span { color: var(--gold); }
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
+/* PDHPE box contains two clickable sub-rows */
+.pdhpe-box {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1.5px solid rgba(240,192,48,0.7);
+  border-radius: 16px; padding: 1rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.pdhpe-kla-tag {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--hltm); margin-bottom: 0.15rem;
+}
+.pdhpe-subj {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.6rem; border-radius: 10px;
+  cursor: pointer; transition: background 0.18s;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.9rem; font-weight: 700; color: var(--text);
+}
+.pdhpe-subj:hover { background: rgba(255,255,255,0.06); }
+.pdhpe-subj.active-hltm  { background: rgba(67,217,173,0.15);  color:#43d9ad; }
+.pdhpe-subj.active-comfam{ background: rgba(244,114,182,0.15); color:#f472b6; }
+.pdhpe-count { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#f0c030; margin-left:auto; font-weight:700; }
 .subject-box {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
   border: 1.5px solid rgba(240,192,48,0.7);
@@ -139,6 +165,13 @@ h1 span { color: var(--gold); }
   box-shadow: 0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15);
   transform: translateY(-3px) scale(1.02);
 }
+.subject-box.active[data-kla="ComFam"] {
+  border-color: var(--comfam); border-width: 2.5px;
+  background: linear-gradient(135deg, rgba(244,114,182,0.22), rgba(244,114,182,0.10));
+  box-shadow: 0 0 0 3px rgba(244,114,182,0.18), 0 6px 24px rgba(244,114,182,0.15);
+  transform: translateY(-3px) scale(1.02);
+}
+.subject-box[data-kla="ComFam"] .kla-tag { color: var(--comfam); }
 .kla-tag {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.6rem; font-weight: 700;
@@ -183,6 +216,7 @@ main { padding: 1.75rem 2.5rem; }
 .stat-card.c-engs::before  { background:var(--engs); }
 .stat-card.c-buss::before  { background:var(--buss); }
 .stat-card.c-hltm::before  { background:var(--hltm); }
+.stat-card.c-comfam::before{ background:var(--comfam); }
 .stat-card.c-neutral::before { background:var(--gold); }
 .stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
 .stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
@@ -311,10 +345,16 @@ main { padding: 1.75rem 2.5rem; }
       <div class="subj-name">📊 Business Studies</div>
       <div class="subj-count" id="cnt-BusS">Loading…</div>
     </div>
-    <div class="subject-box" data-kla="HlthM" onclick="switchKLA('HlthM')">
-      <div class="kla-tag">PDHPE</div>
-      <div class="subj-name">🏃 Health &amp; Movement</div>
-      <div class="subj-count" id="cnt-HlthM">Loading…</div>
+    <div class="pdhpe-box" id="pdhpe-box">
+      <div class="pdhpe-kla-tag">PDHPE</div>
+      <div class="pdhpe-subj" id="pdhpe-hltm" onclick="switchKLA('HlthM')">
+        🏃 Health &amp; Movement
+        <span class="pdhpe-count" id="cnt-HlthM">Loading…</span>
+      </div>
+      <div class="pdhpe-subj" id="pdhpe-comfam" onclick="switchKLA('ComFam')">
+        🏠 Community &amp; Family
+        <span class="pdhpe-count" id="cnt-ComFam">Loading…</span>
+      </div>
     </div>
     <div class="subject-box" data-kla="EngS" onclick="switchKLA('EngS')">
       <div class="kla-tag">TAS</div>
@@ -353,12 +393,13 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM'];
+const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam'];
 const KLA = {
-  EES:   { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'  },
-  EngS:  { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs' },
-  BusS:  { label:'Business Studies',               color:'#a78bfa', cls:'c-buss' },
-  HlthM: { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm' },
+  EES:    { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'    },
+  EngS:   { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs'   },
+  BusS:   { label:'Business Studies',               color:'#a78bfa', cls:'c-buss'   },
+  HlthM:  { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm'   },
+  ComFam: { label:'Community & Family Studies',     color:'#f472b6', cls:'c-comfam' },
 };
 const MCOL = {
   'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
@@ -555,8 +596,26 @@ function setDot(cls,msg) {
   document.getElementById('stxt').textContent=msg;
 }
 function switchKLA(kla) {
-  activeKLA=kla;
-  document.querySelectorAll('.subject-box').forEach(b=>b.classList.toggle('active',b.dataset.kla===kla));
+  activeKLA = kla;
+  // Standard subject boxes
+  document.querySelectorAll('.subject-box').forEach(b => b.classList.toggle('active', b.dataset.kla === kla));
+  // PDHPE dual-subject sub-rows
+  var hltm   = document.getElementById('pdhpe-hltm');
+  var comfam = document.getElementById('pdhpe-comfam');
+  var pdhpeBox = document.getElementById('pdhpe-box');
+  if (hltm && comfam && pdhpeBox) {
+    hltm.classList.toggle('active-hltm',   kla === 'HlthM');
+    comfam.classList.toggle('active-comfam', kla === 'ComFam');
+    // Highlight the PDHPE outer box when either PDHPE subject is active
+    var pdhpeActive = (kla === 'HlthM' || kla === 'ComFam');
+    pdhpeBox.style.borderColor  = pdhpeActive ? (kla === 'ComFam' ? '#f472b6' : '#43d9ad') : 'rgba(240,192,48,0.7)';
+    pdhpeBox.style.borderWidth  = pdhpeActive ? '2.5px' : '1.5px';
+    pdhpeBox.style.boxShadow    = pdhpeActive
+      ? (kla === 'ComFam'
+          ? '0 0 0 3px rgba(244,114,182,0.18), 0 6px 24px rgba(244,114,182,0.15)'
+          : '0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15)')
+      : '';
+  }
   renderKLA(kla);
 }
 
