@@ -29,6 +29,7 @@
   --bio:   #a5d6a7;
   --legal: #ce93d8;
   --va:    #f48fb1;
+  --anch:  #ffcc80;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -164,6 +165,7 @@ h1 span { color: var(--gold); }
 .multi-sublabel.va    { color:var(--va); }
 .multi-subj.active-va1 { background: rgba(244,143,177,0.15); color:#f48fb1; }
 .multi-subj.active-va2 { background: rgba(244,143,177,0.15); color:#f48fb1; }
+.multi-subj.active-ahis { background: rgba(255,204,128,0.15); color:#ffcc80; }
 .pdhpe-count { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#f0c030; margin-left:auto; font-weight:700; }
 .multi-count { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#f0c030; margin-left:auto; font-weight:700; }
 .subject-box {
@@ -264,6 +266,7 @@ main { padding: 1.75rem 2.5rem; }
 .stat-card.c-bio::before   { background:var(--bio); }
 .stat-card.c-legal::before { background:var(--legal); }
 .stat-card.c-va::before    { background:var(--va); }
+.stat-card.c-anch::before  { background:var(--anch); }
 .stat-card.c-neutral::before { background:var(--gold); }
 .stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
 .stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
@@ -421,6 +424,12 @@ main { padding: 1.75rem 2.5rem; }
         ⚖️ 12LS-2
         <span class="multi-count" id="cnt-12LS-2">Loading…</span>
       </div>
+      <div class="multi-divider"></div>
+      <div class="multi-sublabel" style="color:var(--anch)">Ancient History</div>
+      <div class="multi-subj" id="hsie-ahis" onclick="switchKLA('12AHis')">
+        🏛️ 12AHis
+        <span class="multi-count" id="cnt-12AHis">Loading…</span>
+      </div>
     </div>
     <!-- PDHPE: HlthM + ComFam -->
     <div class="pdhpe-box" id="pdhpe-box">
@@ -485,7 +494,7 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12LS-1','12LS-2','12VA-1','12VA-2'];
+const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12LS-1','12LS-2','12VA-1','12VA-2','12AHis'];
 const KLA = {
   EES:      { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'    },
   EngS:     { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs'   },
@@ -499,6 +508,7 @@ const KLA = {
   '12LS-2': { label:'Legal Studies — 12LS-2',         color:'#ce93d8', cls:'c-legal'  },
   '12VA-1': { label:'Visual Arts — 12VA-1',           color:'#f48fb1', cls:'c-va'     },
   '12VA-2': { label:'Visual Arts — 12VA-2',           color:'#f48fb1', cls:'c-va'     },
+  '12AHis': { label:'Ancient History — 12AHis',       color:'#ffcc80', cls:'c-anch'   },
 };
 const MCOL = {
   'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
@@ -723,20 +733,24 @@ function switchKLA(kla) {
   var hsieBuss = document.getElementById('hsie-buss');
   var hsieLeg1 = document.getElementById('hsie-leg1');
   var hsieLeg2 = document.getElementById('hsie-leg2');
-  var hsieActive = (kla === 'BusS' || kla === '12LS-1' || kla === '12LS-2');
+  var hsieAhis = document.getElementById('hsie-ahis');
+  var hsieActive = (kla === 'BusS' || kla === '12LS-1' || kla === '12LS-2' || kla === '12AHis');
   if (hsieBox) {
-    var hsieColor = kla === 'BusS' ? '#a78bfa' : '#ce93d8';
+    var hsieColor = kla === 'BusS' ? '#a78bfa' : kla === '12AHis' ? '#ffcc80' : '#ce93d8';
     hsieBox.style.borderColor = hsieActive ? hsieColor : 'rgba(240,192,48,0.7)';
     hsieBox.style.borderWidth = hsieActive ? '2.5px' : '1.5px';
     hsieBox.style.boxShadow   = hsieActive
       ? (kla === 'BusS'
           ? '0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15)'
+          : kla === '12AHis'
+          ? '0 0 0 3px rgba(255,204,128,0.18), 0 6px 24px rgba(255,204,128,0.15)'
           : '0 0 0 3px rgba(206,147,216,0.18), 0 6px 24px rgba(206,147,216,0.15)')
       : '';
   }
   if (hsieBuss) hsieBuss.classList.toggle('active-buss', kla === 'BusS');
   if (hsieLeg1) hsieLeg1.classList.toggle('active-leg1', kla === '12LS-1');
   if (hsieLeg2) hsieLeg2.classList.toggle('active-leg2', kla === '12LS-2');
+  if (hsieAhis) hsieAhis.classList.toggle('active-ahis', kla === '12AHis');
 
   // ── PDHPE box (HlthM + ComFam) ────────────────────────────────────────────
   var hltm     = document.getElementById('pdhpe-hltm');
