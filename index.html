@@ -26,6 +26,8 @@
   --buss:  #a78bfa;
   --hltm:  #43d9ad;
   --comfam:#f472b6;
+  --bio:   #a5d6a7;
+  --legal: #ce93d8;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -97,11 +99,27 @@ h1 span { color: var(--gold); }
   color: var(--gold); margin-bottom: 1.25rem;
 }
 .subject-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
 }
 /* PDHPE box contains two clickable sub-rows */
 .pdhpe-box {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1.5px solid rgba(240,192,48,0.7);
+  border-radius: 16px; padding: 1rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+/* Science box — EES + Biology sub-rows */
+.science-box {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1.5px solid rgba(240,192,48,0.7);
+  border-radius: 16px; padding: 1rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+/* HSIE box — BusS + Legal sub-rows */
+.hsie-box {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
   border: 1.5px solid rgba(240,192,48,0.7);
   border-radius: 16px; padding: 1rem 1.5rem;
@@ -114,17 +132,36 @@ h1 span { color: var(--gold); }
   letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--hltm); margin-bottom: 0.15rem;
 }
-.pdhpe-subj {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.5rem 0.6rem; border-radius: 10px;
-  cursor: pointer; transition: background 0.18s;
+.science-kla-tag {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.9rem; font-weight: 700; color: var(--text);
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ees); margin-bottom: 0.15rem;
 }
+.hsie-kla-tag {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--buss); margin-bottom: 0.15rem;
+}
+.pdhpe-subj { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem; border-radius: 10px; cursor: pointer; transition: background 0.18s; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--text); }
 .pdhpe-subj:hover { background: rgba(255,255,255,0.06); }
 .pdhpe-subj.active-hltm  { background: rgba(67,217,173,0.15);  color:#43d9ad; }
 .pdhpe-subj.active-comfam{ background: rgba(244,114,182,0.15); color:#f472b6; }
+.multi-subj { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 10px; cursor: pointer; transition: background 0.18s; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.multi-subj:hover { background: rgba(255,255,255,0.06); }
+.multi-subj.active-ees    { background: rgba(79,195,247,0.15);  color:#4fc3f7; }
+.multi-subj.active-bio1   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
+.multi-subj.active-bio2   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
+.multi-subj.active-bio3   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
+.multi-subj.active-buss   { background: rgba(167,139,250,0.15); color:#a78bfa; }
+.multi-subj.active-leg1   { background: rgba(206,147,216,0.15); color:#ce93d8; }
+.multi-subj.active-leg2   { background: rgba(206,147,216,0.15); color:#ce93d8; }
+.multi-divider { height:1px; background:rgba(255,255,255,0.07); margin:2px 0; }
+.multi-sublabel { font-size:0.55rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--bio); padding: 0 0.6rem; margin-top:2px; }
+.multi-sublabel.legal { color:var(--legal); }
 .pdhpe-count { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#f0c030; margin-left:auto; font-weight:700; }
+.multi-count { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#f0c030; margin-left:auto; font-weight:700; }
 .subject-box {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
   border: 1.5px solid rgba(240,192,48,0.7);
@@ -172,7 +209,10 @@ h1 span { color: var(--gold); }
   transform: translateY(-3px) scale(1.02);
 }
 .subject-box[data-kla="ComFam"] .kla-tag { color: var(--comfam); }
-.kla-tag {
+.subject-box[data-kla="EES"]   .kla-tag { color: var(--ees); }
+.subject-box[data-kla="EngS"]  .kla-tag { color: var(--engs); }
+.subject-box[data-kla="BusS"]  .kla-tag { color: var(--buss); }
+.subject-box[data-kla="HlthM"] .kla-tag { color: var(--hltm); }
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.6rem; font-weight: 700;
   letter-spacing: 0.15em; text-transform: uppercase;
@@ -217,6 +257,8 @@ main { padding: 1.75rem 2.5rem; }
 .stat-card.c-buss::before  { background:var(--buss); }
 .stat-card.c-hltm::before  { background:var(--hltm); }
 .stat-card.c-comfam::before{ background:var(--comfam); }
+.stat-card.c-bio::before   { background:var(--bio); }
+.stat-card.c-legal::before { background:var(--legal); }
 .stat-card.c-neutral::before { background:var(--gold); }
 .stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
 .stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
@@ -335,16 +377,47 @@ main { padding: 1.75rem 2.5rem; }
 <div id="subject-selector">
   <div class="selector-label">Select Your Subject</div>
   <div class="subject-grid">
-    <div class="subject-box" data-kla="EES" onclick="switchKLA('EES')">
-      <div class="kla-tag">Science</div>
-      <div class="subj-name">🌏 Earth &amp; Enviro Sci</div>
-      <div class="subj-count" id="cnt-EES">Loading…</div>
+    <!-- Science: EES + Biology classes -->
+    <div class="science-box" id="science-box">
+      <div class="science-kla-tag">Science</div>
+      <div class="multi-subj" id="sci-ees" onclick="switchKLA('EES')">
+        🌏 Earth &amp; Enviro Sci
+        <span class="multi-count" id="cnt-EES">Loading…</span>
+      </div>
+      <div class="multi-divider"></div>
+      <div class="multi-sublabel">Biology</div>
+      <div class="multi-subj" id="sci-bio1" onclick="switchKLA('12Bio-1')">
+        🔬 12Bio-1
+        <span class="multi-count" id="cnt-12Bio-1">Loading…</span>
+      </div>
+      <div class="multi-subj" id="sci-bio2" onclick="switchKLA('12Bio-2')">
+        🔬 12Bio-2
+        <span class="multi-count" id="cnt-12Bio-2">Loading…</span>
+      </div>
+      <div class="multi-subj" id="sci-bio3" onclick="switchKLA('12Bio-3')">
+        🔬 12Bio-3
+        <span class="multi-count" id="cnt-12Bio-3">Loading…</span>
+      </div>
     </div>
-    <div class="subject-box" data-kla="BusS" onclick="switchKLA('BusS')">
-      <div class="kla-tag">HSIE</div>
-      <div class="subj-name">📊 Business Studies</div>
-      <div class="subj-count" id="cnt-BusS">Loading…</div>
+    <!-- HSIE: Business Studies + Legal Studies classes -->
+    <div class="hsie-box" id="hsie-box">
+      <div class="hsie-kla-tag">HSIE</div>
+      <div class="multi-subj" id="hsie-buss" onclick="switchKLA('BusS')">
+        📊 Business Studies
+        <span class="multi-count" id="cnt-BusS">Loading…</span>
+      </div>
+      <div class="multi-divider"></div>
+      <div class="multi-sublabel legal">Legal Studies</div>
+      <div class="multi-subj" id="hsie-leg1" onclick="switchKLA('12LS-1')">
+        ⚖️ 12LS-1
+        <span class="multi-count" id="cnt-12LS-1">Loading…</span>
+      </div>
+      <div class="multi-subj" id="hsie-leg2" onclick="switchKLA('12LS-2')">
+        ⚖️ 12LS-2
+        <span class="multi-count" id="cnt-12LS-2">Loading…</span>
+      </div>
     </div>
+    <!-- PDHPE: HlthM + ComFam -->
     <div class="pdhpe-box" id="pdhpe-box">
       <div class="pdhpe-kla-tag">PDHPE</div>
       <div class="pdhpe-subj" id="pdhpe-hltm" onclick="switchKLA('HlthM')">
@@ -356,6 +429,7 @@ main { padding: 1.75rem 2.5rem; }
         <span class="pdhpe-count" id="cnt-ComFam">Loading…</span>
       </div>
     </div>
+    <!-- TAS: Engineering -->
     <div class="subject-box" data-kla="EngS" onclick="switchKLA('EngS')">
       <div class="kla-tag">TAS</div>
       <div class="subj-name">⚙️ Engineering Studies</div>
@@ -393,13 +467,18 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam'];
+const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12LS-1','12LS-2'];
 const KLA = {
-  EES:    { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'    },
-  EngS:   { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs'   },
-  BusS:   { label:'Business Studies',               color:'#a78bfa', cls:'c-buss'   },
-  HlthM:  { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm'   },
-  ComFam: { label:'Community & Family Studies',     color:'#f472b6', cls:'c-comfam' },
+  EES:      { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'    },
+  EngS:     { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs'   },
+  BusS:     { label:'Business Studies',               color:'#a78bfa', cls:'c-buss'   },
+  HlthM:    { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm'   },
+  ComFam:   { label:'Community & Family Studies',     color:'#f472b6', cls:'c-comfam' },
+  '12Bio-1':{ label:'Biology — 12Bio-1',              color:'#a5d6a7', cls:'c-bio'    },
+  '12Bio-2':{ label:'Biology — 12Bio-2',              color:'#a5d6a7', cls:'c-bio'    },
+  '12Bio-3':{ label:'Biology — 12Bio-3',              color:'#a5d6a7', cls:'c-bio'    },
+  '12LS-1': { label:'Legal Studies — 12LS-1',         color:'#ce93d8', cls:'c-legal'  },
+  '12LS-2': { label:'Legal Studies — 12LS-2',         color:'#ce93d8', cls:'c-legal'  },
 };
 const MCOL = {
   'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
@@ -597,25 +676,65 @@ function setDot(cls,msg) {
 }
 function switchKLA(kla) {
   activeKLA = kla;
-  // Standard subject boxes
+  // Standard single subject-boxes (EngS only now)
   document.querySelectorAll('.subject-box').forEach(b => b.classList.toggle('active', b.dataset.kla === kla));
-  // PDHPE dual-subject sub-rows
-  var hltm   = document.getElementById('pdhpe-hltm');
-  var comfam = document.getElementById('pdhpe-comfam');
+
+  // ── Science box (EES + Biology classes) ──────────────────────────────────
+  var sciBox  = document.getElementById('science-box');
+  var sciEes  = document.getElementById('sci-ees');
+  var sciBio1 = document.getElementById('sci-bio1');
+  var sciBio2 = document.getElementById('sci-bio2');
+  var sciBio3 = document.getElementById('sci-bio3');
+  var sciActive = (kla === 'EES' || kla === '12Bio-1' || kla === '12Bio-2' || kla === '12Bio-3');
+  if (sciBox) {
+    var sciColor = kla === 'EES' ? '#4fc3f7' : '#a5d6a7';
+    sciBox.style.borderColor = sciActive ? sciColor : 'rgba(240,192,48,0.7)';
+    sciBox.style.borderWidth = sciActive ? '2.5px' : '1.5px';
+    sciBox.style.boxShadow   = sciActive ? '0 0 0 3px rgba(165,214,167,0.18), 0 6px 24px rgba(165,214,167,0.15)' : '';
+    if (kla === 'EES' && sciBox.style.boxShadow !== '') sciBox.style.boxShadow = '0 0 0 3px rgba(79,195,247,0.18), 0 6px 24px rgba(79,195,247,0.15)';
+  }
+  if (sciEes)  sciEes.classList.toggle('active-ees',  kla === 'EES');
+  if (sciBio1) sciBio1.classList.toggle('active-bio1', kla === '12Bio-1');
+  if (sciBio2) sciBio2.classList.toggle('active-bio2', kla === '12Bio-2');
+  if (sciBio3) sciBio3.classList.toggle('active-bio3', kla === '12Bio-3');
+
+  // ── HSIE box (Business Studies + Legal classes) ───────────────────────────
+  var hsieBox  = document.getElementById('hsie-box');
+  var hsieBuss = document.getElementById('hsie-buss');
+  var hsieLeg1 = document.getElementById('hsie-leg1');
+  var hsieLeg2 = document.getElementById('hsie-leg2');
+  var hsieActive = (kla === 'BusS' || kla === '12LS-1' || kla === '12LS-2');
+  if (hsieBox) {
+    var hsieColor = kla === 'BusS' ? '#a78bfa' : '#ce93d8';
+    hsieBox.style.borderColor = hsieActive ? hsieColor : 'rgba(240,192,48,0.7)';
+    hsieBox.style.borderWidth = hsieActive ? '2.5px' : '1.5px';
+    hsieBox.style.boxShadow   = hsieActive
+      ? (kla === 'BusS'
+          ? '0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15)'
+          : '0 0 0 3px rgba(206,147,216,0.18), 0 6px 24px rgba(206,147,216,0.15)')
+      : '';
+  }
+  if (hsieBuss) hsieBuss.classList.toggle('active-buss', kla === 'BusS');
+  if (hsieLeg1) hsieLeg1.classList.toggle('active-leg1', kla === '12LS-1');
+  if (hsieLeg2) hsieLeg2.classList.toggle('active-leg2', kla === '12LS-2');
+
+  // ── PDHPE box (HlthM + ComFam) ────────────────────────────────────────────
+  var hltm     = document.getElementById('pdhpe-hltm');
+  var comfam   = document.getElementById('pdhpe-comfam');
   var pdhpeBox = document.getElementById('pdhpe-box');
   if (hltm && comfam && pdhpeBox) {
     hltm.classList.toggle('active-hltm',   kla === 'HlthM');
     comfam.classList.toggle('active-comfam', kla === 'ComFam');
-    // Highlight the PDHPE outer box when either PDHPE subject is active
     var pdhpeActive = (kla === 'HlthM' || kla === 'ComFam');
-    pdhpeBox.style.borderColor  = pdhpeActive ? (kla === 'ComFam' ? '#f472b6' : '#43d9ad') : 'rgba(240,192,48,0.7)';
-    pdhpeBox.style.borderWidth  = pdhpeActive ? '2.5px' : '1.5px';
-    pdhpeBox.style.boxShadow    = pdhpeActive
+    pdhpeBox.style.borderColor = pdhpeActive ? (kla === 'ComFam' ? '#f472b6' : '#43d9ad') : 'rgba(240,192,48,0.7)';
+    pdhpeBox.style.borderWidth = pdhpeActive ? '2.5px' : '1.5px';
+    pdhpeBox.style.boxShadow   = pdhpeActive
       ? (kla === 'ComFam'
           ? '0 0 0 3px rgba(244,114,182,0.18), 0 6px 24px rgba(244,114,182,0.15)'
           : '0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15)')
       : '';
   }
+
   renderKLA(kla);
 }
 
