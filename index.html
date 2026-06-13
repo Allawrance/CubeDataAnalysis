@@ -969,7 +969,7 @@ function renderMC(kla) {
             <td style="font-size:0.7rem">${r.Year||r.year||'—'}</td>
             <td style="font-size:0.68rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Question Text']||''}">${(r['Question Text']||'—').slice(0,60)}${(r['Question Text']||'').length>60?'…':''}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Student Answer']||r.studentAnswer||'—'}</td>
-            <td style="color:${ok?'var(--green)':'var(--red)';font-weight:700">${ok?'✓':'✗'}</td>
+            <td style="color:${ok?'var(--green)':'var(--red)'};font-weight:700">${ok?'✓':'✗'}</td>
             <td style="font-size:0.68rem">${r['Reflection Type']||r.reflectionType||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['XP Earned']||'0'}</td>
           </tr>`;}).join('')}</tbody>
