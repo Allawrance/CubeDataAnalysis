@@ -641,7 +641,7 @@ async function loadTab(name) {
     if(!isNaN(wxp) && !isNaN(wmax) && wmax > 0) r['Write %'] = wxp / wmax;
   });
 
-  klaData[name] = rows.filter(r=>r.Student && r.Student!=='Test Student' && r.Student.trim()!=='');
+  klaData[name] = rows.filter(r=>r.Student && String(r.Student)!=='Test Student' && String(r.Student).trim()!=='');
 }
 
 async function loadMCTab(name) {
@@ -654,7 +654,7 @@ async function loadMCTab(name) {
   }
   if(!text || text.trim().startsWith('<!')) { mcData[name]=[]; return; }
   const rows = parseCSV(text);
-  mcData[name] = rows.filter(r=>r.Student && r.Student.trim()!=='');
+  mcData[name] = rows.filter(r=>r.Student && String(r.Student).trim()!=='');
 }
 // Column aliases — maps every known variant to the canonical key
 const COL_ALIAS = {
