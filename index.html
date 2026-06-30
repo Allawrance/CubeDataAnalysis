@@ -704,43 +704,13 @@ function cleanHeader(h) {
   return COL_ALIAS[s.toLowerCase()] || s;
 }
 
-// The log sheet contains two physical column layouts. The header row (and the
-// bulk of older rows) follow the ORIGINAL order. The current webhook writes a
-// NEWER order (adds Sheet Tab + Class, drops the computed CUBE %/Write %/Mark %
-// columns, and interleaves the W- block). Newer subjects (Bio, Visual Arts,
-// Ancient History) have ONLY new-layout rows, so reading them by the old header
-// scrambles fields. We detect layout per-row and map new-layout rows to the
-// canonical keys the dashboard already uses.
-const NEW_LAYOUT_KEYS = [
-  'Timestamp','Student','Session','Attempt','Streak','Q No','Module','Directive',
-  'Syllabus Kw','Stage','Sheet Tab','Model','CUBE XP','CUBE Max','Anno Ideas',
-  'Anno Used','Anno XP','W-Con','W-Con Max','W-Noun','W-Noun Max','W-Mod',
-  'W-Mod Max','W-Flow','W-Flow Max','Write XP','Write Max','Total XP','Awd Mark',
-  'Q Marks','Ind Band','Mission Category','Mission Fix','Student Phrase',
-  'Improved Version','Illegible ?','Word Count','Mark %','Class'
-];
-
-function looksLikeModel(s){ return /claude|sonnet|haiku|gpt/i.test(String(s==null?'':s)); }
-
-function isNewLayout(vals){
-  // OLD: model string sits in column K (index 10).
-  // NEW: column K holds the sheet/tab name and the model moves to column L (index 11).
-  if(looksLikeModel(vals[10])) return false;
-  if(looksLikeModel(vals[11])) return true;
-  return false; // unknown → treat as old (header-keyed) so legacy rows are unaffected
-}
-
 function parseCSV(text) {
   const lines = text.split('\n').filter(l=>l.trim());
   if(lines.length<2) return [];
   const headers = splitRow(lines[0]).map(cleanHeader);
   return lines.slice(1).map(line=>{
     const vals=splitRow(line), obj={};
-    if(isNewLayout(vals)){
-      NEW_LAYOUT_KEYS.forEach((k,i)=>{ obj[k]=coerce(vals[i]); });
-    } else {
-      headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); });
-    }
+    headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); });
     return obj;
   });
 }
@@ -1326,17 +1296,9 @@ function normM(m){
     'legibility':'Legibility of handwritten response',
     'technical communication':'Technical Vocabulary','technical accuracy':'Technical Vocabulary',
     'technical detail':'Technical Vocabulary','technical precision':'Technical Vocabulary',
-    'technical vocabulary':'Technical Vocabulary','technicalvocabulary':'Technical Vocabulary',
     'content depth':'Content Depth','content completeness':'Content Completeness','clarity':'Clarity',
   };
-  const hit = map[String(m).toLowerCase()];
-  if(hit) return hit;
-  // Fallback: a bare camelCase code (e.g. "causalConnectives") → "Causal Connectives".
-  // Phrase-style categories (with spaces, e.g. Visual Arts frame descriptions) are left as-is.
-  const s = String(m);
-  if(/^[a-z]+([A-Z][a-z]+)+$/.test(s))
-    return s.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).trim();
-  return s;
+  return map[m.toLowerCase()]||m;
 }
 
 showScreen('loading');
