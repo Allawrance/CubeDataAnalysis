@@ -156,6 +156,7 @@ h1 span { color: var(--gold); }
 .multi-subj.active-bio1   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
 .multi-subj.active-bio2   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
 .multi-subj.active-bio3   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
+.multi-subj.active-bio4   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
 .multi-subj.active-buss   { background: rgba(167,139,250,0.15); color:#a78bfa; }
 .multi-subj.active-leg1   { background: rgba(206,147,216,0.15); color:#ce93d8; }
 .multi-subj.active-leg2   { background: rgba(206,147,216,0.15); color:#ce93d8; }
@@ -406,6 +407,10 @@ main { padding: 1.75rem 2.5rem; }
         🔬 12Bio-3
         <span class="multi-count" id="cnt-12Bio-3">Loading…</span>
       </div>
+      <div class="multi-subj" id="sci-bio4" onclick="switchKLA('12Bio-4')">
+        🔬 12Bio-4
+        <span class="multi-count" id="cnt-12Bio-4">Loading…</span>
+      </div>
     </div>
     <!-- HSIE: Business Studies + Legal Studies classes -->
     <div class="hsie-box" id="hsie-box">
@@ -507,12 +512,12 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12LS-1','12LS-2','12VA-1','12VA-2','12AHis'];
-const MC_SHEET_NAMES = ['EES_MC','EngS_MC','BusS_MC','HlthM_MC','ComFam_MC','12Bio-1_MC','12Bio-2_MC','12Bio-3_MC','12LS-1_MC','12LS-2_MC','12VA-1_MC','12VA-2_MC','12AHis_MC'];
+const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12Bio-4','12LS-1','12LS-2','12VA-1','12VA-2','12AHis'];
+const MC_SHEET_NAMES = ['EES_MC','EngS_MC','BusS_MC','HlthM_MC','ComFam_MC','12Bio-1_MC','12Bio-2_MC','12Bio-3_MC','12Bio-4_MC','12LS-1_MC','12LS-2_MC','12VA-1_MC','12VA-2_MC','12AHis_MC'];
 // Maps short answer tab → MC tab
 const MC_TAB_FOR = {
   'EES':'EES_MC','EngS':'EngS_MC','BusS':'BusS_MC','HlthM':'HlthM_MC','ComFam':'ComFam_MC',
-  '12Bio-1':'12Bio-1_MC','12Bio-2':'12Bio-2_MC','12Bio-3':'12Bio-3_MC',
+  '12Bio-1':'12Bio-1_MC','12Bio-2':'12Bio-2_MC','12Bio-3':'12Bio-3_MC','12Bio-4':'12Bio-4_MC',
   '12LS-1':'12LS-1_MC','12LS-2':'12LS-2_MC',
   '12VA-1':'12VA-1_MC','12VA-2':'12VA-2_MC',
   '12AHis':'12AHis_MC'
@@ -526,6 +531,7 @@ const KLA = {
   '12Bio-1':{ label:'Biology — 12Bio-1',              color:'#a5d6a7', cls:'c-bio'    },
   '12Bio-2':{ label:'Biology — 12Bio-2',              color:'#a5d6a7', cls:'c-bio'    },
   '12Bio-3':{ label:'Biology — 12Bio-3',              color:'#a5d6a7', cls:'c-bio'    },
+  '12Bio-4':{ label:'Biology — 12Bio-4',              color:'#a5d6a7', cls:'c-bio'    },
   '12LS-1': { label:'Legal Studies — 12LS-1',         color:'#ce93d8', cls:'c-legal'  },
   '12LS-2': { label:'Legal Studies — 12LS-2',         color:'#ce93d8', cls:'c-legal'  },
   '12VA-1': { label:'Visual Arts — 12VA-1',           color:'#f48fb1', cls:'c-va'     },
@@ -671,6 +677,7 @@ const COL_ALIAS = {
   'awdmark':'Awd Mark','awd mark':'Awd Mark',
   'qmarks':'Q Marks','q marks':'Q Marks',
   'indband':'Ind Band','ind band':'Ind Band',
+  'directives':'Directive','directive':'Directive',
   'w-con':'W-Con','wcon':'W-Con',
   'w-con max':'W-Con Max','wconmax':'W-Con Max',
   'w-noun':'W-Noun','wnoun':'W-Noun',
@@ -749,7 +756,8 @@ function switchKLA(kla) {
   var sciBio1 = document.getElementById('sci-bio1');
   var sciBio2 = document.getElementById('sci-bio2');
   var sciBio3 = document.getElementById('sci-bio3');
-  var sciActive = (kla === 'EES' || kla === '12Bio-1' || kla === '12Bio-2' || kla === '12Bio-3');
+  var sciBio4 = document.getElementById('sci-bio4');
+  var sciActive = (kla === 'EES' || kla === '12Bio-1' || kla === '12Bio-2' || kla === '12Bio-3' || kla === '12Bio-4');
   if (sciBox) {
     var sciColor = kla === 'EES' ? '#4fc3f7' : '#a5d6a7';
     sciBox.style.borderColor = sciActive ? sciColor : 'rgba(240,192,48,0.7)';
@@ -761,6 +769,7 @@ function switchKLA(kla) {
   if (sciBio1) sciBio1.classList.toggle('active-bio1', kla === '12Bio-1');
   if (sciBio2) sciBio2.classList.toggle('active-bio2', kla === '12Bio-2');
   if (sciBio3) sciBio3.classList.toggle('active-bio3', kla === '12Bio-3');
+  if (sciBio4) sciBio4.classList.toggle('active-bio4', kla === '12Bio-4');
 
   // ── HSIE box (Business Studies + Legal classes) ───────────────────────────
   var hsieBox  = document.getElementById('hsie-box');
