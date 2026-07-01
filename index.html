@@ -385,88 +385,7 @@ main { padding: 1.75rem 2.5rem; }
 
 <div id="subject-selector">
   <div class="selector-label">Select Your Subject</div>
-  <div class="subject-grid">
-    <!-- Science: EES + Biology classes -->
-    <div class="science-box" id="science-box">
-      <div class="science-kla-tag">Science</div>
-      <div class="multi-subj" id="sci-ees" onclick="switchKLA('EES')">
-        🌏 Earth &amp; Enviro Sci
-        <span class="multi-count" id="cnt-EES">Loading…</span>
-      </div>
-      <div class="multi-divider"></div>
-      <div class="multi-sublabel">Biology</div>
-      <div class="multi-subj" id="sci-bio1" onclick="switchKLA('12Bio-1')">
-        🔬 12Bio-1
-        <span class="multi-count" id="cnt-12Bio-1">Loading…</span>
-      </div>
-      <div class="multi-subj" id="sci-bio2" onclick="switchKLA('12Bio-2')">
-        🔬 12Bio-2
-        <span class="multi-count" id="cnt-12Bio-2">Loading…</span>
-      </div>
-      <div class="multi-subj" id="sci-bio3" onclick="switchKLA('12Bio-3')">
-        🔬 12Bio-3
-        <span class="multi-count" id="cnt-12Bio-3">Loading…</span>
-      </div>
-      <div class="multi-subj" id="sci-bio4" onclick="switchKLA('12Bio-4')">
-        🔬 12Bio-4
-        <span class="multi-count" id="cnt-12Bio-4">Loading…</span>
-      </div>
-    </div>
-    <!-- HSIE: Business Studies + Legal Studies classes -->
-    <div class="hsie-box" id="hsie-box">
-      <div class="hsie-kla-tag">HSIE</div>
-      <div class="multi-subj" id="hsie-buss" onclick="switchKLA('BusS')">
-        📊 Business Studies
-        <span class="multi-count" id="cnt-BusS">Loading…</span>
-      </div>
-      <div class="multi-divider"></div>
-      <div class="multi-sublabel legal">Legal Studies</div>
-      <div class="multi-subj" id="hsie-leg1" onclick="switchKLA('12LS-1')">
-        ⚖️ 12LS-1
-        <span class="multi-count" id="cnt-12LS-1">Loading…</span>
-      </div>
-      <div class="multi-subj" id="hsie-leg2" onclick="switchKLA('12LS-2')">
-        ⚖️ 12LS-2
-        <span class="multi-count" id="cnt-12LS-2">Loading…</span>
-      </div>
-      <div class="multi-divider"></div>
-      <div class="multi-sublabel" style="color:var(--anch)">Ancient History</div>
-      <div class="multi-subj" id="hsie-ahis" onclick="switchKLA('12AHis')">
-        🏛️ 12AHis
-        <span class="multi-count" id="cnt-12AHis">Loading…</span>
-      </div>
-    </div>
-    <!-- PDHPE: HlthM + ComFam -->
-    <div class="pdhpe-box" id="pdhpe-box">
-      <div class="pdhpe-kla-tag">PDHPE</div>
-      <div class="pdhpe-subj" id="pdhpe-hltm" onclick="switchKLA('HlthM')">
-        🏃 Health &amp; Movement
-        <span class="pdhpe-count" id="cnt-HlthM">Loading…</span>
-      </div>
-      <div class="pdhpe-subj" id="pdhpe-comfam" onclick="switchKLA('ComFam')">
-        🏠 Community &amp; Family
-        <span class="pdhpe-count" id="cnt-ComFam">Loading…</span>
-      </div>
-    </div>
-    <!-- TAS: Engineering -->
-    <div class="subject-box" data-kla="EngS" onclick="switchKLA('EngS')">
-      <div class="kla-tag">TAS</div>
-      <div class="subj-name">⚙️ Engineering Studies</div>
-      <div class="subj-count" id="cnt-EngS">Loading…</div>
-    </div>
-    <!-- CAPA: Visual Arts -->
-    <div class="science-box" id="capa-box">
-      <div class="science-kla-tag" style="color:var(--va)">CAPA</div>
-      <div class="multi-sublabel va" style="padding:0;margin-bottom:2px;">Visual Arts</div>
-      <div class="multi-subj" id="capa-va1" onclick="switchKLA('12VA-1')">
-        🎨 12VA-1
-        <span class="multi-count" id="cnt-12VA-1">Loading…</span>
-      </div>
-      <div class="multi-subj" id="capa-va2" onclick="switchKLA('12VA-2')">
-        🎨 12VA-2
-        <span class="multi-count" id="cnt-12VA-2">Loading…</span>
-      </div>
-    </div>
+  <div class="subject-grid" id="subject-grid"></div>
   </div>
 </div>
 
@@ -512,32 +431,57 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
-const SHEET_NAMES = ['EES','EngS','BusS','HlthM','ComFam','12Bio-1','12Bio-2','12Bio-3','12Bio-4','12LS-1','12LS-2','12VA-1','12VA-2','12AHis'];
-const MC_SHEET_NAMES = ['EES_MC','EngS_MC','BusS_MC','HlthM_MC','ComFam_MC','12Bio-1_MC','12Bio-2_MC','12Bio-3_MC','12Bio-4_MC','12LS-1_MC','12LS-2_MC','12VA-1_MC','12VA-2_MC','12AHis_MC'];
-// Maps short answer tab → MC tab
-const MC_TAB_FOR = {
-  'EES':'EES_MC','EngS':'EngS_MC','BusS':'BusS_MC','HlthM':'HlthM_MC','ComFam':'ComFam_MC',
-  '12Bio-1':'12Bio-1_MC','12Bio-2':'12Bio-2_MC','12Bio-3':'12Bio-3_MC','12Bio-4':'12Bio-4_MC',
-  '12LS-1':'12LS-1_MC','12LS-2':'12LS-2_MC',
-  '12VA-1':'12VA-1_MC','12VA-2':'12VA-2_MC',
-  '12AHis':'12AHis_MC'
-};
-const KLA = {
-  EES:      { label:'Earth & Environmental Science', color:'#4fc3f7', cls:'c-ees'    },
-  EngS:     { label:'Engineering Studies',            color:'#e8a030', cls:'c-engs'   },
-  BusS:     { label:'Business Studies',               color:'#a78bfa', cls:'c-buss'   },
-  HlthM:    { label:'Health & Movement',              color:'#43d9ad', cls:'c-hltm'   },
-  ComFam:   { label:'Community & Family Studies',     color:'#f472b6', cls:'c-comfam' },
-  '12Bio-1':{ label:'Biology — 12Bio-1',              color:'#a5d6a7', cls:'c-bio'    },
-  '12Bio-2':{ label:'Biology — 12Bio-2',              color:'#a5d6a7', cls:'c-bio'    },
-  '12Bio-3':{ label:'Biology — 12Bio-3',              color:'#a5d6a7', cls:'c-bio'    },
-  '12Bio-4':{ label:'Biology — 12Bio-4',              color:'#a5d6a7', cls:'c-bio'    },
-  '12LS-1': { label:'Legal Studies — 12LS-1',         color:'#ce93d8', cls:'c-legal'  },
-  '12LS-2': { label:'Legal Studies — 12LS-2',         color:'#ce93d8', cls:'c-legal'  },
-  '12VA-1': { label:'Visual Arts — 12VA-1',           color:'#f48fb1', cls:'c-va'     },
-  '12VA-2': { label:'Visual Arts — 12VA-2',           color:'#f48fb1', cls:'c-va'     },
-  '12AHis': { label:'Ancient History — 12AHis',       color:'#ffcc80', cls:'c-anch'   },
-};
+// ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
+// To add a class/subject: add ONE row here (and create its Google Sheet tab +
+// config-<Subject>.json). Everything below — which tabs are loaded, the subject
+// sidebar, KLA grouping/colours, MC tab mapping — derives from this list, so
+// there are no other arrays in this file to keep in sync.
+//   code   Google Sheet tab name (also the switchKLA key)
+//   label  short sidebar label            full   panel/heading title
+//   emoji  sidebar icon                   kla    Science|HSIE|PDHPE|TAS|CAPA
+//   group  sub-heading within a KLA (e.g. 'Biology'); null = standalone subject
+//   color  accent hex   cls  panel colour class   hasMC  student MC bank exists?
+const SUBJECTS_FALLBACK = [
+  {code:'EES',     label:'Earth & Enviro Sci', full:'Earth & Environmental Science', emoji:'🌏', kla:'Science', group:null,             color:'#4fc3f7', cls:'c-ees',    hasMC:true },
+  {code:'12Bio-1', label:'12Bio-1',            full:'Biology — 12Bio-1',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
+  {code:'12Bio-2', label:'12Bio-2',            full:'Biology — 12Bio-2',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
+  {code:'12Bio-3', label:'12Bio-3',            full:'Biology — 12Bio-3',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
+  {code:'12Bio-4', label:'12Bio-4',            full:'Biology — 12Bio-4',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
+  {code:'BusS',    label:'Business Studies',   full:'Business Studies',              emoji:'📊', kla:'HSIE',    group:null,             color:'#a78bfa', cls:'c-buss',   hasMC:true },
+  {code:'12LS-1',  label:'12LS-1',             full:'Legal Studies — 12LS-1',        emoji:'⚖️', kla:'HSIE',    group:'Legal Studies',  color:'#ce93d8', cls:'c-legal',  hasMC:true },
+  {code:'12LS-2',  label:'12LS-2',             full:'Legal Studies — 12LS-2',        emoji:'⚖️', kla:'HSIE',    group:'Legal Studies',  color:'#ce93d8', cls:'c-legal',  hasMC:true },
+  {code:'12AHis',  label:'12AHis',             full:'Ancient History — 12AHis',      emoji:'🏛️', kla:'HSIE',    group:'Ancient History',color:'#ffcc80', cls:'c-anch',   hasMC:false},
+  {code:'HlthM',   label:'Health & Movement',  full:'Health & Movement',             emoji:'🏃', kla:'PDHPE',   group:null,             color:'#43d9ad', cls:'c-hltm',   hasMC:true },
+  {code:'ComFam',  label:'Community & Family', full:'Community & Family Studies',     emoji:'🏠', kla:'PDHPE',   group:null,             color:'#f472b6', cls:'c-comfam', hasMC:true },
+  {code:'EngS',    label:'Engineering Studies',full:'Engineering Studies',           emoji:'⚙️', kla:'TAS',     group:null,             color:'#e8a030', cls:'c-engs',   hasMC:true },
+  {code:'12VA-1',  label:'12VA-1',             full:'Visual Arts — 12VA-1',          emoji:'🎨', kla:'CAPA',    group:'Visual Arts',    color:'#f48fb1', cls:'c-va',     hasMC:false},
+  {code:'12VA-2',  label:'12VA-2',             full:'Visual Arts — 12VA-2',          emoji:'🎨', kla:'CAPA',    group:'Visual Arts',    color:'#f48fb1', cls:'c-va',     hasMC:false},
+];
+
+// KLA columns, left→right. 'multi' = a box containing subject rows; 'pdhpe' =
+// same but using the PDHPE row style; 'single' = each subject is its own large
+// box (TAS/Engineering). This mirrors the original hand-built layout.
+const KLA_LAYOUT = [
+  {kla:'Science', tag:'Science', boxClass:'science-box', tagClass:'science-kla-tag', tagColor:null,      style:'multi' },
+  {kla:'HSIE',    tag:'HSIE',    boxClass:'hsie-box',    tagClass:'hsie-kla-tag',    tagColor:null,      style:'multi' },
+  {kla:'PDHPE',   tag:'PDHPE',   boxClass:'pdhpe-box',   tagClass:'pdhpe-kla-tag',   tagColor:null,      style:'pdhpe' },
+  {kla:'TAS',     tag:'TAS',     boxClass:null,          tagClass:null,              tagColor:null,      style:'single'},
+  {kla:'CAPA',    tag:'CAPA',    boxClass:'science-box', tagClass:'science-kla-tag', tagColor:'#f48fb1', style:'multi' },
+];
+
+let SUBJECTS      = SUBJECTS_FALLBACK;
+let SHEET_NAMES   = [];
+let MC_SHEET_NAMES= [];
+let MC_TAB_FOR    = {};
+let KLA           = {};
+function deriveFromRegistry(){
+  SHEET_NAMES    = SUBJECTS.map(s=>s.code);
+  MC_SHEET_NAMES = SUBJECTS.map(s=>s.code+'_MC');
+  MC_TAB_FOR     = {};
+  KLA            = {};
+  SUBJECTS.forEach(s=>{ MC_TAB_FOR[s.code]=s.code+'_MC'; KLA[s.code]={label:s.full,color:s.color,cls:s.cls}; });
+}
+deriveFromRegistry();
 const MCOL = {
   'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
   'C — Complex Noun Groups':'#a78bfa',
@@ -776,86 +720,78 @@ function setDot(cls,msg) {
   document.getElementById('sdot').className='dot'+(cls?' '+cls:'');
   document.getElementById('stxt').textContent=msg;
 }
+function hexToRgba(hex,a){
+  var m=String(hex||'').replace('#','');
+  if(m.length===3) m=m.split('').map(function(c){return c+c;}).join('');
+  var n=parseInt(m,16); if(isNaN(n)) return 'rgba(240,192,48,'+a+')';
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Build the subject sidebar entirely from the registry (KLA columns, sub-group
+// headings, class rows, per-subject counts). Reproduces the original layout.
+function buildSidebar(){
+  var grid=document.getElementById('subject-grid'); if(!grid) return;
+  var html='';
+  KLA_LAYOUT.forEach(function(L){
+    var subs=SUBJECTS.filter(function(s){return s.kla===L.kla;});
+    if(!subs.length) return;
+    if(L.style==='single'){
+      subs.forEach(function(s){
+        html+='<div class="subject-box selectable" data-kla="'+esc(s.code)+'" data-code="'+esc(s.code)+'" onclick="switchKLA(\''+s.code+'\')">'
+             +'<div class="kla-tag">'+esc(L.tag)+'</div>'
+             +'<div class="subj-name">'+esc(s.emoji)+' '+esc(s.label)+'</div>'
+             +'<div class="subj-count" id="cnt-'+esc(s.code)+'">Loading\u2026</div></div>';
+      });
+      return;
+    }
+    var itemClass=L.style==='pdhpe'?'pdhpe-subj':'multi-subj';
+    var countClass=L.style==='pdhpe'?'pdhpe-count':'multi-count';
+    var tagStyle=L.tagColor?' style="color:'+L.tagColor+'"':'';
+    var inner='<div class="'+L.tagClass+'"'+tagStyle+'>'+esc(L.tag)+'</div>';
+    var emitted=false, curGroup=null;
+    subs.forEach(function(s){
+      var g=s.group||null;
+      if(g!==curGroup){
+        curGroup=g;
+        if(g){
+          if(emitted) inner+='<div class="multi-divider"></div>';
+          inner+='<div class="multi-sublabel" style="color:'+s.color+'">'+esc(g)+'</div>';
+          emitted=true;
+        }
+      }
+      inner+='<div class="'+itemClass+' selectable" data-code="'+esc(s.code)+'" onclick="switchKLA(\''+s.code+'\')">'
+            +esc(s.emoji)+' '+esc(s.label)
+            +'<span class="'+countClass+'" id="cnt-'+esc(s.code)+'">Loading\u2026</span></div>';
+      emitted=true;
+    });
+    html+='<div class="'+L.boxClass+'" id="klabox-'+esc(L.kla)+'" data-klabox="'+esc(L.kla)+'">'+inner+'</div>';
+  });
+  grid.innerHTML=html;
+}
+
+// Generic, data-driven selection — no per-subject branches.
 function switchKLA(kla) {
   activeKLA = kla;
-  // Standard single subject-boxes (EngS only now)
-  document.querySelectorAll('.subject-box').forEach(b => b.classList.toggle('active', b.dataset.kla === kla));
-
-  // ── Science box (EES + Biology classes) ──────────────────────────────────
-  var sciBox  = document.getElementById('science-box');
-  var sciEes  = document.getElementById('sci-ees');
-  var sciBio1 = document.getElementById('sci-bio1');
-  var sciBio2 = document.getElementById('sci-bio2');
-  var sciBio3 = document.getElementById('sci-bio3');
-  var sciBio4 = document.getElementById('sci-bio4');
-  var sciActive = (kla === 'EES' || kla === '12Bio-1' || kla === '12Bio-2' || kla === '12Bio-3' || kla === '12Bio-4');
-  if (sciBox) {
-    var sciColor = kla === 'EES' ? '#4fc3f7' : '#a5d6a7';
-    sciBox.style.borderColor = sciActive ? sciColor : 'rgba(240,192,48,0.7)';
-    sciBox.style.borderWidth = sciActive ? '2.5px' : '1.5px';
-    sciBox.style.boxShadow   = sciActive ? '0 0 0 3px rgba(165,214,167,0.18), 0 6px 24px rgba(165,214,167,0.15)' : '';
-    if (kla === 'EES' && sciBox.style.boxShadow !== '') sciBox.style.boxShadow = '0 0 0 3px rgba(79,195,247,0.18), 0 6px 24px rgba(79,195,247,0.15)';
-  }
-  if (sciEes)  sciEes.classList.toggle('active-ees',  kla === 'EES');
-  if (sciBio1) sciBio1.classList.toggle('active-bio1', kla === '12Bio-1');
-  if (sciBio2) sciBio2.classList.toggle('active-bio2', kla === '12Bio-2');
-  if (sciBio3) sciBio3.classList.toggle('active-bio3', kla === '12Bio-3');
-  if (sciBio4) sciBio4.classList.toggle('active-bio4', kla === '12Bio-4');
-
-  // ── HSIE box (Business Studies + Legal classes) ───────────────────────────
-  var hsieBox  = document.getElementById('hsie-box');
-  var hsieBuss = document.getElementById('hsie-buss');
-  var hsieLeg1 = document.getElementById('hsie-leg1');
-  var hsieLeg2 = document.getElementById('hsie-leg2');
-  var hsieAhis = document.getElementById('hsie-ahis');
-  var hsieActive = (kla === 'BusS' || kla === '12LS-1' || kla === '12LS-2' || kla === '12AHis');
-  if (hsieBox) {
-    var hsieColor = kla === 'BusS' ? '#a78bfa' : kla === '12AHis' ? '#ffcc80' : '#ce93d8';
-    hsieBox.style.borderColor = hsieActive ? hsieColor : 'rgba(240,192,48,0.7)';
-    hsieBox.style.borderWidth = hsieActive ? '2.5px' : '1.5px';
-    hsieBox.style.boxShadow   = hsieActive
-      ? (kla === 'BusS'
-          ? '0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15)'
-          : kla === '12AHis'
-          ? '0 0 0 3px rgba(255,204,128,0.18), 0 6px 24px rgba(255,204,128,0.15)'
-          : '0 0 0 3px rgba(206,147,216,0.18), 0 6px 24px rgba(206,147,216,0.15)')
-      : '';
-  }
-  if (hsieBuss) hsieBuss.classList.toggle('active-buss', kla === 'BusS');
-  if (hsieLeg1) hsieLeg1.classList.toggle('active-leg1', kla === '12LS-1');
-  if (hsieLeg2) hsieLeg2.classList.toggle('active-leg2', kla === '12LS-2');
-  if (hsieAhis) hsieAhis.classList.toggle('active-ahis', kla === '12AHis');
-
-  // ── PDHPE box (HlthM + ComFam) ────────────────────────────────────────────
-  var hltm     = document.getElementById('pdhpe-hltm');
-  var comfam   = document.getElementById('pdhpe-comfam');
-  var pdhpeBox = document.getElementById('pdhpe-box');
-  if (hltm && comfam && pdhpeBox) {
-    hltm.classList.toggle('active-hltm',   kla === 'HlthM');
-    comfam.classList.toggle('active-comfam', kla === 'ComFam');
-    var pdhpeActive = (kla === 'HlthM' || kla === 'ComFam');
-    pdhpeBox.style.borderColor = pdhpeActive ? (kla === 'ComFam' ? '#f472b6' : '#43d9ad') : 'rgba(240,192,48,0.7)';
-    pdhpeBox.style.borderWidth = pdhpeActive ? '2.5px' : '1.5px';
-    pdhpeBox.style.boxShadow   = pdhpeActive
-      ? (kla === 'ComFam'
-          ? '0 0 0 3px rgba(244,114,182,0.18), 0 6px 24px rgba(244,114,182,0.15)'
-          : '0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15)')
-      : '';
-  }
-
-  // ── CAPA box (Visual Arts classes) ───────────────────────────────────────
-  var capaBox = document.getElementById('capa-box');
-  var capaVa1 = document.getElementById('capa-va1');
-  var capaVa2 = document.getElementById('capa-va2');
-  var capaActive = (kla === '12VA-1' || kla === '12VA-2');
-  if (capaBox) {
-    capaBox.style.borderColor = capaActive ? '#f48fb1' : 'rgba(240,192,48,0.7)';
-    capaBox.style.borderWidth = capaActive ? '2.5px' : '1.5px';
-    capaBox.style.boxShadow   = capaActive ? '0 0 0 3px rgba(244,143,177,0.18), 0 6px 24px rgba(244,143,177,0.15)' : '';
-  }
-  if (capaVa1) capaVa1.classList.toggle('active-va1', kla === '12VA-1');
-  if (capaVa2) capaVa2.classList.toggle('active-va2', kla === '12VA-2');
-
+  var subj = SUBJECTS.find(function(s){return s.code===kla;}) || {color:'#f0c030', kla:null};
+  document.querySelectorAll('#subject-grid .selectable').forEach(function(el){
+    var active = el.dataset.code === kla;
+    el.classList.toggle('active', active);
+    if (el.classList.contains('subject-box')) { el.style.background=''; el.style.color=''; }
+    else if (active) { el.style.background = hexToRgba(subj.color,0.15); el.style.color = subj.color; }
+    else { el.style.background=''; el.style.color=''; }
+  });
+  document.querySelectorAll('#subject-grid [data-klabox]').forEach(function(box){
+    if (box.dataset.klabox === subj.kla) {
+      box.style.borderColor = subj.color;
+      box.style.borderWidth = '2.5px';
+      box.style.boxShadow = '0 0 0 3px '+hexToRgba(subj.color,0.18)+', 0 6px 24px '+hexToRgba(subj.color,0.15);
+    } else {
+      box.style.borderColor = 'rgba(240,192,48,0.7)';
+      box.style.borderWidth = '1.5px';
+      box.style.boxShadow = '';
+    }
+  });
   renderKLA(kla);
 }
 
@@ -1344,8 +1280,19 @@ function normM(m){
   return s;
 }
 
-showScreen('loading');
-loadSheets();
+// Startup — prefer the hosted registry (single source of truth for all CUBE
+// tools); fall back to the embedded copy so the dashboard never fails to load.
+async function boot(){
+  try {
+    const r = await fetch('subjects.json', {cache:'no-store'});
+    if (r.ok) { const j = await r.json(); if (Array.isArray(j) && j.length) SUBJECTS = j; }
+  } catch(e){ console.warn('subjects.json not loaded; using embedded registry.', e); }
+  deriveFromRegistry();
+  buildSidebar();
+  showScreen('loading');
+  loadSheets();
+}
+boot();
 </script>
 </body>
 </html>
