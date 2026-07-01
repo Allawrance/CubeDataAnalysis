@@ -431,6 +431,9 @@ main { padding: 1.75rem 2.5rem; }
 
 <script>
 const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
+// Sheet data is read through your own Cloudflare Worker (same trusted origin the
+// marking app uses through the DET network) rather than a public CORS proxy.
+const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // To add a class/subject: add ONE row here (and create its Google Sheet tab +
 // config-<Subject>.json). Everything below — which tabs are loaded, the subject
@@ -548,8 +551,10 @@ async function loadSheets() {
   showScreen('loading'); setDot('','Connecting…');
   klaData = {}; mcData = {};
   try {
-    await Promise.all(SHEET_NAMES.map(loadTab));
-    await Promise.all(MC_SHEET_NAMES.map(loadMCTab));
+    // Load in small batches rather than ~28 at once — the public CORS proxy
+    // rate-limits under bursts, which was causing intermittent tab failures.
+    await runBatched(SHEET_NAMES, loadTab, 5);
+    await runBatched(MC_SHEET_NAMES, loadMCTab, 5);
     SHEET_NAMES.forEach(k => {
       const n = (klaData[k]||[]).length;
       const el = document.getElementById('cnt-'+k);
@@ -567,19 +572,38 @@ async function loadSheets() {
   }
 }
 
-async function loadTab(name) {
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
-  const proxy  = `https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`;
-  let text = null;
-  // Try proxy first (needed on GitHub Pages due to CORS)
-  try { const r = await fetch(proxy,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
-  // Fallback direct (works locally)
-  if(!text || text.trim().startsWith('<!')) {
-    try { const r = await fetch(csvUrl,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
+// Run an async fn over items in small batches (limits parallel proxy requests).
+async function runBatched(items, fn, size){
+  size = size || 5;
+  for(let i=0;i<items.length;i+=size){
+    await Promise.all(items.slice(i,i+size).map(fn));
   }
-  if(!text || text.trim().startsWith('<!')) { klaData[name]=[]; return; }
+}
+
+// Fetch one tab's CSV. Primary path is your Cloudflare Worker /sheet endpoint
+// (trusted origin, works through DET, sends CORS headers). If the Worker is
+// unreachable we fall back to the public proxy, then — only in local dev — a
+// direct fetch. The direct fetch is CORS-blocked on GitHub Pages, so it is not
+// attempted in production (it would only log console noise).
+const IS_LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
+async function fetchTabCsv(name){
+  const ok = t => t && !t.trim().startsWith('<');
+  const worker = `${WORKER_BASE}/sheet?tab=${encodeURIComponent(name)}`;
+  for(let attempt=0; attempt<2; attempt++){
+    try { const r=await fetch(worker,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){}
+    if(attempt===0) await new Promise(res=>setTimeout(res,400));  // brief backoff before retry
+  }
+  // Fallbacks if the Worker is momentarily unreachable.
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+  try { const r=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){}
+  if(IS_LOCAL){ try { const r=await fetch(csvUrl,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){} }
+  return null;
+}
+
+async function loadTab(name) {
+  const text = await fetchTabCsv(name);
+  if(!text) { klaData[name]=[]; return; }
   const rows = parseCSV(text);
-  if(rows.length>0) console.log(`[CUBE ${name}] columns:`, Object.keys(rows[0]), 'sample:', rows[0]);
 
   // Recalculate percentages from raw scores — avoids proxy column name/format issues
   rows.forEach(r => {
@@ -595,14 +619,8 @@ async function loadTab(name) {
 }
 
 async function loadMCTab(name) {
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
-  const proxy  = `https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`;
-  let text = null;
-  try { const r = await fetch(proxy,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
-  if(!text || text.trim().startsWith('<!')) {
-    try { const r = await fetch(csvUrl,{cache:'no-store'}); if(r.ok) text=await r.text(); } catch(_){}
-  }
-  if(!text || text.trim().startsWith('<!')) { mcData[name]=[]; return; }
+  const text = await fetchTabCsv(name);
+  if(!text) { mcData[name]=[]; return; }
   const rows = parseCSV(text);
   mcData[name] = rows.filter(r=>r.Student && String(r.Student).trim()!=='');
 }
@@ -1280,13 +1298,11 @@ function normM(m){
   return s;
 }
 
-// Startup — prefer the hosted registry (single source of truth for all CUBE
-// tools); fall back to the embedded copy so the dashboard never fails to load.
-async function boot(){
-  try {
-    const r = await fetch('subjects.json', {cache:'no-store'});
-    if (r.ok) { const j = await r.json(); if (Array.isArray(j) && j.length) SUBJECTS = j; }
-  } catch(e){ console.warn('subjects.json not loaded; using embedded registry.', e); }
+// Startup. The registry is embedded below (SUBJECTS_FALLBACK) — we do NOT fetch
+// it at runtime, because the hosted URL is not reachable from school (DET)
+// networks. subjects.json still ships as the human-readable canonical copy and
+// for the server-side webhook to read; this dashboard uses the embedded copy.
+function boot(){
   deriveFromRegistry();
   buildSidebar();
   showScreen('loading');
