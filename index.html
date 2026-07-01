@@ -704,14 +704,45 @@ function cleanHeader(h) {
   return COL_ALIAS[s.toLowerCase()] || s;
 }
 
+// ── Layout reconciliation ────────────────────────────────────────────────────
+// Tabs may use different Row-1 header orders (older science tabs, Visual Arts,
+// and future subjects like Music can each differ), and some tabs also contain a
+// mix of historically "old-order" and "new-order" rows. The webhook is now
+// header-aware, so going forward every row matches its tab's header. The only
+// rows that can disagree with their header are legacy ones. We DEFAULT to reading
+// each row by its tab header (correct for any tab whose data matches its header,
+// including brand-new subjects with custom columns) and only remap a row when its
+// own column order — detected by where the model string sits — disagrees with the
+// header. This keeps legacy rows correct without making assumptions that could
+// misread a future subject's bespoke header.
+const OLD_LAYOUT_KEYS = ['Timestamp','Student','Session','Attempt','Streak','Q No','Module',
+  'Directive','Syllabus Kw','Stage','Model','CUBE XP','CUBE Max','CUBE %','Anno Ideas','Anno Used',
+  'Anno XP','W-Con','W-Noun','W-Mod','W-Flow','W-Con Max','W-Noun Max','W-Mod Max','W-Flow Max',
+  'Write XP','Write Max','Write %','Total XP','Awd Mark','Q Marks','Ind Band','Mark %',
+  'Mission Category','Mission Fix','Student Phrase','Improved Version','Illegible ?','Word Count'];
+const NEW_LAYOUT_KEYS = ['Timestamp','Student','Session','Attempt','Streak','Q No','Module',
+  'Directive','Syllabus Kw','Stage','Sheet Tab','Model','CUBE XP','CUBE Max','Anno Ideas','Anno Used',
+  'Anno XP','W-Con','W-Con Max','W-Noun','W-Noun Max','W-Mod','W-Mod Max','W-Flow','W-Flow Max',
+  'Write XP','Write Max','Total XP','Awd Mark','Q Marks','Ind Band','Mission Category','Mission Fix',
+  'Student Phrase','Improved Version','Illegible ?','Word Count','Mark %','Class'];
+
+function looksLikeModel(s){ return /claude|sonnet|haiku|gpt/i.test(String(s==null?'':s)); }
+function modelColIndex(vals){ return looksLikeModel(vals[10]) ? 10 : (looksLikeModel(vals[11]) ? 11 : -1); }
+
 function parseCSV(text) {
   const lines = text.split('\n').filter(l=>l.trim());
   if(lines.length<2) return [];
   const headers = splitRow(lines[0]).map(cleanHeader);
+  const headerModelIdx = headers.findIndex(h=>String(h).toLowerCase().replace(/[^a-z]/g,'')==='model');
   return lines.slice(1).map(line=>{
-    const vals=splitRow(line), obj={};
-    headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); });
-    return obj;
+    const vals=splitRow(line);
+    const dataModelIdx = modelColIndex(vals);
+    // Only remap when the row's own layout clearly disagrees with the header.
+    if(dataModelIdx !== -1 && headerModelIdx !== -1 && dataModelIdx !== headerModelIdx){
+      const keys = (dataModelIdx === 11) ? NEW_LAYOUT_KEYS : OLD_LAYOUT_KEYS;
+      const obj={}; keys.forEach((k,i)=>{ obj[k]=coerce(vals[i]); }); return obj;
+    }
+    const obj={}; headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); }); return obj;
   });
 }
 
@@ -1251,8 +1282,13 @@ function renderRow3(rows,cfg) {
 }
 
 function renderRow4(rows,cfg) {
-  const tr=rows.filter(r=>r['Mark %']!=null).sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp)).slice(0,25);
+  // A row counts as a submission if it has a mark-based result (Mark %) OR a
+  // band-based result (Ind Band). Band-marked subjects (e.g. Visual Arts) have
+  // no Mark %, so filtering on Mark % alone hid them entirely.
+  const hasBand=r=>r['Ind Band']!=null && String(r['Ind Band']).trim()!=='';
+  const tr=rows.filter(r=>r['Mark %']!=null||hasBand(r)).sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp)).slice(0,25);
   const pill=p=>p>=0.85?'<span class="pill high">High</span>':p>=0.6?'<span class="pill mid">Mid</span>':'<span class="pill low">Low</span>';
+  const bandCell=r=>hasBand(r)?`<span class="pill">Band ${r['Ind Band']}</span>`:(r['Mark %']!=null?pill(r['Mark %']):'—');
   document.getElementById('row4').innerHTML=`
     <div class="panel">
       <div class="panel-title">Submission Log <span>Most recent ${tr.length} entries</span></div>
@@ -1265,11 +1301,11 @@ function renderRow4(rows,cfg) {
             <td>${r.Directive||'—'}</td>
             <td style="font-size:0.7rem;color:#e8eaf0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${pct(r['Mark %'])}</td>
+            <td style="font-family:'IBM Plex Mono',monospace">${r['Mark %']!=null?pct(r['Mark %']):'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
             <td style="font-size:0.72rem;color:#e8eaf0">${normM(r['Mission Category'])}</td>
-            <td>${pill(r['Mark %'])}</td>
+            <td>${bandCell(r)}</td>
           </tr>`).join('')}</tbody>
       </table></div>
     </div>`;
@@ -1298,7 +1334,14 @@ function normM(m){
     'technical detail':'Technical Vocabulary','technical precision':'Technical Vocabulary',
     'content depth':'Content Depth','content completeness':'Content Completeness','clarity':'Clarity',
   };
-  return map[m.toLowerCase()]||m;
+  const hit = map[String(m).toLowerCase()];
+  if(hit) return hit;
+  // Fallback: a bare camelCase code (e.g. "causalConnectives") → "Causal Connectives".
+  // Phrase-style categories (with spaces, e.g. Visual Arts frame descriptions) are left as-is.
+  const s = String(m);
+  if(/^[a-z]+([A-Z][a-z]+)+$/.test(s))
+    return s.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).trim();
+  return s;
 }
 
 showScreen('loading');
