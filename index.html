@@ -834,6 +834,14 @@ function switchView(view) {
 }
 
 // ── RENDER MC ANALYTICS ───────────────────────────────────
+// Robust MC correctness test. NOTE: the value must be compared as a string;
+// wrapping the whole comparison in String() (the old bug) yields "true"/"false",
+// which are both truthy and made every attempt count as correct.
+function mcIsCorrect(r){
+  var v = r['Correct (Y/N)']; if(v==null) v=r.Correct; if(v==null) v='';
+  v = String(v).trim().toLowerCase();
+  return v==='y' || v==='yes' || v==='true' || v==='1';
+}
 function renderMC(kla) {
   var mcTabName = MC_TAB_FOR[kla];
   var rows = mcTabName ? (mcData[mcTabName]||[]) : [];
@@ -849,7 +857,7 @@ function renderMC(kla) {
 
   // ── Summary stats ─────────────────────────────────────────
   var total    = weekRows.length;
-  var correct  = weekRows.filter(function(r){return String(r['Correct (Y/N)']==='Y'||r['Correct (Y/N)']==='y'||r.Correct==='Y');}).length;
+  var correct  = weekRows.filter(function(r){return mcIsCorrect(r);}).length;
   var accuracy = total ? correct/total : 0;
   var students = [...new Set(weekRows.map(function(r){return r.Student;}).filter(Boolean))];
   var totalXP  = weekRows.reduce(function(s,r){return s+(Number(r['XP Earned'])||0);},0);
@@ -860,7 +868,7 @@ function renderMC(kla) {
     var m = r.Module || r.module || '—';
     if(!byMod[m]) byMod[m] = {total:0,correct:0};
     byMod[m].total++;
-    if(String(r['Correct (Y/N)']==='Y'||r['Correct (Y/N)']==='y'||r.Correct==='Y')) byMod[m].correct++;
+    if(mcIsCorrect(r)) byMod[m].correct++;
   });
   var modStats = Object.entries(byMod).map(function(e){
     return {module:e[0],total:e[1].total,correct:e[1].correct,acc:e[1].total?e[1].correct/e[1].total:0};
@@ -879,7 +887,7 @@ function renderMC(kla) {
   // ── Most missed questions ─────────────────────────────────
   var qMiss = {};
   weekRows.forEach(function(r){
-    var isW = !(String(r['Correct (Y/N)']==='Y'||r['Correct (Y/N)']==='y'||r.Correct==='Y'));
+    var isW = !(mcIsCorrect(r));
     if(!isW) return;
     var id = r['Question ID']||r.questionId||'—';
     var txt = r['Question Text']||r.questionText||id;
@@ -956,7 +964,7 @@ function renderMC(kla) {
       <div style="overflow-x:auto"><table class="student-table">
         <thead><tr><th>Student</th><th>Module</th><th>Year</th><th>Question</th><th>Their Answer</th><th>Correct</th><th>Reflection</th><th>XP</th></tr></thead>
         <tbody>${weekRows.slice().reverse().slice(0,30).map(function(r){
-          var ok = String(r['Correct (Y/N)']==='Y'||r['Correct (Y/N)']==='y'||r.Correct==='Y');
+          var ok = mcIsCorrect(r);
           return `<tr>
             <td style="font-weight:600">${r.Student||'—'}</td>
             <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r.Module||r.module||'—'}</td>
