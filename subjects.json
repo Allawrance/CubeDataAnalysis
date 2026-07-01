@@ -1,0 +1,156 @@
+[
+  {
+    "code": "EES",
+    "label": "Earth & Enviro Sci",
+    "full": "Earth & Environmental Science",
+    "emoji": "🌏",
+    "kla": "Science",
+    "group": null,
+    "color": "#4fc3f7",
+    "cls": "c-ees",
+    "hasMC": true
+  },
+  {
+    "code": "12Bio-1",
+    "label": "12Bio-1",
+    "full": "Biology — 12Bio-1",
+    "emoji": "🔬",
+    "kla": "Science",
+    "group": "Biology",
+    "color": "#a5d6a7",
+    "cls": "c-bio",
+    "hasMC": true
+  },
+  {
+    "code": "12Bio-2",
+    "label": "12Bio-2",
+    "full": "Biology — 12Bio-2",
+    "emoji": "🔬",
+    "kla": "Science",
+    "group": "Biology",
+    "color": "#a5d6a7",
+    "cls": "c-bio",
+    "hasMC": true
+  },
+  {
+    "code": "12Bio-3",
+    "label": "12Bio-3",
+    "full": "Biology — 12Bio-3",
+    "emoji": "🔬",
+    "kla": "Science",
+    "group": "Biology",
+    "color": "#a5d6a7",
+    "cls": "c-bio",
+    "hasMC": true
+  },
+  {
+    "code": "12Bio-4",
+    "label": "12Bio-4",
+    "full": "Biology — 12Bio-4",
+    "emoji": "🔬",
+    "kla": "Science",
+    "group": "Biology",
+    "color": "#a5d6a7",
+    "cls": "c-bio",
+    "hasMC": true
+  },
+  {
+    "code": "BusS",
+    "label": "Business Studies",
+    "full": "Business Studies",
+    "emoji": "📊",
+    "kla": "HSIE",
+    "group": null,
+    "color": "#a78bfa",
+    "cls": "c-buss",
+    "hasMC": true
+  },
+  {
+    "code": "12LS-1",
+    "label": "12LS-1",
+    "full": "Legal Studies — 12LS-1",
+    "emoji": "⚖️",
+    "kla": "HSIE",
+    "group": "Legal Studies",
+    "color": "#ce93d8",
+    "cls": "c-legal",
+    "hasMC": true
+  },
+  {
+    "code": "12LS-2",
+    "label": "12LS-2",
+    "full": "Legal Studies — 12LS-2",
+    "emoji": "⚖️",
+    "kla": "HSIE",
+    "group": "Legal Studies",
+    "color": "#ce93d8",
+    "cls": "c-legal",
+    "hasMC": true
+  },
+  {
+    "code": "12AHis",
+    "label": "12AHis",
+    "full": "Ancient History — 12AHis",
+    "emoji": "🏛️",
+    "kla": "HSIE",
+    "group": "Ancient History",
+    "color": "#ffcc80",
+    "cls": "c-anch",
+    "hasMC": false
+  },
+  {
+    "code": "HlthM",
+    "label": "Health & Movement",
+    "full": "Health & Movement",
+    "emoji": "🏃",
+    "kla": "PDHPE",
+    "group": null,
+    "color": "#43d9ad",
+    "cls": "c-hltm",
+    "hasMC": true
+  },
+  {
+    "code": "ComFam",
+    "label": "Community & Family",
+    "full": "Community & Family Studies",
+    "emoji": "🏠",
+    "kla": "PDHPE",
+    "group": null,
+    "color": "#f472b6",
+    "cls": "c-comfam",
+    "hasMC": true
+  },
+  {
+    "code": "EngS",
+    "label": "Engineering Studies",
+    "full": "Engineering Studies",
+    "emoji": "⚙️",
+    "kla": "TAS",
+    "group": null,
+    "color": "#e8a030",
+    "cls": "c-engs",
+    "hasMC": true
+  },
+  {
+    "code": "12VA-1",
+    "label": "12VA-1",
+    "full": "Visual Arts — 12VA-1",
+    "emoji": "🎨",
+    "kla": "CAPA",
+    "group": "Visual Arts",
+    "color": "#f48fb1",
+    "cls": "c-va",
+    "hasMC": false
+  },
+  {
+    "code": "12VA-2",
+    "label": "12VA-2",
+    "full": "Visual Arts — 12VA-2",
+    "emoji": "🎨",
+    "kla": "CAPA",
+    "group": "Visual Arts",
+    "color": "#f48fb1",
+    "cls": "c-va",
+    "hasMC": false
+  }
+]
