@@ -434,6 +434,9 @@ const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
 // Sheet data is read through your own Cloudflare Worker (same trusted origin the
 // marking app uses through the DET network) rather than a public CORS proxy.
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
+// Bump this whenever you deploy a new build, so you can confirm at a glance
+// (in the header and the console) that the live site is the version you meant.
+const BUILD = '2026-07-02 · reconciler+mc-fix';
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // To add a class/subject: add ONE row here (and create its Google Sheet tab +
 // config-<Subject>.json). Everything below — which tabs are loaded, the subject
@@ -560,7 +563,8 @@ async function loadSheets() {
       const el = document.getElementById('cnt-'+k);
       if(el) el.textContent = n ? n+' submissions' : 'No data yet';
     });
-    setDot('live','Live · '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
+    setDot('live','Live · '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})+'  ·  build '+BUILD);
+    console.log('[CUBE dashboard] build:', BUILD);
     showScreen('dashboard');
     const first = SHEET_NAMES.find(k=>(klaData[k]||[]).length>0)||'EES';
     switchKLA(activeKLA || first);
