@@ -436,7 +436,7 @@ const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
 // Bump this whenever you deploy a new build, so you can confirm at a glance
 // (in the header and the console) that the live site is the version you meant.
-const BUILD = '2026-07-02 · reconciler+mc-fix';
+const BUILD = '2026-07-03 · reconciler+mc+band';
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // To add a class/subject: add ONE row here (and create its Google Sheet tab +
 // config-<Subject>.json). Everything below — which tabs are loaded, the subject
@@ -1226,8 +1226,42 @@ function renderRow1(rows,cfg) {
 }
 
 function renderRow2(rows,cfg) {
-  // Row2 is now empty — all content consolidated into row1
-  document.getElementById('row2').innerHTML='';
+  // ── HSC Band Distribution ────────────────────────────────────────────────
+  // Band-marked work (e.g. Visual Arts) is assessed holistically against NESA
+  // performance-band descriptors, so it is reported here as a distribution
+  // rather than folded into the Mark % averages (which are mark-based).
+  function bandLabel(v){
+    if(v==null) return null;
+    var s=String(v).trim();
+    if(/^E[1-4]$/i.test(s)) return 'Band '+s.toUpperCase();
+    var n=Number(s);
+    if(!isNaN(n) && Math.abs(n-Math.round(n))<1e-9){ n=Math.round(n); if(n>=1&&n<=6) return 'Band '+n; }
+    return null; // fractional / non-band values (e.g. a stray Mark %) are not bands
+  }
+  var counts={};
+  rows.forEach(function(r){ var b=bandLabel(r['Ind Band']); if(b) counts[b]=(counts[b]||0)+1; });
+  var labels=Object.keys(counts);
+  if(!labels.length){ document.getElementById('row2').innerHTML=''; return; }
+  var total=labels.reduce(function(a,k){return a+counts[k];},0);
+  function rank(l){ var m=l.replace('Band ',''); return /^E/i.test(m)?Number(m.slice(1)):Number(m); }
+  labels.sort(function(a,b){return rank(b)-rank(a);}); // highest band first
+  var maxC=Math.max.apply(null,labels.map(function(k){return counts[k];}));
+  document.getElementById('row2').innerHTML=
+    '<div class="panel">'+
+      '<div class="panel-title">HSC Band Distribution <span>'+total+' band-marked response'+(total!==1?'s':'')+'</span></div>'+
+      '<div class="bar-chart">'+labels.map(function(k){
+        var c=counts[k], p=Math.round(c/total*100);
+        return '<div class="bar-row">'+
+            '<div class="bar-label" title="'+k+'">'+k+'</div>'+
+            '<div class="bar-track"><div class="bar-fill" style="width:'+(c/maxC*100)+'%;background:'+cfg.color+'"></div></div>'+
+            '<div class="bar-val">'+c+' <span style="color:var(--text-dim)">('+p+'%)</span></div>'+
+          '</div>';
+      }).join('')+'</div>'+
+      '<div style="font-size:0.72rem;color:var(--text-dim);line-height:1.4;margin-top:0.85rem">'+
+        'Band-marked responses are assessed holistically against NESA performance-band descriptors, '+
+        'so they are shown as a distribution here and are <strong>not</strong> included in the Mark&nbsp;% averages above.'+
+      '</div>'+
+    '</div>';
 }
 
 function renderRow3(rows,cfg) {
