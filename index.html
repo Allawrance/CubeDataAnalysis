@@ -430,13 +430,15 @@ main { padding: 1.75rem 2.5rem; }
 </main>
 
 <script>
-const SHEET_ID    = '1bUXcDRYv7B-4CAEaGmm4kxnOSIIDmLdMXVxj-nH2nJI';
+// SHEET_ID removed in Phase 1b — tab data now comes through the Worker /sheet
+// endpoint (owner-executed Apps Script), so the private spreadsheet's ID is no
+// longer present in this public file, and there is no direct-to-Google fallback.
 // Sheet data is read through your own Cloudflare Worker (same trusted origin the
 // marking app uses through the DET network) rather than a public CORS proxy.
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
 // Bump this whenever you deploy a new build, so you can confirm at a glance
 // (in the header and the console) that the live site is the version you meant.
-const BUILD = '2026-07-03 · reconciler+mc+band';
+const BUILD = '2026-07-06 · privateSheet+key (Phase 1b)';
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // To add a class/subject: add ONE row here (and create its Google Sheet tab +
 // config-<Subject>.json). Everything below — which tabs are loaded, the subject
@@ -584,23 +586,41 @@ async function runBatched(items, fn, size){
   }
 }
 
-// Fetch one tab's CSV. Primary path is your Cloudflare Worker /sheet endpoint
-// (trusted origin, works through DET, sends CORS headers). If the Worker is
-// unreachable we fall back to the public proxy, then — only in local dev — a
-// direct fetch. The direct fetch is CORS-blocked on GitHub Pages, so it is not
-// attempted in production (it would only log console noise).
-const IS_LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
+// ── Dashboard access key (Phase 1b) ────────────────────────────────────────
+// The Worker /sheet endpoint is gated by DASH_KEY. This file is public (until
+// Phase 2 moves it behind sureview), so the key is NOT hardcoded — it is asked
+// for once per browser session and held in sessionStorage. A wrong key makes
+// /sheet return 403; we clear it and warn so the next reload re-prompts.
+function getDashKey(){
+  let k = sessionStorage.getItem('cube_dash_key') || '';
+  if(!k){
+    k = (window.prompt('Enter the CUBE dashboard access key:') || '').trim();
+    if(k) sessionStorage.setItem('cube_dash_key', k);
+  }
+  return k;
+}
+function clearDashKey(){ try { sessionStorage.removeItem('cube_dash_key'); } catch(_){} }
+
+// Fetch one tab's CSV. SINGLE path: the Cloudflare Worker /sheet endpoint, which
+// reads the tab through the owner-executed Apps Script (private-sheet safe).
+// The former public fallbacks are gone — they required the spreadsheet to be
+// "anyone with link", which Phase 1b removes in favour of a private sheet.
 async function fetchTabCsv(name){
-  const ok = t => t && !t.trim().startsWith('<');
-  const worker = `${WORKER_BASE}/sheet?tab=${encodeURIComponent(name)}`;
+  const ok = t => t && !t.trim().startsWith('<') && !t.trim().toLowerCase().startsWith('error');
+  const key = getDashKey();
+  const worker = `${WORKER_BASE}/sheet?tab=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
   for(let attempt=0; attempt<2; attempt++){
-    try { const r=await fetch(worker,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){}
+    try {
+      const r = await fetch(worker,{cache:'no-store'});
+      if(r.status === 403){                       // bad/missing key — stop, re-prompt next load
+        clearDashKey();
+        if(!window.__dashKeyWarned){ window.__dashKeyWarned = true; alert('Dashboard key was rejected. Reload the page to re-enter it.'); }
+        return null;
+      }
+      if(r.ok){ const t = await r.text(); if(ok(t)) return t; }
+    } catch(_){}
     if(attempt===0) await new Promise(res=>setTimeout(res,400));  // brief backoff before retry
   }
-  // Fallbacks if the Worker is momentarily unreachable.
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
-  try { const r=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){}
-  if(IS_LOCAL){ try { const r=await fetch(csvUrl,{cache:'no-store'}); if(r.ok){ const t=await r.text(); if(ok(t)) return t; } } catch(_){} }
   return null;
 }
 
@@ -1355,6 +1375,16 @@ function boot(){
   loadSheets();
 }
 boot();
+</script>
+<!-- Phase 1b — readable (white) build stamp, fixed bottom-right -->
+<div id="build-stamp" style="position:fixed;bottom:6px;right:10px;z-index:9999;pointer-events:none;font:11px/1.4 ui-monospace,Menlo,Consolas,monospace;color:#ffffff;opacity:0.65;text-shadow:0 1px 2px rgba(0,0,0,0.6);">CUBE dashboard · build <span id="bs-build"></span> · <span id="bs-loaded"></span></div>
+<script>
+  (function(){
+    var b = document.getElementById('bs-build');
+    var t = document.getElementById('bs-loaded');
+    if(b) b.textContent = (typeof BUILD !== 'undefined') ? BUILD : '(unknown)';
+    if(t) t.textContent = 'loaded ' + new Date().toLocaleString('en-AU', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+  })();
 </script>
 </body>
 </html>
