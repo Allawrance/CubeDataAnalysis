@@ -438,7 +438,7 @@ main { padding: 1.75rem 2.5rem; }
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
 // Bump this whenever you deploy a new build, so you can confirm at a glance
 // (in the header and the console) that the live site is the version you meant.
-const BUILD = '2026-07-06 · privateSheet+key (Phase 1b)';
+const BUILD = '2026-07-06 · privateSheet+key+counts (Phase 1b)';
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // To add a class/subject: add ONE row here (and create its Google Sheet tab +
 // config-<Subject>.json). Everything below — which tabs are loaded, the subject
@@ -505,6 +505,7 @@ const MCOL = {
 };
 
 let klaData = {}, mcData = {}, activeKLA = null, activeView = 'sa'; // sa = short answer, mc = multiple choice
+let loadFailed = new Set();  // tabs whose fetch failed (≠ empty) — retried before counts render
 let weekOffset = 0;
 
 function getWeekBounds(offset) {
@@ -556,14 +557,41 @@ async function loadSheets() {
   showScreen('loading'); setDot('','Connecting…');
   klaData = {}; mcData = {};
   try {
-    // Load in small batches rather than ~28 at once — the public CORS proxy
-    // rate-limits under bursts, which was causing intermittent tab failures.
+    // Load in small batches rather than ~28 at once — a burst of cold-start /
+    // key-gated requests can make the first batch time out, which previously
+    // showed real subjects (EES, Biology) as "No data yet". Anything that fails
+    // is flagged in loadFailed and retried once below, so the count is accurate.
     await runBatched(SHEET_NAMES, loadTab, 5);
     await runBatched(MC_SHEET_NAMES, loadMCTab, 5);
+
+    // Retry pass — re-fetch only the tabs that failed (not the empty ones).
+    // By now the key is cached and the Apps Script is warm, so cold-start
+    // failures from the first batch resolve here instead of poisoning the count.
+    if(loadFailed.size){
+      const retrySA = SHEET_NAMES.filter(k=>loadFailed.has(k));
+      const retryMC = MC_SHEET_NAMES.filter(k=>loadFailed.has('MC:'+k));
+      if(retrySA.length) await runBatched(retrySA, loadTab, 3);
+      if(retryMC.length) await runBatched(retryMC, loadMCTab, 3);
+    }
+
     SHEET_NAMES.forEach(k => {
-      const n = (klaData[k]||[]).length;
       const el = document.getElementById('cnt-'+k);
-      if(el) el.textContent = n ? n+' submissions' : 'No data yet';
+      if(!el) return;
+      const saN = (klaData[k]||[]).length;
+      const mcN = (mcData[k+'_MC']||[]).length;
+      // A tab still in loadFailed after the retry is a genuine failure — mark it
+      // so a real problem is never silently displayed as "No data yet".
+      const failed = loadFailed.has(k) || loadFailed.has('MC:'+k+'_MC');
+      if(failed && saN===0 && mcN===0){
+        el.textContent = '\u26a0 load failed — refresh';
+        el.title = 'This tab could not be read after a retry. Check the Worker / Apps Script, then Refresh Data.';
+      } else if(saN===0 && mcN===0){
+        el.textContent = 'No data yet';
+        el.title = '';
+      } else {
+        el.textContent = saN + ' written \u00b7 ' + mcN + ' MC';
+        el.title = saN + ' short-answer submissions \u00b7 ' + mcN + ' multiple-choice attempts (all time)';
+      }
     });
     setDot('live','Live · '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})+'  ·  build '+BUILD);
     console.log('[CUBE dashboard] build:', BUILD);
@@ -573,7 +601,8 @@ async function loadSheets() {
   } catch(e) {
     setDot('err', e.message);
     document.getElementById('errmsg').textContent = e.message +
-      ' — Make sure the Google Sheet is set to "Anyone with the link → Viewer" and try refreshing.';
+      ' — Check that the Worker is deployed, the DASH_KEY is correct, and the ' +
+      'Apps Script getTab deployment is on its latest version, then Refresh.';
     showScreen('error');
   }
 }
@@ -626,7 +655,8 @@ async function fetchTabCsv(name){
 
 async function loadTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { klaData[name]=[]; return; }
+  if(!text) { klaData[name]=[]; loadFailed.add(name); return; }   // failed ≠ empty — flag for retry
+  loadFailed.delete(name);
   const rows = parseCSV(text);
 
   // Recalculate percentages from raw scores — avoids proxy column name/format issues
@@ -644,7 +674,8 @@ async function loadTab(name) {
 
 async function loadMCTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { mcData[name]=[]; return; }
+  if(!text) { mcData[name]=[]; loadFailed.add('MC:'+name); return; }   // failed ≠ empty
+  loadFailed.delete('MC:'+name);
   const rows = parseCSV(text);
   mcData[name] = rows.filter(r=>r.Student && String(r.Student).trim()!=='');
 }
