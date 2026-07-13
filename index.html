@@ -75,35 +75,68 @@ h1 span { color: var(--gold); }
 .switch-key { background:none; border:none; color:var(--text-dim); font-size:0.62rem; cursor:pointer; text-decoration:underline; padding:0; font-family:inherit; }
 .switch-key:hover { color:var(--gold); }
 
-/* SUBJECT CHIPS */
-#subject-bar { padding: 1rem 2.5rem 0.4rem; border-bottom: 1px solid var(--border); background: var(--navy-mid); }
+/* SCOPE BANNER — subject / faculty keys (pt 9) */
+#scope-banner {
+  display:none; padding: 1.1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(201,168,76,0.03));
+}
+.sb-inner { display:flex; align-items:center; justify-content:space-between; gap:1.25rem; flex-wrap:wrap; }
+.sb-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.25rem; }
+.sb-title { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:1.7rem; font-weight:800; color:#fff; line-height:1.1; }
+.sb-sub { font-size:0.75rem; color:var(--text-dim); margin-top:0.25rem; }
+.sb-stats { display:flex; gap:2rem; flex-wrap:wrap; }
+.sb-stat { text-align:right; }
+.sb-num { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:1.7rem; font-weight:800; line-height:1; color:#fff; }
+.sb-num .sb-wk { color:var(--gold-light); }
+.sb-num .sb-sep { color:var(--text-dim); font-size:1.2rem; font-weight:400; }
+.sb-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-dim); margin-top:0.3rem; }
+
+/* KLA FACULTY PANELS — landing-page style (pts 2, 5, 10) */
+#subject-bar { padding: 1rem 2.5rem; border-bottom: 1px solid var(--border); background: var(--navy-mid); display:none; }
 .bar-label-sm {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.6rem;
+  color: var(--gold); margin-bottom: 0.7rem;
 }
-.chip-row { display:flex; flex-wrap:wrap; gap:0.5rem; padding-bottom:0.85rem; }
-.chip {
-  display:flex; align-items:center; gap:0.45rem;
+.fac-panel {
+  border: 1.5px solid var(--fac-border, rgba(201,168,76,0.35));
+  background: var(--fac-bg, rgba(201,168,76,0.05));
+  border-radius: 14px; margin-bottom: 0.7rem; overflow:hidden;
+}
+.fac-head {
+  display:flex; align-items:center; justify-content:space-between; gap:0.75rem;
+  padding: 0.8rem 1.2rem; cursor:pointer; user-select:none;
+}
+.fac-name { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:0.95rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color: var(--fac-color, var(--gold)); }
+.fac-desc { font-size:0.68rem; color:var(--text-dim); margin-top:0.15rem; }
+.fac-right { display:flex; align-items:center; gap:0.9rem; }
+.fac-counts { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:#f0c030; font-weight:700; white-space:nowrap; }
+.fac-counts .sc-dim { color:var(--text-dim); font-weight:400; }
+.fac-arrow { color:var(--text-dim); transition: transform 0.2s; font-size:0.85rem; }
+.fac-panel.open .fac-arrow { transform: rotate(180deg); }
+.fac-grid { display:none; padding: 0 1rem 1rem; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.6rem; }
+.fac-panel.open .fac-grid { display:grid; }
+.subj-card {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border:1.5px solid var(--border); border-radius: 24px;
-  padding: 0.42rem 0.95rem; cursor:pointer;
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:0.8rem; font-weight:700; color:var(--text);
-  transition: border-color 0.2s, background 0.2s, color 0.2s; white-space:nowrap;
+  border:1.5px solid var(--border); border-radius: 12px;
+  padding: 0.65rem 0.9rem; cursor:pointer;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
-.chip:hover { border-color: rgba(240,192,48,0.7); }
-.chip-count { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#f0c030; font-weight:700; }
-.chip-kla { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; }
+.subj-card:hover { border-color: rgba(240,192,48,0.7); }
+.sc-name { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:0.82rem; font-weight:700; color:var(--text); display:flex; align-items:center; gap:0.45rem; }
+.sc-counts { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:#f0c030; font-weight:700; margin-top:0.3rem; }
+.sc-counts .sc-dim { color:var(--text-dim); font-weight:400; }
 
-/* CLASS PILLS */
+/* CLASS PILLS — contrast fixed (pt 8) */
 #class-bar { padding: 0.7rem 2.5rem; border-bottom: 1px solid var(--border); background: rgba(10,22,40,0.6); display:none; }
-.pill-row { display:flex; flex-wrap:wrap; gap:0.45rem; align-items:center; }
+.pill-row { display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; }
 .class-pill {
-  font-family:'IBM Plex Mono',monospace; font-size:0.66rem; font-weight:700; letter-spacing:0.06em;
-  background: transparent; border:1.5px solid var(--border); color:var(--text-dim);
-  border-radius: 18px; padding: 0.3rem 0.85rem; cursor:pointer; transition: all 0.18s;
+  font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
+  background: rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.3); color:#c8d8e8;
+  border-radius: 18px; padding: 0.35rem 1rem; cursor:pointer; transition: all 0.18s;
 }
-.class-pill:hover { color:var(--text); border-color: rgba(255,255,255,0.25); }
+.class-pill:hover { color:#fff; border-color: rgba(255,255,255,0.55); }
 
 /* MAIN */
 main { padding: 1.5rem 2.5rem; }
@@ -238,15 +271,20 @@ main { padding: 1.5rem 2.5rem; }
 }
 .show-all-btn:hover { color:var(--gold); border-color:var(--border-gold); }
 
-/* ── MOBILE ── This dashboard is standalone GitHub Pages (NOT inside the
-   Google Sites iframe), so plain media queries are reliable here. */
+/* ── MOBILE ── standalone GitHub Pages (NOT the Google Sites iframe), so plain
+   media queries are reliable here. */
 @media(max-width:768px){
   header{ padding:0.9rem 1rem; }
   h1{ font-size:1.25rem; }
   .header-right{ align-items:flex-start; width:100%; }
+  #scope-banner{ padding:0.9rem 1rem; }
+  .sb-title{ font-size:1.3rem; }
+  .sb-stats{ gap:1.25rem; }
+  .sb-num{ font-size:1.3rem; }
+  .sb-stat{ text-align:left; }
   #subject-bar, #class-bar{ padding-left:1rem; padding-right:1rem; }
-  .chip-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  .chip-row::-webkit-scrollbar{ display:none; }
+  .fac-grid{ grid-template-columns:repeat(2,1fr); }
+  .fac-counts{ font-size:0.58rem; }
   main{ padding:1rem; }
   .insight-row{ grid-template-columns:repeat(2,1fr); gap:0.7rem; }
   .grid-2{ grid-template-columns:1fr; }
@@ -260,7 +298,8 @@ main { padding: 1.5rem 2.5rem; }
   .mission-name{ width:120px; font-size:0.72rem; }
 }
 @media(max-width:480px){
-  .insight-row{ grid-template-columns:repeat(2,1fr); }
+  .fac-grid{ grid-template-columns:1fr; }
+  .fac-desc{ display:none; }
   .hide-xs{ display:none; }
   .week-badge{ display:none; }
   .trophy-row{ flex-direction:column; }
@@ -288,9 +327,12 @@ main { padding: 1.5rem 2.5rem; }
   </div>
 </header>
 
-<div id="subject-bar" style="display:none">
+<!-- Scope banner — big subject/faculty heading + cross-class usage (pt 9) -->
+<div id="scope-banner"></div>
+
+<div id="subject-bar">
   <div class="bar-label-sm">Your Subjects</div>
-  <div class="chip-row" id="chip-row"></div>
+  <div id="fac-root"></div>
 </div>
 <div id="class-bar">
   <div class="pill-row" id="pill-row"></div>
@@ -324,11 +366,11 @@ main { padding: 1.5rem 2.5rem; }
       <button id="btn-view-mc" class="view-btn" onclick="switchView('mc')">&#128203; Multiple Choice</button>
     </div>
 
-    <!-- SA DETAIL -->
+    <!-- SA DETAIL — band distribution ABOVE improvements (pt 7) -->
     <div id="sa-detail">
+      <div id="acc-band"></div>
       <div class="mb" id="improvements"></div>
       <div class="mb" id="insights"></div>
-      <div id="acc-band"></div>
       <div id="acc-log"></div>
     </div>
 
@@ -341,23 +383,29 @@ main { padding: 1.5rem 2.5rem; }
 // Tab data comes through the Worker /sheet endpoint (owner-executed Apps
 // Script) — the private spreadsheet's ID is not present in this public file.
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
-const BUILD = 'v2.0 \u00b7 2026-07-13 \u00b7 scoped keys + weekly hero + mobile';
+const BUILD = 'v3.0 \u00b7 2026-07-13 \u00b7 KLA panels + faculty keys + wk/total';
 
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
-// v2 structure: one entry PER SUBJECT, with its class tabs nested. 'label' is
-// what teachers see on the class pill (student-facing class name); 'tab' is the
-// Google Sheet tab (must match the webhook TAB_MAP). To add a class: add one
-// {label, tab} row. To add a subject: add one entry here (+ sheet tab + config).
-// hasMC gates both the '<tab>_MC' loads and the SA/MC toggle.
+// One entry PER SUBJECT, class tabs nested. 'label' = what teachers see on the
+// class pill (student-facing class name, matching school-SIHS.json); 'tab' =
+// the Google Sheet tab (must match the webhook TAB_MAP). hasMC gates both the
+// '<tab>_MC' loads and the SA/MC toggle. Tabs whose sheet doesn't exist yet
+// show '—' on the card (definitive not-found ≠ load failure ≠ zero rows).
 const REGISTRY = [
+  // ── Science ──
   {subj:'EES',    full:'Earth & Environmental Science', emoji:'\ud83c\udf0f', kla:'Science', color:'#4fc3f7', hasMC:true,
     classes:[{label:'EES', tab:'EES'}]},
   {subj:'BIO',    full:'Biology', emoji:'\ud83d\udd2c', kla:'Science', color:'#a5d6a7', hasMC:true,
     classes:[{label:'12Bio-1',tab:'12Bio-1'},{label:'12Bio-2',tab:'12Bio-2'},{label:'12Bio-3',tab:'12Bio-3'},{label:'12Bio-4',tab:'12Bio-4'}]},
+  {subj:'INVSCI', full:'Investigating Science', emoji:'\ud83d\udd2c', kla:'Science', color:'#69f0ae', hasMC:true,
+    classes:[{label:'12SIS1',tab:'12InvSci-1'},{label:'12SIS2',tab:'12InvSci-2'},{label:'12SIS3',tab:'12InvSci-3'}]},
+  {subj:'CHEM',   full:'Chemistry', emoji:'\u2697\ufe0f', kla:'Science', color:'#4dd0e1', hasMC:true,
+    classes:[{label:'12SCH1',tab:'Chem-1'},{label:'12SCH2',tab:'Chem-2'},{label:'12SCH3',tab:'Chem-3'}]},
   {subj:'PHYS',   full:'Physics', emoji:'\u269b\ufe0f', kla:'Science', color:'#7986cb', hasMC:true,
     classes:[{label:'12PH1',tab:'PHYS-1'},{label:'12PH2',tab:'PHYS-2'},{label:'12PH3',tab:'PHYS-3'},{label:'12PH4',tab:'PHYS-4'}]},
+  // ── HSIE ──
   {subj:'BUSS',   full:'Business Studies', emoji:'\ud83d\udcca', kla:'HSIE', color:'#a78bfa', hasMC:true,
-    classes:[{label:'BusS', tab:'BusS'}]},
+    classes:[{label:'BusS-1',tab:'BusS-1'},{label:'BusS-2',tab:'BusS-2'},{label:'BusS-3',tab:'BusS-3'}]},
   {subj:'LEG',    full:'Legal Studies', emoji:'\u2696\ufe0f', kla:'HSIE', color:'#ce93d8', hasMC:true,
     classes:[{label:'12LS-1',tab:'12LS-1'},{label:'12LS-2',tab:'12LS-2'}]},
   {subj:'ANCH',   full:'Ancient History', emoji:'\ud83c\udfdb\ufe0f', kla:'HSIE', color:'#ffcc80', hasMC:false,
@@ -366,15 +414,38 @@ const REGISTRY = [
     classes:[{label:'12HMH1',tab:'MHIST-1'},{label:'12HMH2',tab:'MHIST-2'},{label:'12HMH3',tab:'MHIST-3'}]},
   {subj:'ECON',   full:'Economics', emoji:'\ud83d\udcc8', kla:'HSIE', color:'#ffd54f', hasMC:true,
     classes:[{label:'12HEC1',tab:'ECON-1'},{label:'12HEC2',tab:'ECON-2'},{label:'12HEC3',tab:'ECON-3'}]},
-  {subj:'HLTM',   full:'Health & Movement', emoji:'\ud83c\udfc3', kla:'PDHPE', color:'#43d9ad', hasMC:true,
-    classes:[{label:'HlthM', tab:'HlthM'}]},
+  {subj:'GEO',    full:'Geography', emoji:'\ud83d\uddfa\ufe0f', kla:'HSIE', color:'#4db6ac', hasMC:true,
+    classes:[{label:'12HGE1',tab:'GEO-1'},{label:'12HGE2',tab:'GEO-2'},{label:'12HGE3',tab:'GEO-3'}]},
+  {subj:'SOR2',   full:'Studies of Religion II', emoji:'\ud83d\udd4a\ufe0f', kla:'HSIE', color:'#b39ddb', hasMC:true,
+    classes:[{label:'12HRS1',tab:'SOR2'}]},
+  // ── PDHPE ──
+  {subj:'HLTM',   full:'Health & Movement Science', emoji:'\ud83c\udfc3', kla:'PDHPE', color:'#43d9ad', hasMC:true,
+    classes:[{label:'12PHS-1',tab:'HlthM-1'},{label:'12PHS-2',tab:'HlthM-2'},{label:'12PHS-3',tab:'HlthM-3'},{label:'12PHS-4',tab:'HlthM-4'}]},
   {subj:'COMFAM', full:'Community & Family Studies', emoji:'\ud83c\udfe0', kla:'PDHPE', color:'#f472b6', hasMC:true,
     classes:[{label:'ComFam', tab:'ComFam'}]},
+  // ── TAS ──
   {subj:'ENGS',   full:'Engineering Studies', emoji:'\u2699\ufe0f', kla:'TAS', color:'#e8a030', hasMC:true,
     classes:[{label:'EngS', tab:'EngS'}]},
+  // ── CAPA ──
   {subj:'VISART', full:'Visual Arts', emoji:'\ud83c\udfa8', kla:'CAPA', color:'#f48fb1', hasMC:false,
     classes:[{label:'12VA-1',tab:'12VA-1'},{label:'12VA-2',tab:'12VA-2'}]},
+  {subj:'MUS1',   full:'Music 1', emoji:'\ud83c\udfb5', kla:'CAPA', color:'#ffe082', hasMC:false,
+    classes:[{label:'MUS1', tab:'MUS1'}]},
+  // ── VET ──
+  {subj:'HOSP',   full:'Hospitality (Kitchen Ops & Cookery)', emoji:'\ud83c\udf7d\ufe0f', kla:'VET', color:'#ff8a65', hasMC:true,
+    classes:[{label:'11THC1',tab:'HOSP-1'},{label:'11THC2',tab:'HOSP-2'},{label:'11THC3',tab:'HOSP-3'}]},
 ];
+
+// Faculty panel meta — mirrors the landing page KLA_META
+const KLA_META = {
+  'Science': { desc:'Earth systems, biology, chemistry & investigation', color:'#69f0ae' },
+  'HSIE':    { desc:'Humanities, society, business & law',               color:'#ffcc80' },
+  'PDHPE':   { desc:'Health, movement & personal development',           color:'#b39ddb' },
+  'TAS':     { desc:'Technology & applied studies',                      color:'#64b5f6' },
+  'CAPA':    { desc:'Creative & performing arts',                        color:'#f48fb1' },
+  'VET':     { desc:'Vocational education & training',                   color:'#4dd0e1' }
+};
+const KLA_ORDER = ['Science','HSIE','PDHPE','TAS','CAPA','VET'];
 
 const MCOL = {
   'Complex Noun Groups':'#a78bfa','Logical Flow & Structure':'#43d9ad',
@@ -388,28 +459,50 @@ let VISIBLE = [];                 // registry entries filtered to scope, classes
 let SHEET_NAMES = [];             // SA tabs to load
 let MC_SHEET_NAMES = [];          // MC tabs to load (hasMC subjects only)
 let tabData = {}, mcData = {};
-let loadFailed = new Set();
+let tabStatus = {};               // tab or 'MC:'+tab → 'ok' | 'notab' | 'failed'
+let loadFailed = new Set();       // transient failures only — retried once
 let activeSubj = null;            // subj code
 let activeClassTab = 'ALL';       // 'ALL' or a tab name
 let activeView = 'sa';
 let weekOffset = 0;
+let openKlas = {};                // kla name → bool (panel expanded)
 let insightsExpanded = false;
 let logExpanded = false, mcLogExpanded = false;
 
 // ── ACCESS KEY + SCOPE (dashkeys-v1.0) ───────────────────────────────────────
-// One short key per subject faculty (e.g. PHYS-xxxx) or a master key. The
-// Worker /dashscope endpoint resolves the key to a scope; /sheet then enforces
-// the same scope server-side, so this file never decides what a key may see.
+// The key is remembered in localStorage (pt 4) so teachers enter it ONCE per
+// browser profile — 'switch key' clears it. Migrates any old sessionStorage key.
 function getDashKey(){
-  let k = sessionStorage.getItem('cube_dash_key') || '';
+  let k = '';
+  try { k = localStorage.getItem('cube_dash_key') || ''; } catch(_){}
   if(!k){
-    k = (window.prompt('Enter your CUBE dashboard access key\n(e.g. PHYS-XXXX, or your master key):') || '').trim();
-    if(k) sessionStorage.setItem('cube_dash_key', k);
+    try {
+      k = sessionStorage.getItem('cube_dash_key') || '';           // pre-v3 sessions
+      if(k) localStorage.setItem('cube_dash_key', k);
+    } catch(_){}
+  }
+  if(!k){
+    k = (window.prompt('Enter your CUBE dashboard access key\n(e.g. PHYS-XXXX, SCI-XXXX, or your master key).\nIt will be remembered on this computer.') || '').trim();
+    if(k){ try { localStorage.setItem('cube_dash_key', k); } catch(_){} }
   }
   return k;
 }
-function clearDashKey(){ try { sessionStorage.removeItem('cube_dash_key'); } catch(_){} }
+function storedKey(){
+  try { return localStorage.getItem('cube_dash_key') || sessionStorage.getItem('cube_dash_key') || ''; } catch(_){ return ''; }
+}
+function clearDashKey(){
+  try { localStorage.removeItem('cube_dash_key'); } catch(_){}
+  try { sessionStorage.removeItem('cube_dash_key'); } catch(_){}
+}
 function switchKey(){ clearDashKey(); location.reload(); }
+
+// Last-viewed subject + class (pt 3) — restored on open, landing-page style.
+function saveLast(){
+  try { localStorage.setItem('cube_dash_last', JSON.stringify({subj:activeSubj, classTab:activeClassTab})); } catch(_){}
+}
+function loadLast(){
+  try { return JSON.parse(localStorage.getItem('cube_dash_last') || 'null'); } catch(_){ return null; }
+}
 
 async function fetchScope(){
   for(let attempt=0; attempt<3; attempt++){
@@ -442,25 +535,110 @@ function applyScope(){
   const badge = document.getElementById('scope-badge');
   badge.textContent = SCOPE.role === 'master' ? '\ud83d\udd11 Master \u00b7 all subjects' : '\ud83d\udd11 '+(SCOPE.label||'Subject view');
   badge.style.display = 'inline-block';
-  buildSubjectBar();
 }
 
-// ── SUBJECT CHIPS + CLASS PILLS ──────────────────────────
+// ── PER-SUBJECT / PER-KLA USAGE COUNTS (pts 1, 5, 6) ─────────────────────────
+function subjStats(s){
+  const st = {saWk:0, saTot:0, mcWk:0, mcTot:0, anyFailed:false, notabCount:0, classCount:s.classes.length};
+  s.classes.forEach(function(c){
+    const rows = tabData[c.tab]||[];
+    st.saTot += rows.length;
+    st.saWk  += filterByWeek(rows, weekOffset).length;
+    if(tabStatus[c.tab]==='failed') st.anyFailed = true;
+    if(tabStatus[c.tab]==='notab') st.notabCount++;
+    if(s.hasMC){
+      const m = mcData[c.tab+'_MC']||[];
+      st.mcTot += m.length;
+      st.mcWk  += filterByWeek(m, weekOffset).length;
+      if(tabStatus['MC:'+c.tab+'_MC']==='failed') st.anyFailed = true;
+    }
+  });
+  st.allNotab = st.notabCount === st.classCount;
+  return st;
+}
+function addStats(a,b){
+  return {saWk:a.saWk+b.saWk, saTot:a.saTot+b.saTot, mcWk:a.mcWk+b.mcWk, mcTot:a.mcTot+b.mcTot,
+          anyFailed:a.anyFailed||b.anyFailed, notabCount:0, classCount:1, allNotab:a.allNotab&&b.allNotab};
+}
+function fmtCounts(st, hasMC){
+  if(st.allNotab && st.saTot===0 && st.mcTot===0) return '<span class="sc-dim" title="Sheet tab(s) not created yet">\u2014</span>';
+  let out = '\u270d '+st.saWk+'<span class="sc-dim">/'+st.saTot+'</span>';
+  if(hasMC) out += ' \u00b7 MC '+st.mcWk+'<span class="sc-dim">/'+st.mcTot+'</span>';
+  if(st.anyFailed) out += ' <span title="Some tabs failed to load \u2014 Refresh Data">\u26a0</span>';
+  return out;
+}
+
+// ── SCOPE BANNER (pt 9) ──────────────────────────────────
+function renderScopeBanner(){
+  const el = document.getElementById('scope-banner');
+  if(!SCOPE || SCOPE.role === 'master'){ el.style.display='none'; return; }
+  let total = {saWk:0,saTot:0,mcWk:0,mcTot:0,anyFailed:false,allNotab:true};
+  let anyMC = false;
+  VISIBLE.forEach(function(s){ total = addStats(total, subjStats(s)); if(s.hasMC) anyMC = true; });
+  const single = VISIBLE.length === 1 ? VISIBLE[0] : null;
+  const title = single ? single.emoji+' '+single.full : (SCOPE.label || 'Your subjects');
+  const sub = single
+    ? 'Your subject \u00b7 all '+single.classes.length+' class'+(single.classes.length!==1?'es':'')+' combined'
+    : VISIBLE.length+' subjects in your faculty combined';
+  const wkTag = weekOffset===0 ? 'this week' : weekOffset===-1 ? 'last week' : Math.abs(weekOffset)+' weeks ago';
+  el.innerHTML =
+    '<div class="sb-inner">'+
+      '<div>'+
+        '<div class="sb-eyebrow">'+(single?'Your Subject':'Your Faculty')+'</div>'+
+        '<div class="sb-title">'+esc(title)+'</div>'+
+        '<div class="sb-sub">'+esc(sub)+'</div>'+
+      '</div>'+
+      '<div class="sb-stats">'+
+        '<div class="sb-stat"><div class="sb-num"><span class="sb-wk">'+total.saWk+'</span><span class="sb-sep"> / </span>'+total.saTot+'</div>'+
+          '<div class="sb-label">\u270d written \u00b7 '+wkTag+' / all time</div></div>'+
+        (anyMC ? '<div class="sb-stat"><div class="sb-num"><span class="sb-wk">'+total.mcWk+'</span><span class="sb-sep"> / </span>'+total.mcTot+'</div>'+
+          '<div class="sb-label">\ud83d\udccb MC \u00b7 '+wkTag+' / all time</div></div>' : '')+
+      '</div>'+
+    '</div>';
+  el.style.display = 'block';
+}
+
+// ── FACULTY PANELS + SUBJECT CARDS (pts 2, 5, 6, 10) ─────────────────────────
 function subjEntry(code){ return VISIBLE.find(function(s){return s.subj===code;}); }
 
-function buildSubjectBar(){
+function renderSelector(){
   const bar = document.getElementById('subject-bar');
-  const row = document.getElementById('chip-row');
+  const root = document.getElementById('fac-root');
   if(VISIBLE.length <= 1){ bar.style.display = 'none'; return; }
   bar.style.display = 'block';
-  row.innerHTML = VISIBLE.map(function(s){
-    return '<div class="chip" id="chip-'+esc(s.subj)+'" onclick="selectSubject(\''+s.subj+'\')">'
-      + '<span>'+s.emoji+'</span><span>'+esc(s.full)+'</span>'
-      + '<span class="chip-kla">'+esc(s.kla)+'</span>'
-      + '<span class="chip-count" id="cnt-'+esc(s.subj)+'">\u2026</span></div>';
+  const klas = KLA_ORDER.filter(function(k){ return VISIBLE.some(function(s){return s.kla===k;}); });
+  root.innerHTML = klas.map(function(k){
+    const meta = KLA_META[k] || {desc:'', color:'#c9a84c'};
+    const subs = VISIBLE.filter(function(s){return s.kla===k;});
+    let kt = {saWk:0,saTot:0,mcWk:0,mcTot:0,anyFailed:false,allNotab:true};
+    let anyMC = false;
+    subs.forEach(function(s){ kt = addStats(kt, subjStats(s)); if(s.hasMC) anyMC = true; });
+    const cards = subs.map(function(s){
+      const st = subjStats(s);
+      const active = s.subj === activeSubj;
+      const style = active
+        ? 'border-color:'+s.color+';background:'+hexToRgba(s.color,0.14)+';box-shadow:0 0 0 3px '+hexToRgba(s.color,0.15)
+        : '';
+      return '<div class="subj-card" style="'+style+'" onclick="selectSubject(\''+s.subj+'\')">'+
+        '<div class="sc-name"'+(active?' style="color:'+s.color+'"':'')+'>'+s.emoji+' '+esc(s.full)+'</div>'+
+        '<div class="sc-counts">'+fmtCounts(st, s.hasMC)+'</div></div>';
+    }).join('');
+    return '<div class="fac-panel'+(openKlas[k]?' open':'')+'" id="fac-'+esc(k)+'" style="--fac-color:'+meta.color+';--fac-border:'+meta.color+'40;--fac-bg:'+meta.color+'0d">'+
+      '<div class="fac-head" onclick="toggleKla(\''+k+'\')">'+
+        '<div><div class="fac-name">'+esc(k)+'</div>'+(meta.desc?'<div class="fac-desc">'+esc(meta.desc)+'</div>':'')+'</div>'+
+        '<div class="fac-right"><span class="fac-counts">'+fmtCounts(kt, anyMC)+'</span><span class="fac-arrow">\u25be</span></div>'+
+      '</div>'+
+      '<div class="fac-grid">'+cards+'</div>'+
+    '</div>';
   }).join('');
 }
+function toggleKla(k){
+  openKlas[k] = !openKlas[k];
+  const panel = document.getElementById('fac-'+k);
+  if(panel) panel.classList.toggle('open', openKlas[k]);
+}
 
+// ── CLASS PILLS ──────────────────────────────────────────
 function buildClassBar(){
   const bar = document.getElementById('class-bar');
   const row = document.getElementById('pill-row');
@@ -473,25 +651,15 @@ function buildClassBar(){
   }).join('');
   stylePills();
 }
-
 function stylePills(){
   const s = subjEntry(activeSubj); if(!s) return;
   document.querySelectorAll('.class-pill').forEach(function(el){
     const active = el.id === 'pill-'+activeClassTab;
+    // Active = solid subject colour with dark text (pt 8 — contrast fix)
     el.style.borderColor = active ? s.color : '';
-    el.style.color = active ? s.color : '';
-    el.style.background = active ? hexToRgba(s.color, 0.14) : '';
-  });
-}
-
-function styleChips(){
-  VISIBLE.forEach(function(s){
-    const el = document.getElementById('chip-'+s.subj); if(!el) return;
-    const active = s.subj === activeSubj;
-    el.style.borderColor = active ? s.color : '';
-    el.style.color = active ? s.color : '';
-    el.style.background = active ? hexToRgba(s.color, 0.14) : '';
-    el.style.boxShadow = active ? '0 0 0 3px '+hexToRgba(s.color,0.15) : '';
+    el.style.color = active ? '#04101d' : '';
+    el.style.background = active ? s.color : '';
+    el.style.fontWeight = active ? '800' : '';
   });
 }
 
@@ -499,14 +667,18 @@ function selectSubject(code){
   activeSubj = code;
   activeClassTab = 'ALL';
   const s = subjEntry(code);
+  if(!s) return;
   if(!s.hasMC) activeView = 'sa';
+  openKlas[s.kla] = true;
   insightsExpanded = false; logExpanded = false; mcLogExpanded = false;
-  styleChips();
+  saveLast();
+  renderSelector();
   buildClassBar();
   renderAll();
 }
 function selectClass(tab){
   activeClassTab = tab;
+  saveLast();
   stylePills();
   renderAll();
 }
@@ -560,16 +732,19 @@ function changeWeek(delta) {
   if(lbl) lbl.textContent=weekLabel(weekOffset);
   if(bdg) bdg.textContent=weekOffset===0?'This week':weekOffset===-1?'Last week':Math.abs(weekOffset)+' weeks ago';
   if(nxt) nxt.disabled=weekOffset>=0;
+  renderScopeBanner();          // wk/total numbers follow the selected week
+  renderSelector();
   renderAll();
 }
 
 // ── LOAD ─────────────────────────────────────────────────
 async function loadSheets() {
   showScreen('loading'); setDot('','Connecting\u2026');
-  tabData = {}; mcData = {};
+  tabData = {}; mcData = {}; tabStatus = {};
   try {
     // Small batches — a burst of cold-start requests can time out; anything
-    // that fails is flagged in loadFailed and retried once below.
+    // that TRANSIENTLY fails is flagged in loadFailed and retried once below.
+    // A definitive Apps Script "error: …" (tab doesn't exist) is NOT retried.
     await runBatched(SHEET_NAMES, loadTab, 5);
     await runBatched(MC_SHEET_NAMES, loadMCTab, 5);
     if(loadFailed.size){
@@ -578,28 +753,31 @@ async function loadSheets() {
       if(retrySA.length) await runBatched(retrySA, loadTab, 3);
       if(retryMC.length) await runBatched(retryMC, loadMCTab, 3);
     }
-    // Per-SUBJECT counts on the chips (sum across the subject's class tabs).
-    VISIBLE.forEach(function(s){
-      const el = document.getElementById('cnt-'+s.subj); if(!el) return;
-      let sa=0, mc=0, failed=false;
-      s.classes.forEach(function(c){
-        sa += (tabData[c.tab]||[]).length;
-        mc += (mcData[c.tab+'_MC']||[]).length;
-        if(loadFailed.has(c.tab) || loadFailed.has('MC:'+c.tab+'_MC')) failed=true;
-      });
-      if(failed && sa===0 && mc===0){ el.textContent='\u26a0'; el.title='Load failed after retry \u2014 Refresh Data'; }
-      else if(sa===0 && mc===0){ el.textContent='0'; el.title='No data yet'; }
-      else { el.textContent = sa+'\u270d '+mc+'MC'; el.title = sa+' short-answer \u00b7 '+mc+' MC attempts (all time)'; }
-    });
     setDot('live','Live \u00b7 '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})+'  \u00b7  build '+BUILD);
     console.log('[CUBE dashboard] build:', BUILD);
     showScreen('dashboard');
     var lbl=document.getElementById('week-label');
     if(lbl) lbl.textContent=weekLabel(weekOffset);
-    const first = VISIBLE.find(function(s){
-      return s.classes.some(function(c){ return (tabData[c.tab]||[]).length>0 || (mcData[c.tab+'_MC']||[]).length>0; });
-    }) || VISIBLE[0];
-    selectSubject(activeSubj && subjEntry(activeSubj) ? activeSubj : first.subj);
+    renderScopeBanner();
+
+    // Restore last subject + class (pt 3), else first subject with data
+    const last = loadLast();
+    let target = null, targetClass = 'ALL';
+    if(last && subjEntry(last.subj)){
+      target = last.subj;
+      const s = subjEntry(last.subj);
+      if(last.classTab && (last.classTab==='ALL' || s.classes.some(function(c){return c.tab===last.classTab;}))){
+        targetClass = last.classTab;
+      }
+    }
+    if(!target){
+      const first = VISIBLE.find(function(s){
+        return s.classes.some(function(c){ return (tabData[c.tab]||[]).length>0 || (mcData[c.tab+'_MC']||[]).length>0; });
+      }) || VISIBLE[0];
+      target = first.subj;
+    }
+    selectSubject(target);
+    if(targetClass !== 'ALL'){ activeClassTab = targetClass; saveLast(); stylePills(); renderAll(); }
   } catch(e) {
     setDot('err', e.message);
     document.getElementById('errmsg').textContent = e.message +
@@ -618,9 +796,9 @@ async function runBatched(items, fn, size){
 
 // Fetch one tab's CSV through the Worker /sheet endpoint (owner-executed Apps
 // Script, private-sheet safe). Scope is enforced server-side per tab.
+// Returns: CSV text | 'NOTAB' (definitive — tab doesn't exist, don't retry) | null (transient failure).
 async function fetchTabCsv(name){
-  const ok = function(t){ return t && !t.trim().startsWith('<') && !t.trim().toLowerCase().startsWith('error'); };
-  const key = sessionStorage.getItem('cube_dash_key') || '';
+  const key = storedKey();
   const worker = WORKER_BASE+'/sheet?tab='+encodeURIComponent(name)+'&key='+encodeURIComponent(key);
   for(let attempt=0; attempt<2; attempt++){
     try {
@@ -630,7 +808,12 @@ async function fetchTabCsv(name){
         if(!window.__dashKeyWarned){ window.__dashKeyWarned = true; alert('Your access key was rejected. Reload the page to re-enter it.'); }
         return null;
       }
-      if(r.ok){ const t = await r.text(); if(ok(t)) return t; }
+      if(r.ok){
+        const t = await r.text();
+        const tt = t.trim();
+        if(tt.toLowerCase().startsWith('error')) return 'NOTAB';   // Apps Script: tab not found — definitive
+        if(tt && !tt.startsWith('<')) return t;
+      }
     } catch(_){}
     if(attempt===0) await new Promise(function(res){setTimeout(res,400);});
   }
@@ -639,8 +822,9 @@ async function fetchTabCsv(name){
 
 async function loadTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { tabData[name]=[]; loadFailed.add(name); return; }   // failed ≠ empty
-  loadFailed.delete(name);
+  if(text === 'NOTAB'){ tabData[name]=[]; tabStatus[name]='notab'; loadFailed.delete(name); return; }
+  if(!text) { tabData[name]=[]; tabStatus[name]='failed'; loadFailed.add(name); return; }   // transient ≠ empty
+  loadFailed.delete(name); tabStatus[name]='ok';
   const rows = parseCSV(text);
   // Recalculate percentages from raw scores — avoids proxy column name/format issues
   rows.forEach(function(r){
@@ -656,8 +840,9 @@ async function loadTab(name) {
 
 async function loadMCTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { mcData[name]=[]; loadFailed.add('MC:'+name); return; }
-  loadFailed.delete('MC:'+name);
+  if(text === 'NOTAB'){ mcData[name]=[]; tabStatus['MC:'+name]='notab'; loadFailed.delete('MC:'+name); return; }
+  if(!text) { mcData[name]=[]; tabStatus['MC:'+name]='failed'; loadFailed.add('MC:'+name); return; }
+  loadFailed.delete('MC:'+name); tabStatus['MC:'+name]='ok';
   const rows = parseCSV(text);
   mcData[name] = rows.filter(function(r){return r.Student && String(r.Student).trim()!=='';});
 }
@@ -829,9 +1014,9 @@ function renderAll(){
   if(!s.hasMC){ activeView='sa'; document.getElementById('sa-detail').style.display=''; document.getElementById('mc-detail').style.display='none'; }
   renderHero(s);
   if(activeView === 'sa'){
+    renderBandAccordion(s);
     renderImprovements(s);
     renderInsights(s);
-    renderBandAccordion(s);
     renderLogAccordion(s);
   } else {
     renderMCDetail(s);
@@ -1108,7 +1293,7 @@ function renderBandAccordion(s){
     }).join('')+'</div>'+
     '<div style="font-size:0.72rem;color:var(--text-dim);line-height:1.4;margin-top:0.85rem">'+
       'Band-marked responses are assessed holistically against NESA performance-band descriptors, '+
-      'so they are shown as a distribution here and are <strong>not</strong> included in the Mark&nbsp;% averages above.'+
+      'so they are shown as a distribution here and are <strong>not</strong> included in the Mark&nbsp;% averages below.'+
     '</div>';
   const wasOpen = el.querySelector('.accordion.open') !== null;
   el.innerHTML = accordion('band-acc', 'HSC Band Distribution', total+' band-marked response'+(total!==1?'s':'')+' \u00b7 all time', body, wasOpen);
@@ -1271,6 +1456,10 @@ async function boot(){
     if(!VISIBLE.length){
       throw new Error('Your key\u2019s subjects are not in this dashboard\u2019s registry \u2014 contact the CUBE administrator.');
     }
+    // Open the faculty of the last-used subject (else the first in scope)
+    const last = loadLast();
+    const lastSubj = last && REGISTRY.find(function(s){return s.subj===last.subj;});
+    openKlas[(lastSubj && lastSubj.kla) || VISIBLE[0].kla] = true;
     await loadSheets();
   } catch(e){
     setDot('err', e.message);
