@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,18 +21,6 @@
   --gold-light: #e8c96a;
   --green: #43d9ad;
   --red: #ff6b6b;
-  --ees:   #4fc3f7;
-  --engs:  #e8a030;
-  --buss:  #a78bfa;
-  --hltm:  #43d9ad;
-  --comfam:#f472b6;
-  --bio:   #a5d6a7;
-  --legal: #ce93d8;
-  --va:    #f48fb1;
-  --anch:  #ffcc80;
-  --phys:  #7986cb;
-  --mhist: #ef9a9a;
-  --econ:  #ffd54f;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -45,246 +33,98 @@ body {
 
 /* HEADER */
 header {
-  padding: 1.5rem 2.5rem;
+  padding: 1.25rem 2.5rem;
   border-bottom: 1px solid var(--border);
   background: rgba(4,13,24,0.96);
   backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
   position: sticky; top: 0; z-index: 50;
 }
-/* eyebrow matches "HOW IT WORKS" — Helvetica Neue 700 uppercase */
 .eyebrow {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.62rem; font-weight: 700;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--gold); margin-bottom: 0.3rem;
 }
-/* h1 matches hero "Get instant feedback" — Helvetica Neue 800 */
 h1 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.75rem; font-weight: 800; line-height: 1.1; color: var(--text);
+  font-size: 1.6rem; font-weight: 800; line-height: 1.1; color: var(--text);
 }
 h1 span { color: var(--gold); }
-.header-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
-.btn-refresh {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: #040d18; border: none; padding: 0.55rem 1.25rem;
-  border-radius: 8px; cursor: pointer; font-weight: 700;
-  box-shadow: 0 4px 16px rgba(201,168,76,0.25);
-  transition: opacity 0.2s;
+.scope-badge {
+  display:inline-block; margin-top:0.35rem;
+  font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.08em;
+  background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3);
+  color:var(--gold-light); border-radius:20px; padding:0.18rem 0.65rem;
 }
-.btn-refresh:hover { opacity: 0.85; }
-.btn-research {
+.header-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
+.btn-refresh, .btn-research {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
-  background: linear-gradient(135deg, #e8621a, #f0873a);
-  color: #ffffff; border: none; padding: 0.55rem 1.25rem;
+  border: none; padding: 0.55rem 1.25rem;
   border-radius: 8px; cursor: pointer; font-weight: 700;
-  box-shadow: 0 4px 16px rgba(232,98,26,0.35);
   transition: opacity 0.2s; text-decoration: none; display: inline-block;
 }
-.btn-research:hover { opacity: 0.85; }
-.status-line { font-size: 0.7rem; color: var(--text-dim); display:flex; align-items:center; gap:0.4rem; }
+.btn-refresh { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color:#040d18; box-shadow:0 4px 16px rgba(201,168,76,0.25); }
+.btn-research { background: linear-gradient(135deg, #e8621a, #f0873a); color:#fff; box-shadow:0 4px 16px rgba(232,98,26,0.35); }
+.btn-refresh:hover, .btn-research:hover { opacity: 0.85; }
+.status-line { font-size: 0.7rem; color: var(--text-dim); display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; justify-content:flex-end; }
 .dot { width:7px; height:7px; border-radius:50%; background:var(--text-dim); display:inline-block; flex-shrink:0; }
 .dot.live { background:var(--green); box-shadow:0 0 6px var(--green); }
 .dot.err  { background:var(--red); }
+.switch-key { background:none; border:none; color:var(--text-dim); font-size:0.62rem; cursor:pointer; text-decoration:underline; padding:0; font-family:inherit; }
+.switch-key:hover { color:var(--gold); }
 
-/* SUBJECT SELECTOR */
-#subject-selector {
-  padding: 2rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--navy-mid);
-}
-.selector-label {
+/* SUBJECT CHIPS */
+#subject-bar { padding: 1rem 2.5rem 0.4rem; border-bottom: 1px solid var(--border); background: var(--navy-mid); }
+.bar-label-sm {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1.25rem;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.6rem;
 }
-.subject-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-}
-/* PDHPE box contains two clickable sub-rows */
-.pdhpe-box {
+.chip-row { display:flex; flex-wrap:wrap; gap:0.5rem; padding-bottom:0.85rem; }
+.chip {
+  display:flex; align-items:center; gap:0.45rem;
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
-  border-radius: 16px; padding: 1rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  border:1.5px solid var(--border); border-radius: 24px;
+  padding: 0.42rem 0.95rem; cursor:pointer;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:0.8rem; font-weight:700; color:var(--text);
+  transition: border-color 0.2s, background 0.2s, color 0.2s; white-space:nowrap;
 }
-/* Science box — EES + Biology sub-rows */
-.science-box {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
-  border-radius: 16px; padding: 1rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  transition: border-color 0.25s, box-shadow 0.25s;
+.chip:hover { border-color: rgba(240,192,48,0.7); }
+.chip-count { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#f0c030; font-weight:700; }
+.chip-kla { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; }
+
+/* CLASS PILLS */
+#class-bar { padding: 0.7rem 2.5rem; border-bottom: 1px solid var(--border); background: rgba(10,22,40,0.6); display:none; }
+.pill-row { display:flex; flex-wrap:wrap; gap:0.45rem; align-items:center; }
+.class-pill {
+  font-family:'IBM Plex Mono',monospace; font-size:0.66rem; font-weight:700; letter-spacing:0.06em;
+  background: transparent; border:1.5px solid var(--border); color:var(--text-dim);
+  border-radius: 18px; padding: 0.3rem 0.85rem; cursor:pointer; transition: all 0.18s;
 }
-/* HSIE box — BusS + Legal sub-rows */
-.hsie-box {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
-  border-radius: 16px; padding: 1rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  transition: border-color 0.25s, box-shadow 0.25s;
-}
-.pdhpe-kla-tag {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--hltm); margin-bottom: 0.15rem;
-}
-.science-kla-tag {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ees); margin-bottom: 0.15rem;
-}
-.hsie-kla-tag {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--buss); margin-bottom: 0.15rem;
-}
-.pdhpe-subj { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem; border-radius: 10px; cursor: pointer; transition: background 0.18s; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--text); }
-.pdhpe-subj:hover { background: rgba(255,255,255,0.06); }
-.pdhpe-subj.active-hltm  { background: rgba(67,217,173,0.15);  color:#43d9ad; }
-.pdhpe-subj.active-comfam{ background: rgba(244,114,182,0.15); color:#f472b6; }
-.multi-subj { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 10px; cursor: pointer; transition: background 0.18s; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
-.multi-subj:hover { background: rgba(255,255,255,0.06); }
-.multi-subj.active-ees    { background: rgba(79,195,247,0.15);  color:#4fc3f7; }
-.multi-subj.active-bio1   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
-.multi-subj.active-bio2   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
-.multi-subj.active-bio3   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
-.multi-subj.active-bio4   { background: rgba(165,214,167,0.15); color:#a5d6a7; }
-.multi-subj.active-buss   { background: rgba(167,139,250,0.15); color:#a78bfa; }
-.multi-subj.active-leg1   { background: rgba(206,147,216,0.15); color:#ce93d8; }
-.multi-subj.active-leg2   { background: rgba(206,147,216,0.15); color:#ce93d8; }
-.multi-divider { height:1px; background:rgba(255,255,255,0.07); margin:2px 0; }
-.multi-sublabel { font-size:0.55rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--bio); padding: 0 0.6rem; margin-top:2px; }
-.multi-sublabel.legal { color:var(--legal); }
-.multi-sublabel.va    { color:var(--va); }
-.multi-subj.active-va1 { background: rgba(244,143,177,0.15); color:#f48fb1; }
-.multi-subj.active-va2 { background: rgba(244,143,177,0.15); color:#f48fb1; }
-.multi-subj.active-ahis { background: rgba(255,204,128,0.15); color:#ffcc80; }
-.pdhpe-count { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#f0c030; margin-left:auto; font-weight:700; }
-.multi-count { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#f0c030; margin-left:auto; font-weight:700; }
-.subject-box {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1.5px solid rgba(240,192,48,0.7);
-  border-radius: 16px; padding: 1.25rem 1.5rem;
-  cursor: pointer;
-  transition: border-color 0.25s, transform 0.2s, background 0.25s;
-}
-.subject-box.active .subj-name { color: #ffffff; }
-.subject-box.active .kla-tag::after {
-  content: ' · SELECTED';
-  font-size: 0.55rem;
-  opacity: 0.85;
-  letter-spacing: 0.12em;
-}
-.subject-box { transition: border-color 0.25s, transform 0.2s, background 0.25s, box-shadow 0.25s; }
-.subject-box:hover { border-color: #f0c030; transform: translateY(-2px); }
-.subject-box.active[data-kla="EES"]   {
-  border-color: var(--ees); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(79,195,247,0.22), rgba(79,195,247,0.10));
-  box-shadow: 0 0 0 3px rgba(79,195,247,0.18), 0 6px 24px rgba(79,195,247,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="EngS"]  {
-  border-color: var(--engs); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(232,160,48,0.22), rgba(232,160,48,0.10));
-  box-shadow: 0 0 0 3px rgba(232,160,48,0.18), 0 6px 24px rgba(232,160,48,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="BusS"]  {
-  border-color: var(--buss); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(167,139,250,0.22), rgba(167,139,250,0.10));
-  box-shadow: 0 0 0 3px rgba(167,139,250,0.18), 0 6px 24px rgba(167,139,250,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="HlthM"] {
-  border-color: var(--hltm); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(67,217,173,0.22), rgba(67,217,173,0.10));
-  box-shadow: 0 0 0 3px rgba(67,217,173,0.18), 0 6px 24px rgba(67,217,173,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box.active[data-kla="ComFam"] {
-  border-color: var(--comfam); border-width: 2.5px;
-  background: linear-gradient(135deg, rgba(244,114,182,0.22), rgba(244,114,182,0.10));
-  box-shadow: 0 0 0 3px rgba(244,114,182,0.18), 0 6px 24px rgba(244,114,182,0.15);
-  transform: translateY(-3px) scale(1.02);
-}
-.subject-box[data-kla="ComFam"] .kla-tag { color: var(--comfam); }
-.subject-box[data-kla="EES"]   .kla-tag { color: var(--ees); }
-.subject-box[data-kla="EngS"]  .kla-tag { color: var(--engs); }
-.subject-box[data-kla="BusS"]  .kla-tag { color: var(--buss); }
-.subject-box[data-kla="HlthM"] .kla-tag { color: var(--hltm); }
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  margin-bottom: 0.35rem;
-}
-.subject-box[data-kla="EES"]   .kla-tag { color: var(--ees); }
-.subject-box[data-kla="EngS"]  .kla-tag { color: var(--engs); }
-.subject-box[data-kla="BusS"]  .kla-tag { color: var(--buss); }
-.subject-box[data-kla="HlthM"] .kla-tag { color: var(--hltm); }
-.subj-name {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1rem; font-weight: 700; color: var(--text);
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.subj-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#f0c030; margin-top:0.25rem; font-weight:700; }
+.class-pill:hover { color:var(--text); border-color: rgba(255,255,255,0.25); }
 
 /* MAIN */
-main { padding: 1.75rem 2.5rem; }
-
-/* LOADING */
+main { padding: 1.5rem 2.5rem; }
 #loading-screen { display:none; text-align:center; padding:5rem 2rem; }
 .spinner { width:36px; height:36px; border:2px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1rem; }
 @keyframes spin { to { transform:rotate(360deg); } }
-
-/* ERROR */
 #error-screen { display:none; text-align:center; padding:4rem 2rem; }
 .error-box { max-width:520px; margin:0 auto; background:rgba(255,107,107,0.07); border:1px solid rgba(255,107,107,0.25); border-radius:12px; padding:2rem; }
 .error-title { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:800; font-size:1rem; color:var(--red); margin-bottom:0.75rem; }
 .error-msg { font-size:0.82rem; color:var(--text-dim); line-height:1.7; }
-
-/* DASHBOARD */
 #dashboard { display:none; }
-.stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:1.5rem; }
-.stat-card {
-  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
-  border: 1px solid var(--border-gold); border-radius: 10px;
-  padding: 1rem 1.2rem; position: relative; overflow: hidden;
-}
-.stat-card::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; }
-.stat-card.c-ees::before   { background:var(--ees); }
-.stat-card.c-engs::before  { background:var(--engs); }
-.stat-card.c-buss::before  { background:var(--buss); }
-.stat-card.c-hltm::before  { background:var(--hltm); }
-.stat-card.c-comfam::before{ background:var(--comfam); }
-.stat-card.c-bio::before   { background:var(--bio); }
-.stat-card.c-legal::before { background:var(--legal); }
-.stat-card.c-va::before    { background:var(--va); }
-.stat-card.c-anch::before  { background:var(--anch); }
-.stat-card.c-phys::before  { background:var(--phys); }
-.stat-card.c-mhist::before { background:var(--mhist); }
-.stat-card.c-econ::before  { background:var(--econ); }
-.stat-card.c-neutral::before { background:var(--gold); }
-.stat-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
-.stat-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:2rem; font-weight:800; line-height:1; }
-.stat-value.good { color:var(--green); }
-.stat-value.warn { color:var(--gold); }
-.stat-value.low  { color:var(--red); }
-.stat-sub { font-size:0.7rem; color:#c8d8e8; margin-top:0.2rem; }
 
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
-.mb { margin-bottom:1.25rem; }
+/* WEEK NAV */
+.week-nav{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:0.7rem 1.2rem;}
+.week-nav-btn{background:rgba(201,168,76,0.18);border:2px solid rgba(201,168,76,0.55);color:var(--gold-light);border-radius:8px;padding:0.4rem 1rem;cursor:pointer;font-size:1.1rem;font-weight:900;transition:all 0.15s;line-height:1;letter-spacing:0.05em;}
+.week-nav-btn:hover{background:rgba(201,168,76,0.35);border-color:var(--gold-light);color:#fff;}
+.week-nav-btn:disabled{opacity:0.25;cursor:default;}
+.week-label{font-family:'IBM Plex Mono',monospace;font-size:0.95rem;letter-spacing:0.06em;color:#ffffff;flex:1;text-align:center;font-weight:700;}
+.week-badge{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:20px;padding:0.2rem 0.6rem;}
 
+/* PANELS */
 .panel {
   background: linear-gradient(135deg, var(--surface), var(--navy-mid));
   border: 1px solid var(--border-gold); border-radius: 12px; padding: 1.25rem;
@@ -293,17 +133,71 @@ main { padding: 1.75rem 2.5rem; }
   font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
   font-size:0.87rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
   color:#f0c030; margin-bottom:1rem; padding-bottom:0.55rem;
-  border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;
 }
-.panel-title span { color:#ffffff; font-weight:600; }
+.panel-title span { color:#ffffff; font-weight:600; font-size:0.7rem; letter-spacing:0.05em; text-transform:none; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
+.mb { margin-bottom:1.25rem; }
+.no-data { text-align:center; padding:1.5rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
 
+/* TROPHIES */
+.trophy-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.trophy-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+.trophy-row{display:flex;gap:0.75rem;flex-wrap:wrap;}
+.trophy-card{flex:1;min-width:140px;display:flex;align-items:center;gap:0.6rem;background:rgba(0,0,0,0.2);border-radius:8px;padding:0.6rem 0.9rem;border:1px solid rgba(255,255,255,0.07);}
+.trophy-medal{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.trophy-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:0.85rem;color:#fff;}
+.trophy-xp{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--gold);margin-top:0.1rem;}
+
+/* HERO USAGE TABLE */
+.student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
+.student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
+.student-table tr:last-child td { border-bottom:none; }
+.student-table tr:hover td { background:rgba(201,168,76,0.04); }
+.usage-foot { font-size:0.7rem; color:var(--text-dim); margin-top:0.75rem; }
+.mono { font-family:'IBM Plex Mono',monospace; }
+
+/* INSIGHT TILES */
+.insight-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; }
+.insight-tile {
+  background: linear-gradient(135deg, var(--surface), var(--navy-mid));
+  border: 1px solid var(--border-gold); border-radius: 10px;
+  padding: 0.9rem 1.1rem; position: relative; overflow: hidden;
+}
+.insight-tile::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; background:var(--gold); }
+.tile-label { font-family:'IBM Plex Mono',monospace; font-size:0.54rem; letter-spacing:0.14em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.4rem; }
+.tile-value { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:1.5rem; font-weight:800; line-height:1.05; }
+.tile-sub { font-size:0.66rem; color:#c8d8e8; margin-top:0.25rem; line-height:1.35; }
+.clr-green{color:#39ff6e;} .clr-amber{color:#ffb830;} .clr-red{color:#ff4f4f;}
+.detail-toggle {
+  display:block; width:100%; margin-top:0.9rem; text-align:center;
+  background:rgba(255,255,255,0.03); border:1px dashed var(--border-gold); color:var(--gold);
+  border-radius:8px; padding:0.45rem; cursor:pointer;
+  font-family:'IBM Plex Mono',monospace; font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;
+}
+.detail-toggle:hover { background:rgba(201,168,76,0.08); }
+
+/* ACCORDIONS */
+.accordion { border:1px solid var(--border-gold); border-radius:12px; background:linear-gradient(135deg, var(--surface), var(--navy-mid)); margin-bottom:1.25rem; overflow:hidden; }
+.acc-head {
+  width:100%; display:flex; justify-content:space-between; align-items:center; gap:0.5rem;
+  background:none; border:none; cursor:pointer; padding:0.95rem 1.25rem;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:0.82rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#f0c030;
+}
+.acc-head .acc-sub { color:#fff; font-weight:600; font-size:0.68rem; letter-spacing:0.05em; text-transform:none; margin-left:auto; margin-right:0.75rem; }
+.acc-chev { color:var(--text-dim); transition: transform 0.2s; font-size:0.8rem; }
+.accordion.open .acc-chev { transform: rotate(180deg); }
+.acc-body { display:none; padding:0 1.25rem 1.25rem; }
+.accordion.open .acc-body { display:block; }
+
+/* BARS */
 .bar-chart { display:flex; flex-direction:column; gap:0.55rem; }
 .bar-row { display:flex; align-items:center; gap:0.7rem; }
 .bar-label { font-size:0.82rem; width:160px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#e8eaf0; }
 .bar-track { flex:1; height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
 .bar-fill { height:100%; border-radius:3px; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
-.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:38px; text-align:right; color:#e8eaf0; }
-
+.bar-val { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; width:46px; text-align:right; color:#e8eaf0; }
 .mission-freq { display:flex; flex-direction:column; gap:0.5rem; }
 .mission-row { display:flex; align-items:center; gap:0.75rem; }
 .mission-name { font-size:0.78rem; width:180px; flex-shrink:0; color:#e8eaf0; }
@@ -311,6 +205,7 @@ main { padding: 1.75rem 2.5rem; }
 .mission-bar-fill { height:100%; border-radius:3px; }
 .mission-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#ffffff; width:24px; text-align:right; font-weight:700; }
 
+/* IMPROVEMENT CARDS */
 .example-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.75rem; }
 .example-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-left:3px solid var(--border); border-radius:10px; padding:0.9rem 1rem; }
 .example-card.fix-causal { border-left-color:#4fc3f7; }
@@ -320,53 +215,55 @@ main { padding: 1.75rem 2.5rem; }
 .example-card.fix-other  { border-left-color:#6b7599; }
 .ex-label { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; margin-bottom:0.35rem; font-weight:600; }
 .ex-before { font-size:0.77rem; color:var(--red); margin-bottom:0.3rem; }
-.ex-before::before { content:'✗ '; }
+.ex-before::before { content:'\2717 '; }
 .ex-after  { font-size:0.77rem; color:var(--green); }
-.ex-after::before  { content:'✓ '; }
+.ex-after::before  { content:'\2713 '; }
 .ex-kw { font-size:0.72rem; color:#c8d8e8; margin-top:0.3rem; font-style:italic; }
 
-.student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
-.student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
-.student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
-.student-table tr:last-child td { border-bottom:none; }
-.student-table tr:hover td { background:rgba(201,168,76,0.04); }
-.pill { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.06em; padding:0.15rem 0.5rem; border-radius:20px; }
-.pill.high { background:rgba(67,217,173,0.15); color:var(--green);  border:1px solid rgba(67,217,173,0.3); }
-.pill.mid  { background:rgba(201,168,76,0.15);  color:var(--gold);   border:1px solid rgba(201,168,76,0.3); }
-.pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border:1px solid rgba(255,107,107,0.3); }
-.no-data { text-align:center; padding:2rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
+/* PILLS + VIEW TOGGLE */
+.pill { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.06em; padding:0.15rem 0.5rem; border-radius:20px; border:1px solid var(--border); }
+.pill.high { background:rgba(67,217,173,0.15); color:var(--green);  border-color:rgba(67,217,173,0.3); }
+.pill.mid  { background:rgba(201,168,76,0.15);  color:var(--gold);   border-color:rgba(201,168,76,0.3); }
+.pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border-color:rgba(255,107,107,0.3); }
+.view-toggle { display:flex; gap:10px; margin-bottom:1.25rem; }
+.view-btn {
+  padding:8px 20px; border-radius:8px; border:1.5px solid var(--border); background:transparent; color:var(--text-dim);
+  font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+}
+.view-btn.active { border-color:var(--gold); background:rgba(201,168,76,0.15); color:var(--gold); }
+.show-all-btn {
+  display:block; margin:0.75rem auto 0; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text-dim);
+  border-radius:8px; padding:0.4rem 1.2rem; cursor:pointer;
+  font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;
+}
+.show-all-btn:hover { color:var(--gold); border-color:var(--border-gold); }
 
-.week-nav{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:0.7rem 1.2rem;}
-.week-nav-btn{background:rgba(201,168,76,0.18);border:2px solid rgba(201,168,76,0.55);color:var(--gold-light);border-radius:8px;padding:0.4rem 1rem;cursor:pointer;font-size:1.1rem;font-weight:900;transition:all 0.15s;line-height:1;letter-spacing:0.05em;}
-.week-nav-btn:hover{background:rgba(201,168,76,0.35);border-color:var(--gold-light);color:#fff;}
-.week-nav-btn:disabled{opacity:0.25;cursor:default;}
-.week-label{font-family:'IBM Plex Mono',monospace;font-size:1rem;letter-spacing:0.06em;color:#ffffff;flex:1;text-align:center;font-weight:700;}
-.week-badge{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:20px;padding:0.2rem 0.6rem;}
-.trophy-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;}
-.trophy-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
-.trophy-row{display:flex;gap:0.75rem;flex-wrap:wrap;}
-.trophy-card{flex:1;min-width:140px;display:flex;align-items:center;gap:0.6rem;background:rgba(0,0,0,0.2);border-radius:8px;padding:0.6rem 0.9rem;border:1px solid rgba(255,255,255,0.07);}
-.trophy-medal{font-size:1.4rem;line-height:1;flex-shrink:0;}
-.trophy-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:0.85rem;color:#fff;}
-.trophy-xp{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--gold);margin-top:0.1rem;}
-.stat-value.clr-green{color:#39ff6e;}
-.stat-value.clr-amber{color:#ffb830;}
-.stat-value.clr-red{color:#ff4f4f;}
-.rank-list{margin-top:0.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:0.6rem;display:flex;flex-direction:column;gap:0.28rem;}
-.rank-row{display:flex;align-items:center;gap:0.4rem;}
-.rank-num{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--text-dim);width:14px;flex-shrink:0;}
-.rank-name{font-size:0.72rem;color:#e8eaf0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rank-val{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--gold);flex-shrink:0;font-weight:700;}
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.25rem;align-items:start;}
+/* ── MOBILE ── This dashboard is standalone GitHub Pages (NOT inside the
+   Google Sites iframe), so plain media queries are reliable here. */
 @media(max-width:768px){
-  header,main{ padding:1.25rem; }
-  #subject-selector{ padding:1.25rem; }
-  .stats-row{ grid-template-columns:repeat(2,1fr); }
+  header{ padding:0.9rem 1rem; }
+  h1{ font-size:1.25rem; }
+  .header-right{ align-items:flex-start; width:100%; }
+  #subject-bar, #class-bar{ padding-left:1rem; padding-right:1rem; }
+  .chip-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .chip-row::-webkit-scrollbar{ display:none; }
+  main{ padding:1rem; }
+  .insight-row{ grid-template-columns:repeat(2,1fr); gap:0.7rem; }
   .grid-2{ grid-template-columns:1fr; }
-  .subject-grid{ grid-template-columns:1fr 1fr; }
+  .week-nav{ padding:0.55rem 0.7rem; gap:0.5rem; }
+  .week-label{ font-size:0.78rem; }
+  .week-nav-btn{ padding:0.35rem 0.7rem; font-size:0.9rem; }
+  .trophy-card{ min-width:110px; padding:0.5rem 0.7rem; }
+  .student-table{ font-size:0.72rem; }
+  .student-table th, .student-table td{ padding:0.4rem 0.45rem; }
+  .bar-label{ width:110px; font-size:0.72rem; }
+  .mission-name{ width:120px; font-size:0.72rem; }
 }
 @media(max-width:480px){
-  .subject-grid{ grid-template-columns:1fr; }
+  .insight-row{ grid-template-columns:repeat(2,1fr); }
+  .hide-xs{ display:none; }
+  .week-badge{ display:none; }
+  .trophy-row{ flex-direction:column; }
 }
 </style>
 </head>
@@ -376,33 +273,37 @@ main { padding: 1.75rem 2.5rem; }
   <div>
     <div class="eyebrow">CUBE Marking Coach</div>
     <h1><span>Effectiveness</span> Tracker</h1>
+    <span class="scope-badge" id="scope-badge" style="display:none"></span>
   </div>
   <div class="header-right">
     <div style="display:flex;gap:0.6rem;align-items:center">
-      <button class="btn-refresh" onclick="loadSheets()">↻ Refresh Data</button>
-      <a class="btn-research" href="research/index.html">🔬 Research</a>
+      <button class="btn-refresh" onclick="loadSheets()">&#8635; Refresh Data</button>
+      <a class="btn-research" href="research/index.html">&#128300; Research</a>
     </div>
     <div class="status-line">
       <span class="dot" id="sdot"></span>
-      <span id="stxt">Connecting…</span>
+      <span id="stxt">Connecting&hellip;</span>
+      <button class="switch-key" onclick="switchKey()">switch key</button>
     </div>
   </div>
 </header>
 
-<div id="subject-selector">
-  <div class="selector-label">Select Your Subject</div>
-  <div class="subject-grid" id="subject-grid"></div>
-  </div>
+<div id="subject-bar" style="display:none">
+  <div class="bar-label-sm">Your Subjects</div>
+  <div class="chip-row" id="chip-row"></div>
+</div>
+<div id="class-bar">
+  <div class="pill-row" id="pill-row"></div>
 </div>
 
 <main>
   <div id="loading-screen">
     <div class="spinner"></div>
-    <div style="color:var(--text-dim);font-size:0.85rem">Loading CUBE Marking Coach data…</div>
+    <div style="color:var(--text-dim);font-size:0.85rem">Loading CUBE Marking Coach data&hellip;</div>
   </div>
   <div id="error-screen">
     <div class="error-box">
-      <div class="error-title">⚠ Could not load data</div>
+      <div class="error-title">&#9888; Could not load data</div>
       <div class="error-msg" id="errmsg"></div>
     </div>
   </div>
@@ -413,117 +314,214 @@ main { padding: 1.75rem 2.5rem; }
       <span class="week-badge" id="week-badge">This week</span>
       <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>Next &#8594;</button>
     </div>
-    <!-- SA / MC view toggle -->
-    <div style="display:flex;gap:10px;margin-bottom:1.5rem;padding:0 0.25rem">
-      <button id="btn-view-sa" onclick="switchView('sa')"
-        style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--gold);background:rgba(201,168,76,0.15);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">
-        ✍️ Short Answer
-      </button>
-      <button id="btn-view-mc" onclick="switchView('mc')"
-        style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">
-        📋 Multiple Choice
-      </button>
+
+    <!-- 1 · THIS WEEK HERO — combined SA + MC usage, Top 3, active students -->
+    <div id="hero" class="mb"></div>
+
+    <!-- SA / MC detail toggle (shown only for subjects with an MC bank) -->
+    <div class="view-toggle" id="view-toggle" style="display:none">
+      <button id="btn-view-sa" class="view-btn active" onclick="switchView('sa')">&#9997;&#65039; Short Answer</button>
+      <button id="btn-view-mc" class="view-btn" onclick="switchView('mc')">&#128203; Multiple Choice</button>
     </div>
-    <div id="trophy-banner"></div>
-    <div class="stats-row" id="stats-row"></div>
-    <div class="grid-2 mb" id="row1"></div>
-    <div class="mb"        id="row2"></div>
-    <div class="mb"        id="row3"></div>
-    <div                   id="row4"></div>
-    <!-- MC panel — shown when activeView === 'mc' -->
-    <div id="mc-panel" style="display:none"></div>
+
+    <!-- SA DETAIL -->
+    <div id="sa-detail">
+      <div class="mb" id="improvements"></div>
+      <div class="mb" id="insights"></div>
+      <div id="acc-band"></div>
+      <div id="acc-log"></div>
+    </div>
+
+    <!-- MC DETAIL -->
+    <div id="mc-detail" style="display:none"></div>
   </div>
 </main>
 
 <script>
-// SHEET_ID removed in Phase 1b — tab data now comes through the Worker /sheet
-// endpoint (owner-executed Apps Script), so the private spreadsheet's ID is no
-// longer present in this public file, and there is no direct-to-Google fallback.
-// Sheet data is read through your own Cloudflare Worker (same trusted origin the
-// marking app uses through the DET network) rather than a public CORS proxy.
+// Tab data comes through the Worker /sheet endpoint (owner-executed Apps
+// Script) — the private spreadsheet's ID is not present in this public file.
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
-// Bump this whenever you deploy a new build, so you can confirm at a glance
-// (in the header and the console) that the live site is the version you meant.
-const BUILD = '2026-07-13 · +Economics (ECON-1..3) +Physics (PHYS-1..4) +Modern History (MHIST-1..3)';
+const BUILD = 'v2.0 \u00b7 2026-07-13 \u00b7 scoped keys + weekly hero + mobile';
+
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
-// To add a class/subject: add ONE row here (and create its Google Sheet tab +
-// config-<Subject>.json). Everything below — which tabs are loaded, the subject
-// sidebar, KLA grouping/colours, MC tab mapping — derives from this list, so
-// there are no other arrays in this file to keep in sync.
-//   code   Google Sheet tab name (also the switchKLA key)
-//   label  short sidebar label            full   panel/heading title
-//   emoji  sidebar icon                   kla    Science|HSIE|PDHPE|TAS|CAPA
-//   group  sub-heading within a KLA (e.g. 'Biology'); null = standalone subject
-//   color  accent hex   cls  panel colour class   hasMC  student MC bank exists?
-const SUBJECTS_FALLBACK = [
-  {code:'EES',     label:'Earth & Enviro Sci', full:'Earth & Environmental Science', emoji:'🌏', kla:'Science', group:null,             color:'#4fc3f7', cls:'c-ees',    hasMC:true },
-  {code:'12Bio-1', label:'12Bio-1',            full:'Biology — 12Bio-1',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
-  {code:'12Bio-2', label:'12Bio-2',            full:'Biology — 12Bio-2',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
-  {code:'12Bio-3', label:'12Bio-3',            full:'Biology — 12Bio-3',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
-  {code:'12Bio-4', label:'12Bio-4',            full:'Biology — 12Bio-4',             emoji:'🔬', kla:'Science', group:'Biology',        color:'#a5d6a7', cls:'c-bio',    hasMC:true },
-  {code:'PHYS-1',  label:'PHYS-1',             full:'Physics — 12PH1',               emoji:'⚛️', kla:'Science', group:'Physics',        color:'#7986cb', cls:'c-phys',   hasMC:true },
-  {code:'PHYS-2',  label:'PHYS-2',             full:'Physics — 12PH2',               emoji:'⚛️', kla:'Science', group:'Physics',        color:'#7986cb', cls:'c-phys',   hasMC:true },
-  {code:'PHYS-3',  label:'PHYS-3',             full:'Physics — 12PH3',               emoji:'⚛️', kla:'Science', group:'Physics',        color:'#7986cb', cls:'c-phys',   hasMC:true },
-  {code:'PHYS-4',  label:'PHYS-4',             full:'Physics — 12PH4',               emoji:'⚛️', kla:'Science', group:'Physics',        color:'#7986cb', cls:'c-phys',   hasMC:true },
-  {code:'BusS',    label:'Business Studies',   full:'Business Studies',              emoji:'📊', kla:'HSIE',    group:null,             color:'#a78bfa', cls:'c-buss',   hasMC:true },
-  {code:'12LS-1',  label:'12LS-1',             full:'Legal Studies — 12LS-1',        emoji:'⚖️', kla:'HSIE',    group:'Legal Studies',  color:'#ce93d8', cls:'c-legal',  hasMC:true },
-  {code:'12LS-2',  label:'12LS-2',             full:'Legal Studies — 12LS-2',        emoji:'⚖️', kla:'HSIE',    group:'Legal Studies',  color:'#ce93d8', cls:'c-legal',  hasMC:true },
-  {code:'12AHis',  label:'12AHis',             full:'Ancient History — 12AHis',      emoji:'🏛️', kla:'HSIE',    group:'Ancient History',color:'#ffcc80', cls:'c-anch',   hasMC:false},
-  {code:'MHIST-1', label:'MHIST-1',            full:'Modern History — 12HMH1',       emoji:'📜', kla:'HSIE',    group:'Modern History', color:'#ef9a9a', cls:'c-mhist',  hasMC:false},
-  {code:'MHIST-2', label:'MHIST-2',            full:'Modern History — 12HMH2',       emoji:'📜', kla:'HSIE',    group:'Modern History', color:'#ef9a9a', cls:'c-mhist',  hasMC:false},
-  {code:'MHIST-3', label:'MHIST-3',            full:'Modern History — 12HMH3',       emoji:'📜', kla:'HSIE',    group:'Modern History', color:'#ef9a9a', cls:'c-mhist',  hasMC:false},
-  {code:'ECON-1',  label:'ECON-1',             full:'Economics — 12HEC1',            emoji:'📈', kla:'HSIE',    group:'Economics',      color:'#ffd54f', cls:'c-econ',   hasMC:true },
-  {code:'ECON-2',  label:'ECON-2',             full:'Economics — 12HEC2',            emoji:'📈', kla:'HSIE',    group:'Economics',      color:'#ffd54f', cls:'c-econ',   hasMC:true },
-  {code:'ECON-3',  label:'ECON-3',             full:'Economics — 12HEC3',            emoji:'📈', kla:'HSIE',    group:'Economics',      color:'#ffd54f', cls:'c-econ',   hasMC:true },
-  {code:'HlthM',   label:'Health & Movement',  full:'Health & Movement',             emoji:'🏃', kla:'PDHPE',   group:null,             color:'#43d9ad', cls:'c-hltm',   hasMC:true },
-  {code:'ComFam',  label:'Community & Family', full:'Community & Family Studies',     emoji:'🏠', kla:'PDHPE',   group:null,             color:'#f472b6', cls:'c-comfam', hasMC:true },
-  {code:'EngS',    label:'Engineering Studies',full:'Engineering Studies',           emoji:'⚙️', kla:'TAS',     group:null,             color:'#e8a030', cls:'c-engs',   hasMC:true },
-  {code:'12VA-1',  label:'12VA-1',             full:'Visual Arts — 12VA-1',          emoji:'🎨', kla:'CAPA',    group:'Visual Arts',    color:'#f48fb1', cls:'c-va',     hasMC:false},
-  {code:'12VA-2',  label:'12VA-2',             full:'Visual Arts — 12VA-2',          emoji:'🎨', kla:'CAPA',    group:'Visual Arts',    color:'#f48fb1', cls:'c-va',     hasMC:false},
+// v2 structure: one entry PER SUBJECT, with its class tabs nested. 'label' is
+// what teachers see on the class pill (student-facing class name); 'tab' is the
+// Google Sheet tab (must match the webhook TAB_MAP). To add a class: add one
+// {label, tab} row. To add a subject: add one entry here (+ sheet tab + config).
+// hasMC gates both the '<tab>_MC' loads and the SA/MC toggle.
+const REGISTRY = [
+  {subj:'EES',    full:'Earth & Environmental Science', emoji:'\ud83c\udf0f', kla:'Science', color:'#4fc3f7', hasMC:true,
+    classes:[{label:'EES', tab:'EES'}]},
+  {subj:'BIO',    full:'Biology', emoji:'\ud83d\udd2c', kla:'Science', color:'#a5d6a7', hasMC:true,
+    classes:[{label:'12Bio-1',tab:'12Bio-1'},{label:'12Bio-2',tab:'12Bio-2'},{label:'12Bio-3',tab:'12Bio-3'},{label:'12Bio-4',tab:'12Bio-4'}]},
+  {subj:'PHYS',   full:'Physics', emoji:'\u269b\ufe0f', kla:'Science', color:'#7986cb', hasMC:true,
+    classes:[{label:'12PH1',tab:'PHYS-1'},{label:'12PH2',tab:'PHYS-2'},{label:'12PH3',tab:'PHYS-3'},{label:'12PH4',tab:'PHYS-4'}]},
+  {subj:'BUSS',   full:'Business Studies', emoji:'\ud83d\udcca', kla:'HSIE', color:'#a78bfa', hasMC:true,
+    classes:[{label:'BusS', tab:'BusS'}]},
+  {subj:'LEG',    full:'Legal Studies', emoji:'\u2696\ufe0f', kla:'HSIE', color:'#ce93d8', hasMC:true,
+    classes:[{label:'12LS-1',tab:'12LS-1'},{label:'12LS-2',tab:'12LS-2'}]},
+  {subj:'ANCH',   full:'Ancient History', emoji:'\ud83c\udfdb\ufe0f', kla:'HSIE', color:'#ffcc80', hasMC:false,
+    classes:[{label:'12AHis', tab:'12AHis'}]},
+  {subj:'MHIST',  full:'Modern History', emoji:'\ud83d\udcdc', kla:'HSIE', color:'#ef9a9a', hasMC:false,
+    classes:[{label:'12HMH1',tab:'MHIST-1'},{label:'12HMH2',tab:'MHIST-2'},{label:'12HMH3',tab:'MHIST-3'}]},
+  {subj:'ECON',   full:'Economics', emoji:'\ud83d\udcc8', kla:'HSIE', color:'#ffd54f', hasMC:true,
+    classes:[{label:'12HEC1',tab:'ECON-1'},{label:'12HEC2',tab:'ECON-2'},{label:'12HEC3',tab:'ECON-3'}]},
+  {subj:'HLTM',   full:'Health & Movement', emoji:'\ud83c\udfc3', kla:'PDHPE', color:'#43d9ad', hasMC:true,
+    classes:[{label:'HlthM', tab:'HlthM'}]},
+  {subj:'COMFAM', full:'Community & Family Studies', emoji:'\ud83c\udfe0', kla:'PDHPE', color:'#f472b6', hasMC:true,
+    classes:[{label:'ComFam', tab:'ComFam'}]},
+  {subj:'ENGS',   full:'Engineering Studies', emoji:'\u2699\ufe0f', kla:'TAS', color:'#e8a030', hasMC:true,
+    classes:[{label:'EngS', tab:'EngS'}]},
+  {subj:'VISART', full:'Visual Arts', emoji:'\ud83c\udfa8', kla:'CAPA', color:'#f48fb1', hasMC:false,
+    classes:[{label:'12VA-1',tab:'12VA-1'},{label:'12VA-2',tab:'12VA-2'}]},
 ];
 
-// KLA columns, left→right. 'multi' = a box containing subject rows; 'pdhpe' =
-// same but using the PDHPE row style; 'single' = each subject is its own large
-// box (TAS/Engineering). This mirrors the original hand-built layout.
-const KLA_LAYOUT = [
-  {kla:'Science', tag:'Science', boxClass:'science-box', tagClass:'science-kla-tag', tagColor:null,      style:'multi' },
-  {kla:'HSIE',    tag:'HSIE',    boxClass:'hsie-box',    tagClass:'hsie-kla-tag',    tagColor:null,      style:'multi' },
-  {kla:'PDHPE',   tag:'PDHPE',   boxClass:'pdhpe-box',   tagClass:'pdhpe-kla-tag',   tagColor:null,      style:'pdhpe' },
-  {kla:'TAS',     tag:'TAS',     boxClass:null,          tagClass:null,              tagColor:null,      style:'single'},
-  {kla:'CAPA',    tag:'CAPA',    boxClass:'science-box', tagClass:'science-kla-tag', tagColor:'#f48fb1', style:'multi' },
-];
-
-let SUBJECTS      = SUBJECTS_FALLBACK;
-let SHEET_NAMES   = [];
-let MC_SHEET_NAMES= [];
-let MC_TAB_FOR    = {};
-let KLA           = {};
-function deriveFromRegistry(){
-  SHEET_NAMES    = SUBJECTS.map(s=>s.code);
-  MC_SHEET_NAMES = SUBJECTS.map(s=>s.code+'_MC');
-  MC_TAB_FOR     = {};
-  KLA            = {};
-  SUBJECTS.forEach(s=>{ MC_TAB_FOR[s.code]=s.code+'_MC'; KLA[s.code]={label:s.full,color:s.color,cls:s.cls}; });
-}
-deriveFromRegistry();
 const MCOL = {
-  'Complex Noun Groups':'#a78bfa','complexNounGroups':'#a78bfa','complexnoungroups':'#a78bfa',
-  'C — Complex Noun Groups':'#a78bfa',
-  'Logical Flow & Structure':'#43d9ad','logicalFlow':'#43d9ad','logicalflow':'#43d9ad','Structure':'#43d9ad',
-  'L — Logical Flow & Structure':'#43d9ad',
-  'Modality':'#e8a030','modality':'#e8a030',
-  'M — Modality':'#e8a030',
-  'Causal Connectives':'#4fc3f7','causalConnectives':'#4fc3f7','causalconnectives':'#4fc3f7',
-  'B — Because/But/So (Causal Connectives)':'#4fc3f7',
-  'Legibility of handwritten response':'#6b7599','Handwriting Clarity':'#6b7599',
-  'Technical Vocabulary':'#6b7599','Technical Communication':'#6b7599',
-  'Technical Accuracy':'#6b7599','Technical Detail':'#6b7599','Technical Precision':'#6b7599',
+  'Complex Noun Groups':'#a78bfa','Logical Flow & Structure':'#43d9ad',
+  'Modality':'#e8a030','Causal Connectives':'#4fc3f7',
+  'Legibility of handwritten response':'#6b7599','Technical Vocabulary':'#6b7599',
 };
 
-let klaData = {}, mcData = {}, activeKLA = null, activeView = 'sa'; // sa = short answer, mc = multiple choice
-let loadFailed = new Set();  // tabs whose fetch failed (≠ empty) — retried before counts render
+// ── STATE ────────────────────────────────────────────────
+let SCOPE = null;                 // {role, label, tabs|null} from /dashscope
+let VISIBLE = [];                 // registry entries filtered to scope, classes trimmed
+let SHEET_NAMES = [];             // SA tabs to load
+let MC_SHEET_NAMES = [];          // MC tabs to load (hasMC subjects only)
+let tabData = {}, mcData = {};
+let loadFailed = new Set();
+let activeSubj = null;            // subj code
+let activeClassTab = 'ALL';       // 'ALL' or a tab name
+let activeView = 'sa';
 let weekOffset = 0;
+let insightsExpanded = false;
+let logExpanded = false, mcLogExpanded = false;
 
+// ── ACCESS KEY + SCOPE (dashkeys-v1.0) ───────────────────────────────────────
+// One short key per subject faculty (e.g. PHYS-xxxx) or a master key. The
+// Worker /dashscope endpoint resolves the key to a scope; /sheet then enforces
+// the same scope server-side, so this file never decides what a key may see.
+function getDashKey(){
+  let k = sessionStorage.getItem('cube_dash_key') || '';
+  if(!k){
+    k = (window.prompt('Enter your CUBE dashboard access key\n(e.g. PHYS-XXXX, or your master key):') || '').trim();
+    if(k) sessionStorage.setItem('cube_dash_key', k);
+  }
+  return k;
+}
+function clearDashKey(){ try { sessionStorage.removeItem('cube_dash_key'); } catch(_){} }
+function switchKey(){ clearDashKey(); location.reload(); }
+
+async function fetchScope(){
+  for(let attempt=0; attempt<3; attempt++){
+    const key = getDashKey();
+    if(!key){ continue; }
+    let r;
+    try { r = await fetch(WORKER_BASE+'/dashscope?key='+encodeURIComponent(key), {cache:'no-store'}); }
+    catch(e){ throw new Error('Could not reach the Worker \u2014 '+e.message); }
+    if(r.status === 403){ clearDashKey(); alert('That access key was not recognised. Please try again.'); continue; }
+    if(!r.ok) throw new Error('Scope check failed ('+r.status+')');
+    return await r.json();
+  }
+  throw new Error('No valid access key entered. Reload the page to try again.');
+}
+
+function applyScope(){
+  const allowed = SCOPE.role === 'master' ? null : new Set(SCOPE.tabs || []);
+  VISIBLE = REGISTRY.map(function(s){
+    const classes = allowed ? s.classes.filter(function(c){ return allowed.has(c.tab); }) : s.classes;
+    return Object.assign({}, s, {classes: classes});
+  }).filter(function(s){ return s.classes.length > 0; });
+  SHEET_NAMES = [];
+  MC_SHEET_NAMES = [];
+  VISIBLE.forEach(function(s){
+    s.classes.forEach(function(c){
+      SHEET_NAMES.push(c.tab);
+      if(s.hasMC) MC_SHEET_NAMES.push(c.tab+'_MC');
+    });
+  });
+  const badge = document.getElementById('scope-badge');
+  badge.textContent = SCOPE.role === 'master' ? '\ud83d\udd11 Master \u00b7 all subjects' : '\ud83d\udd11 '+(SCOPE.label||'Subject view');
+  badge.style.display = 'inline-block';
+  buildSubjectBar();
+}
+
+// ── SUBJECT CHIPS + CLASS PILLS ──────────────────────────
+function subjEntry(code){ return VISIBLE.find(function(s){return s.subj===code;}); }
+
+function buildSubjectBar(){
+  const bar = document.getElementById('subject-bar');
+  const row = document.getElementById('chip-row');
+  if(VISIBLE.length <= 1){ bar.style.display = 'none'; return; }
+  bar.style.display = 'block';
+  row.innerHTML = VISIBLE.map(function(s){
+    return '<div class="chip" id="chip-'+esc(s.subj)+'" onclick="selectSubject(\''+s.subj+'\')">'
+      + '<span>'+s.emoji+'</span><span>'+esc(s.full)+'</span>'
+      + '<span class="chip-kla">'+esc(s.kla)+'</span>'
+      + '<span class="chip-count" id="cnt-'+esc(s.subj)+'">\u2026</span></div>';
+  }).join('');
+}
+
+function buildClassBar(){
+  const bar = document.getElementById('class-bar');
+  const row = document.getElementById('pill-row');
+  const s = subjEntry(activeSubj);
+  if(!s || s.classes.length <= 1){ bar.style.display='none'; return; }
+  bar.style.display = 'block';
+  const pills = [{label:'All classes', tab:'ALL'}].concat(s.classes.map(function(c){return {label:c.label, tab:c.tab};}));
+  row.innerHTML = pills.map(function(p){
+    return '<button class="class-pill" id="pill-'+esc(p.tab)+'" onclick="selectClass(\''+p.tab+'\')">'+esc(p.label)+'</button>';
+  }).join('');
+  stylePills();
+}
+
+function stylePills(){
+  const s = subjEntry(activeSubj); if(!s) return;
+  document.querySelectorAll('.class-pill').forEach(function(el){
+    const active = el.id === 'pill-'+activeClassTab;
+    el.style.borderColor = active ? s.color : '';
+    el.style.color = active ? s.color : '';
+    el.style.background = active ? hexToRgba(s.color, 0.14) : '';
+  });
+}
+
+function styleChips(){
+  VISIBLE.forEach(function(s){
+    const el = document.getElementById('chip-'+s.subj); if(!el) return;
+    const active = s.subj === activeSubj;
+    el.style.borderColor = active ? s.color : '';
+    el.style.color = active ? s.color : '';
+    el.style.background = active ? hexToRgba(s.color, 0.14) : '';
+    el.style.boxShadow = active ? '0 0 0 3px '+hexToRgba(s.color,0.15) : '';
+  });
+}
+
+function selectSubject(code){
+  activeSubj = code;
+  activeClassTab = 'ALL';
+  const s = subjEntry(code);
+  if(!s.hasMC) activeView = 'sa';
+  insightsExpanded = false; logExpanded = false; mcLogExpanded = false;
+  styleChips();
+  buildClassBar();
+  renderAll();
+}
+function selectClass(tab){
+  activeClassTab = tab;
+  stylePills();
+  renderAll();
+}
+
+// ── VIEW TOGGLE (detail sections only — the hero always shows both) ─────────
+function switchView(view){
+  activeView = view;
+  document.getElementById('btn-view-sa').classList.toggle('active', view==='sa');
+  document.getElementById('btn-view-mc').classList.toggle('active', view==='mc');
+  document.getElementById('sa-detail').style.display = view==='sa' ? '' : 'none';
+  document.getElementById('mc-detail').style.display = view==='mc' ? '' : 'none';
+  renderAll();
+}
+
+// ── WEEK WINDOW (Friday 3pm AEST boundaries) ─────────────
 function getWeekBounds(offset) {
   // Week runs from Friday 3pm AEST to the following Friday 3pm AEST.
   // Find the most recent Friday 3pm AEST as the START of the current week.
@@ -540,7 +538,6 @@ function getWeekBounds(offset) {
   var endMs = startMs + 7 * 86400000;   // end = 7 days later (next Friday 3pm)
   return { start: new Date(startMs + offset * 7 * 86400000), end: new Date(endMs + offset * 7 * 86400000) };
 }
-
 function filterByWeek(rows, offset) {
   var b = getWeekBounds(offset);
   return rows.filter(function(r){
@@ -549,13 +546,11 @@ function filterByWeek(rows, offset) {
     return ts >= b.start && ts < b.end;
   });
 }
-
 function weekLabel(offset) {
   var b = getWeekBounds(offset);
   var fmt = function(d){ return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',timeZone:'Australia/Sydney'}); };
   return fmt(b.start) + ' \u2013 ' + fmt(new Date(b.end.getTime()-1));
 }
-
 function changeWeek(delta) {
   weekOffset += delta;
   if (weekOffset > 0) weekOffset = 0;
@@ -565,65 +560,55 @@ function changeWeek(delta) {
   if(lbl) lbl.textContent=weekLabel(weekOffset);
   if(bdg) bdg.textContent=weekOffset===0?'This week':weekOffset===-1?'Last week':Math.abs(weekOffset)+' weeks ago';
   if(nxt) nxt.disabled=weekOffset>=0;
-  if(activeKLA) renderKLA(activeKLA);
+  renderAll();
 }
 
 // ── LOAD ─────────────────────────────────────────────────
 async function loadSheets() {
-  showScreen('loading'); setDot('','Connecting…');
-  klaData = {}; mcData = {};
+  showScreen('loading'); setDot('','Connecting\u2026');
+  tabData = {}; mcData = {};
   try {
-    // Load in small batches rather than ~28 at once — a burst of cold-start /
-    // key-gated requests can make the first batch time out, which previously
-    // showed real subjects (EES, Biology) as "No data yet". Anything that fails
-    // is flagged in loadFailed and retried once below, so the count is accurate.
+    // Small batches — a burst of cold-start requests can time out; anything
+    // that fails is flagged in loadFailed and retried once below.
     await runBatched(SHEET_NAMES, loadTab, 5);
     await runBatched(MC_SHEET_NAMES, loadMCTab, 5);
-
-    // Retry pass — re-fetch only the tabs that failed (not the empty ones).
-    // By now the key is cached and the Apps Script is warm, so cold-start
-    // failures from the first batch resolve here instead of poisoning the count.
     if(loadFailed.size){
-      const retrySA = SHEET_NAMES.filter(k=>loadFailed.has(k));
-      const retryMC = MC_SHEET_NAMES.filter(k=>loadFailed.has('MC:'+k));
+      const retrySA = SHEET_NAMES.filter(function(k){return loadFailed.has(k);});
+      const retryMC = MC_SHEET_NAMES.filter(function(k){return loadFailed.has('MC:'+k);});
       if(retrySA.length) await runBatched(retrySA, loadTab, 3);
       if(retryMC.length) await runBatched(retryMC, loadMCTab, 3);
     }
-
-    SHEET_NAMES.forEach(k => {
-      const el = document.getElementById('cnt-'+k);
-      if(!el) return;
-      const saN = (klaData[k]||[]).length;
-      const mcN = (mcData[k+'_MC']||[]).length;
-      // A tab still in loadFailed after the retry is a genuine failure — mark it
-      // so a real problem is never silently displayed as "No data yet".
-      const failed = loadFailed.has(k) || loadFailed.has('MC:'+k+'_MC');
-      if(failed && saN===0 && mcN===0){
-        el.textContent = '\u26a0 load failed — refresh';
-        el.title = 'This tab could not be read after a retry. Check the Worker / Apps Script, then Refresh Data.';
-      } else if(saN===0 && mcN===0){
-        el.textContent = 'No data yet';
-        el.title = '';
-      } else {
-        el.textContent = saN + ' written \u00b7 ' + mcN + ' MC';
-        el.title = saN + ' short-answer submissions \u00b7 ' + mcN + ' multiple-choice attempts (all time)';
-      }
+    // Per-SUBJECT counts on the chips (sum across the subject's class tabs).
+    VISIBLE.forEach(function(s){
+      const el = document.getElementById('cnt-'+s.subj); if(!el) return;
+      let sa=0, mc=0, failed=false;
+      s.classes.forEach(function(c){
+        sa += (tabData[c.tab]||[]).length;
+        mc += (mcData[c.tab+'_MC']||[]).length;
+        if(loadFailed.has(c.tab) || loadFailed.has('MC:'+c.tab+'_MC')) failed=true;
+      });
+      if(failed && sa===0 && mc===0){ el.textContent='\u26a0'; el.title='Load failed after retry \u2014 Refresh Data'; }
+      else if(sa===0 && mc===0){ el.textContent='0'; el.title='No data yet'; }
+      else { el.textContent = sa+'\u270d '+mc+'MC'; el.title = sa+' short-answer \u00b7 '+mc+' MC attempts (all time)'; }
     });
-    setDot('live','Live · '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})+'  ·  build '+BUILD);
+    setDot('live','Live \u00b7 '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})+'  \u00b7  build '+BUILD);
     console.log('[CUBE dashboard] build:', BUILD);
     showScreen('dashboard');
-    const first = SHEET_NAMES.find(k=>(klaData[k]||[]).length>0)||'EES';
-    switchKLA(activeKLA || first);
+    var lbl=document.getElementById('week-label');
+    if(lbl) lbl.textContent=weekLabel(weekOffset);
+    const first = VISIBLE.find(function(s){
+      return s.classes.some(function(c){ return (tabData[c.tab]||[]).length>0 || (mcData[c.tab+'_MC']||[]).length>0; });
+    }) || VISIBLE[0];
+    selectSubject(activeSubj && subjEntry(activeSubj) ? activeSubj : first.subj);
   } catch(e) {
     setDot('err', e.message);
     document.getElementById('errmsg').textContent = e.message +
-      ' — Check that the Worker is deployed, the DASH_KEY is correct, and the ' +
+      ' \u2014 Check that the Worker is deployed, your access key is correct, and the ' +
       'Apps Script getTab deployment is on its latest version, then Refresh.';
     showScreen('error');
   }
 }
 
-// Run an async fn over items in small batches (limits parallel proxy requests).
 async function runBatched(items, fn, size){
   size = size || 5;
   for(let i=0;i<items.length;i+=size){
@@ -631,52 +616,34 @@ async function runBatched(items, fn, size){
   }
 }
 
-// ── Dashboard access key (Phase 1b) ────────────────────────────────────────
-// The Worker /sheet endpoint is gated by DASH_KEY. This file is public (until
-// Phase 2 moves it behind sureview), so the key is NOT hardcoded — it is asked
-// for once per browser session and held in sessionStorage. A wrong key makes
-// /sheet return 403; we clear it and warn so the next reload re-prompts.
-function getDashKey(){
-  let k = sessionStorage.getItem('cube_dash_key') || '';
-  if(!k){
-    k = (window.prompt('Enter the CUBE dashboard access key:') || '').trim();
-    if(k) sessionStorage.setItem('cube_dash_key', k);
-  }
-  return k;
-}
-function clearDashKey(){ try { sessionStorage.removeItem('cube_dash_key'); } catch(_){} }
-
-// Fetch one tab's CSV. SINGLE path: the Cloudflare Worker /sheet endpoint, which
-// reads the tab through the owner-executed Apps Script (private-sheet safe).
-// The former public fallbacks are gone — they required the spreadsheet to be
-// "anyone with link", which Phase 1b removes in favour of a private sheet.
+// Fetch one tab's CSV through the Worker /sheet endpoint (owner-executed Apps
+// Script, private-sheet safe). Scope is enforced server-side per tab.
 async function fetchTabCsv(name){
-  const ok = t => t && !t.trim().startsWith('<') && !t.trim().toLowerCase().startsWith('error');
-  const key = getDashKey();
-  const worker = `${WORKER_BASE}/sheet?tab=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+  const ok = function(t){ return t && !t.trim().startsWith('<') && !t.trim().toLowerCase().startsWith('error'); };
+  const key = sessionStorage.getItem('cube_dash_key') || '';
+  const worker = WORKER_BASE+'/sheet?tab='+encodeURIComponent(name)+'&key='+encodeURIComponent(key);
   for(let attempt=0; attempt<2; attempt++){
     try {
       const r = await fetch(worker,{cache:'no-store'});
-      if(r.status === 403){                       // bad/missing key — stop, re-prompt next load
+      if(r.status === 403){                       // key revoked mid-session — re-prompt next load
         clearDashKey();
-        if(!window.__dashKeyWarned){ window.__dashKeyWarned = true; alert('Dashboard key was rejected. Reload the page to re-enter it.'); }
+        if(!window.__dashKeyWarned){ window.__dashKeyWarned = true; alert('Your access key was rejected. Reload the page to re-enter it.'); }
         return null;
       }
       if(r.ok){ const t = await r.text(); if(ok(t)) return t; }
     } catch(_){}
-    if(attempt===0) await new Promise(res=>setTimeout(res,400));  // brief backoff before retry
+    if(attempt===0) await new Promise(function(res){setTimeout(res,400);});
   }
   return null;
 }
 
 async function loadTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { klaData[name]=[]; loadFailed.add(name); return; }   // failed ≠ empty — flag for retry
+  if(!text) { tabData[name]=[]; loadFailed.add(name); return; }   // failed ≠ empty
   loadFailed.delete(name);
   const rows = parseCSV(text);
-
   // Recalculate percentages from raw scores — avoids proxy column name/format issues
-  rows.forEach(r => {
+  rows.forEach(function(r){
     const awd = Number(r['Awd Mark']), qm = Number(r['Q Marks']);
     if(!isNaN(awd) && !isNaN(qm) && qm > 0) r['Mark %'] = awd / qm;
     const cxp = Number(r['CUBE XP']), cmax = Number(r['CUBE Max']);
@@ -684,18 +651,18 @@ async function loadTab(name) {
     const wxp = Number(r['Write XP']), wmax = Number(r['Write Max']);
     if(!isNaN(wxp) && !isNaN(wmax) && wmax > 0) r['Write %'] = wxp / wmax;
   });
-
-  klaData[name] = rows.filter(r=>r.Student && String(r.Student)!=='Test Student' && String(r.Student).trim()!=='');
+  tabData[name] = rows.filter(function(r){return r.Student && String(r.Student)!=='Test Student' && String(r.Student).trim()!=='';});
 }
 
 async function loadMCTab(name) {
   const text = await fetchTabCsv(name);
-  if(!text) { mcData[name]=[]; loadFailed.add('MC:'+name); return; }   // failed ≠ empty
+  if(!text) { mcData[name]=[]; loadFailed.add('MC:'+name); return; }
   loadFailed.delete('MC:'+name);
   const rows = parseCSV(text);
-  mcData[name] = rows.filter(r=>r.Student && String(r.Student).trim()!=='');
+  mcData[name] = rows.filter(function(r){return r.Student && String(r.Student).trim()!=='';});
 }
-// Column aliases — maps every known variant to the canonical key
+
+// ── CSV PARSING (unchanged from v1 — layout reconciliation included) ────────
 const COL_ALIAS = {
   'mark%':'Mark %','mark %':'Mark %',
   'cube%':'CUBE %','cube %':'CUBE %',
@@ -730,24 +697,13 @@ const COL_ALIAS = {
   'illegible?':'Illegible ?','illegible ?':'Illegible ?',
   'qno':'Q No','q no':'Q No',
 };
-
 function cleanHeader(h) {
-  // Strip quotes, trim, normalise internal spaces
   const s = h.replace(/^["'\s]+|["'\s]+$/g,'').replace(/\s+/g,' ');
   return COL_ALIAS[s.toLowerCase()] || s;
 }
-
-// ── Layout reconciliation ────────────────────────────────────────────────────
-// Tabs may use different Row-1 header orders (older science tabs, Visual Arts,
-// and future subjects like Music can each differ), and some tabs also contain a
-// mix of historically "old-order" and "new-order" rows. The webhook is now
-// header-aware, so going forward every row matches its tab's header. The only
-// rows that can disagree with their header are legacy ones. We DEFAULT to reading
-// each row by its tab header (correct for any tab whose data matches its header,
-// including brand-new subjects with custom columns) and only remap a row when its
-// own column order — detected by where the model string sits — disagrees with the
-// header. This keeps legacy rows correct without making assumptions that could
-// misread a future subject's bespoke header.
+// Layout reconciliation — tabs may mix historically "old-order" and "new-order"
+// rows. Default to the tab header; remap a row only when its own column order
+// (detected by where the model string sits) disagrees with the header.
 const OLD_LAYOUT_KEYS = ['Timestamp','Student','Session','Attempt','Streak','Q No','Module',
   'Directive','Syllabus Kw','Stage','Model','CUBE XP','CUBE Max','CUBE %','Anno Ideas','Anno Used',
   'Anno XP','W-Con','W-Noun','W-Mod','W-Flow','W-Con Max','W-Noun Max','W-Mod Max','W-Flow Max',
@@ -758,27 +714,23 @@ const NEW_LAYOUT_KEYS = ['Timestamp','Student','Session','Attempt','Streak','Q N
   'Anno XP','W-Con','W-Con Max','W-Noun','W-Noun Max','W-Mod','W-Mod Max','W-Flow','W-Flow Max',
   'Write XP','Write Max','Total XP','Awd Mark','Q Marks','Ind Band','Mission Category','Mission Fix',
   'Student Phrase','Improved Version','Illegible ?','Word Count','Mark %','Class'];
-
 function looksLikeModel(s){ return /claude|sonnet|haiku|gpt/i.test(String(s==null?'':s)); }
 function modelColIndex(vals){ return looksLikeModel(vals[10]) ? 10 : (looksLikeModel(vals[11]) ? 11 : -1); }
-
 function parseCSV(text) {
-  const lines = text.split('\n').filter(l=>l.trim());
+  const lines = text.split('\n').filter(function(l){return l.trim();});
   if(lines.length<2) return [];
   const headers = splitRow(lines[0]).map(cleanHeader);
-  const headerModelIdx = headers.findIndex(h=>String(h).toLowerCase().replace(/[^a-z]/g,'')==='model');
-  return lines.slice(1).map(line=>{
+  const headerModelIdx = headers.findIndex(function(h){return String(h).toLowerCase().replace(/[^a-z]/g,'')==='model';});
+  return lines.slice(1).map(function(line){
     const vals=splitRow(line);
     const dataModelIdx = modelColIndex(vals);
-    // Only remap when the row's own layout clearly disagrees with the header.
     if(dataModelIdx !== -1 && headerModelIdx !== -1 && dataModelIdx !== headerModelIdx){
       const keys = (dataModelIdx === 11) ? NEW_LAYOUT_KEYS : OLD_LAYOUT_KEYS;
-      const obj={}; keys.forEach((k,i)=>{ obj[k]=coerce(vals[i]); }); return obj;
+      const obj={}; keys.forEach(function(k,i){ obj[k]=coerce(vals[i]); }); return obj;
     }
-    const obj={}; headers.forEach((h,i)=>{ obj[h]=coerce(vals[i]); }); return obj;
+    const obj={}; headers.forEach(function(h,i){ obj[h]=coerce(vals[i]); }); return obj;
   });
 }
-
 function splitRow(row) {
   const out=[]; let inQ=false,cur='';
   for(let i=0;i<row.length;i++){
@@ -791,7 +743,6 @@ function splitRow(row) {
   }
   out.push(cur); return out;
 }
-
 function coerce(v) {
   if(v==null) return null;
   const s=String(v).replace(/^["'\s]+|["'\s]+$/g,'').trim();
@@ -799,7 +750,21 @@ function coerce(v) {
   const n=Number(s); return isNaN(n)?s:n;
 }
 
-// ── UI ────────────────────────────────────────────────────
+// ── DATA ACCESS (subject + class scoped) ─────────────────
+function scopedTabs(){
+  const s = subjEntry(activeSubj); if(!s) return [];
+  if(activeClassTab === 'ALL') return s.classes.map(function(c){return c.tab;});
+  return s.classes.filter(function(c){return c.tab===activeClassTab;}).map(function(c){return c.tab;});
+}
+function saRowsAll(){  // all-time SA rows for current subject+class
+  return scopedTabs().reduce(function(a,t){ return a.concat(tabData[t]||[]); }, []);
+}
+function mcRowsAll(){  // all-time MC rows for current subject+class
+  const s = subjEntry(activeSubj); if(!s || !s.hasMC) return [];
+  return scopedTabs().reduce(function(a,t){ return a.concat(mcData[t+'_MC']||[]); }, []);
+}
+
+// ── UI helpers ───────────────────────────────────────────
 function showScreen(w) {
   document.getElementById('loading-screen').style.display = w==='loading' ?'block':'none';
   document.getElementById('error-screen').style.display   = w==='error'   ?'block':'none';
@@ -816,584 +781,31 @@ function hexToRgba(hex,a){
   return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
 }
 function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// Build the subject sidebar entirely from the registry (KLA columns, sub-group
-// headings, class rows, per-subject counts). Reproduces the original layout.
-function buildSidebar(){
-  var grid=document.getElementById('subject-grid'); if(!grid) return;
-  var html='';
-  KLA_LAYOUT.forEach(function(L){
-    var subs=SUBJECTS.filter(function(s){return s.kla===L.kla;});
-    if(!subs.length) return;
-    if(L.style==='single'){
-      subs.forEach(function(s){
-        html+='<div class="subject-box selectable" data-kla="'+esc(s.code)+'" data-code="'+esc(s.code)+'" onclick="switchKLA(\''+s.code+'\')">'
-             +'<div class="kla-tag">'+esc(L.tag)+'</div>'
-             +'<div class="subj-name">'+esc(s.emoji)+' '+esc(s.label)+'</div>'
-             +'<div class="subj-count" id="cnt-'+esc(s.code)+'">Loading\u2026</div></div>';
-      });
-      return;
-    }
-    var itemClass=L.style==='pdhpe'?'pdhpe-subj':'multi-subj';
-    var countClass=L.style==='pdhpe'?'pdhpe-count':'multi-count';
-    var tagStyle=L.tagColor?' style="color:'+L.tagColor+'"':'';
-    var inner='<div class="'+L.tagClass+'"'+tagStyle+'>'+esc(L.tag)+'</div>';
-    var emitted=false, curGroup=null;
-    subs.forEach(function(s){
-      var g=s.group||null;
-      if(g!==curGroup){
-        curGroup=g;
-        if(g){
-          if(emitted) inner+='<div class="multi-divider"></div>';
-          inner+='<div class="multi-sublabel" style="color:'+s.color+'">'+esc(g)+'</div>';
-          emitted=true;
-        }
-      }
-      inner+='<div class="'+itemClass+' selectable" data-code="'+esc(s.code)+'" onclick="switchKLA(\''+s.code+'\')">'
-            +esc(s.emoji)+' '+esc(s.label)
-            +'<span class="'+countClass+'" id="cnt-'+esc(s.code)+'">Loading\u2026</span></div>';
-      emitted=true;
-    });
-    html+='<div class="'+L.boxClass+'" id="klabox-'+esc(L.kla)+'" data-klabox="'+esc(L.kla)+'">'+inner+'</div>';
-  });
-  grid.innerHTML=html;
-}
-
-// Generic, data-driven selection — no per-subject branches.
-function switchKLA(kla) {
-  activeKLA = kla;
-  var subj = SUBJECTS.find(function(s){return s.code===kla;}) || {color:'#f0c030', kla:null};
-  document.querySelectorAll('#subject-grid .selectable').forEach(function(el){
-    var active = el.dataset.code === kla;
-    el.classList.toggle('active', active);
-    if (el.classList.contains('subject-box')) { el.style.background=''; el.style.color=''; }
-    else if (active) { el.style.background = hexToRgba(subj.color,0.15); el.style.color = subj.color; }
-    else { el.style.background=''; el.style.color=''; }
-  });
-  document.querySelectorAll('#subject-grid [data-klabox]').forEach(function(box){
-    if (box.dataset.klabox === subj.kla) {
-      box.style.borderColor = subj.color;
-      box.style.borderWidth = '2.5px';
-      box.style.boxShadow = '0 0 0 3px '+hexToRgba(subj.color,0.18)+', 0 6px 24px '+hexToRgba(subj.color,0.15);
-    } else {
-      box.style.borderColor = 'rgba(240,192,48,0.7)';
-      box.style.borderWidth = '1.5px';
-      box.style.boxShadow = '';
-    }
-  });
-  renderKLA(kla);
-}
-
-// ── VIEW TOGGLE ───────────────────────────────────────────
-function switchView(view) {
-  activeView = view;
-  var sa = document.getElementById('btn-view-sa');
-  var mc = document.getElementById('btn-view-mc');
-  var saRows = ['trophy-banner','stats-row','row1','row2','row3','row4'];
-  if (view === 'sa') {
-    if(sa){sa.style.background='rgba(201,168,76,0.15)';sa.style.borderColor='var(--gold)';sa.style.color='var(--gold)';}
-    if(mc){mc.style.background='transparent';mc.style.borderColor='var(--border)';mc.style.color='var(--text-dim)';}
-    saRows.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='';});
-    var mp=document.getElementById('mc-panel');if(mp)mp.style.display='none';
-  } else {
-    if(mc){mc.style.background='rgba(201,168,76,0.15)';mc.style.borderColor='var(--gold)';mc.style.color='var(--gold)';}
-    if(sa){sa.style.background='transparent';sa.style.borderColor='var(--border)';sa.style.color='var(--text-dim)';}
-    saRows.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
-    var mp=document.getElementById('mc-panel');if(mp)mp.style.display='';
-    if(activeKLA) renderMC(activeKLA);
-  }
-}
-
-// ── RENDER MC ANALYTICS ───────────────────────────────────
-// Robust MC correctness test. NOTE: the value must be compared as a string;
-// wrapping the whole comparison in String() (the old bug) yields "true"/"false",
-// which are both truthy and made every attempt count as correct.
-function mcIsCorrect(r){
-  var v = r['Correct (Y/N)']; if(v==null) v=r.Correct; if(v==null) v='';
-  v = String(v).trim().toLowerCase();
-  return v==='y' || v==='yes' || v==='true' || v==='1';
-}
-function renderMC(kla) {
-  var mcTabName = MC_TAB_FOR[kla];
-  var rows = mcTabName ? (mcData[mcTabName]||[]) : [];
-  var weekRows = filterByWeek(rows, weekOffset);
-  var cfg = KLA[kla];
-  var panel = document.getElementById('mc-panel');
-  if (!panel) return;
-
-  if (!weekRows.length) {
-    panel.innerHTML = '<div class="panel" style="text-align:center;padding:2rem"><div style="color:var(--text-dim);font-size:0.85rem">No MC data this week for '+cfg.label+'.<br>Data will appear as students complete MC sessions.</div></div>';
-    return;
-  }
-
-  // ── Summary stats ─────────────────────────────────────────
-  var total    = weekRows.length;
-  var correct  = weekRows.filter(function(r){return mcIsCorrect(r);}).length;
-  var accuracy = total ? correct/total : 0;
-  var students = [...new Set(weekRows.map(function(r){return r.Student;}).filter(Boolean))];
-  var totalXP  = weekRows.reduce(function(s,r){return s+(Number(r['XP Earned'])||0);},0);
-
-  // ── Accuracy by module ────────────────────────────────────
-  var byMod = {};
-  weekRows.forEach(function(r){
-    var m = r.Module || r.module || '—';
-    if(!byMod[m]) byMod[m] = {total:0,correct:0};
-    byMod[m].total++;
-    if(mcIsCorrect(r)) byMod[m].correct++;
-  });
-  var modStats = Object.entries(byMod).map(function(e){
-    return {module:e[0],total:e[1].total,correct:e[1].correct,acc:e[1].total?e[1].correct/e[1].total:0};
-  }).sort(function(a,b){return a.acc-b.acc;}); // worst first
-
-  // ── Error pattern (reflection types) ─────────────────────
-  var refCounts = {guessed:0,misread:0,noknowledge:0};
-  weekRows.forEach(function(r){
-    var rt = String(r['Reflection Type']||r.reflectionType||'').toLowerCase();
-    if(rt==='guessed') refCounts.guessed++;
-    else if(rt==='misread') refCounts.misread++;
-    else if(rt==='noknowledge') refCounts.noknowledge++;
-  });
-  var wrongTotal = refCounts.guessed + refCounts.misread + refCounts.noknowledge;
-
-  // ── Most missed questions ─────────────────────────────────
-  var qMiss = {};
-  weekRows.forEach(function(r){
-    var isW = !(mcIsCorrect(r));
-    if(!isW) return;
-    var id = r['Question ID']||r.questionId||'—';
-    var txt = r['Question Text']||r.questionText||id;
-    if(!qMiss[id]) qMiss[id]={id:id,text:txt,count:0};
-    qMiss[id].count++;
-  });
-  var missedQ = Object.values(qMiss).sort(function(a,b){return b.count-a.count;}).slice(0,8);
-
-  panel.innerHTML = `
-    <div class="stats-row" style="margin-bottom:1.5rem">
-      <div class="stat-card ${cfg.cls}">
-        <div class="stat-label">MC Attempts</div>
-        <div class="stat-value">${total}</div>
-        <div class="stat-sub">${students.length} student${students.length!==1?'s':''} this week</div>
-      </div>
-      <div class="stat-card c-neutral">
-        <div class="stat-label">Accuracy</div>
-        <div class="stat-value ${accuracy>=0.75?'clr-green':accuracy>=0.5?'clr-amber':'clr-red'}">${pct(accuracy)}</div>
-        <div class="stat-sub">${correct} of ${total} correct</div>
-      </div>
-      <div class="stat-card c-neutral">
-        <div class="stat-label">MC XP Earned</div>
-        <div class="stat-value clr-green">${totalXP}</div>
-        <div class="stat-sub">this week</div>
-      </div>
-      <div class="stat-card c-neutral">
-        <div class="stat-label">Guessing Rate</div>
-        <div class="stat-value ${wrongTotal>0?'clr-amber':'clr-green'}">${wrongTotal>0?pct(refCounts.guessed/wrongTotal):'—'}</div>
-        <div class="stat-sub">of wrong answers were guesses</div>
-      </div>
-    </div>
-    <div class="grid-2 mb">
-      <div class="panel">
-        <div class="panel-title">Accuracy by Module <span>lowest first — focus your teaching here</span></div>
-        <div class="bar-chart">${modStats.map(function(m){return `
-          <div class="bar-row">
-            <div class="bar-label">${m.module}</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${m.acc*100}%;background:${m.acc<0.5?'#ff6b6b':m.acc<0.75?'#e8a030':cfg.color}"></div></div>
-            <div class="bar-val">${pct(m.acc)} <span style="color:var(--text-dim);font-size:0.65rem">(${m.total})</span></div>
-          </div>`;}).join('')}</div>
-        <div class="panel-title" style="font-size:0.72rem;margin-top:1.25rem;margin-bottom:0.75rem">Error patterns (wrong answers only)</div>
-        ${wrongTotal===0?'<div class="no-data">No wrong answers this week</div>':`
-        <div class="bar-chart">
-          <div class="bar-row">
-            <div class="bar-label">🎲 Guessing</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${wrongTotal?refCounts.guessed/wrongTotal*100:0}%;background:#e8a030"></div></div>
-            <div class="bar-val">${refCounts.guessed}</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">📚 Didn't know</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${wrongTotal?refCounts.noknowledge/wrongTotal*100:0}%;background:#ff6b6b"></div></div>
-            <div class="bar-val">${refCounts.noknowledge}</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">👁 Misread</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${wrongTotal?refCounts.misread/wrongTotal*100:0}%;background:#a78bfa"></div></div>
-            <div class="bar-val">${refCounts.misread}</div>
-          </div>
-        </div>`}
-      </div>
-      <div class="panel">
-        <div class="panel-title">Most Missed Questions <span>this week</span></div>
-        ${missedQ.length===0?'<div class="no-data">No missed questions this week</div>':`
-        <div class="rank-list">${missedQ.map(function(q,i){return `
-          <div class="rank-row" style="align-items:flex-start">
-            <span class="rank-num">${i+1}</span>
-            <span class="rank-name" style="font-size:0.7rem;line-height:1.4;white-space:normal;max-width:200px" title="${q.text}">${q.text.slice(0,80)}${q.text.length>80?'…':''}</span>
-            <span class="rank-val" style="color:#ff6b6b">${q.count} wrong</span>
-          </div>`;}).join('')}</div>`}
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">MC Attempt Log <span>Most recent entries</span></div>
-      <div style="overflow-x:auto"><table class="student-table">
-        <thead><tr><th>Student</th><th>Module</th><th>Year</th><th>Question</th><th>Their Answer</th><th>Correct</th><th>Reflection</th><th>XP</th></tr></thead>
-        <tbody>${weekRows.slice().reverse().slice(0,30).map(function(r){
-          var ok = mcIsCorrect(r);
-          return `<tr>
-            <td style="font-weight:600">${r.Student||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r.Module||r.module||'—'}</td>
-            <td style="font-size:0.7rem">${r.Year||r.year||'—'}</td>
-            <td style="font-size:0.68rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Question Text']||''}">${(r['Question Text']||'—').slice(0,60)}${(r['Question Text']||'').length>60?'…':''}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Student Answer']||r.studentAnswer||'—'}</td>
-            <td style="color:${ok?'var(--green)':'var(--red)'};font-weight:700">${ok?'✓':'✗'}</td>
-            <td style="font-size:0.68rem">${r['Reflection Type']||r.reflectionType||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['XP Earned']||'0'}</td>
-          </tr>`;}).join('')}</tbody>
-      </table></div>
-    </div>`;
-}
-
-// ── RENDER ────────────────────────────────────────────────
-function renderKLA(kla) {
-  var allRows=klaData[kla]||[], cfg=KLA[kla];
-  var lbl=document.getElementById('week-label');
-  if(lbl&&lbl.textContent==='Loading...') { lbl.textContent=weekLabel(weekOffset); }
-  var rows=filterByWeek(allRows, weekOffset);
-  if (activeView === 'mc') {
-    renderMC(kla);
-    return;
-  }
-  if(!allRows.length){
-    document.getElementById('trophy-banner').innerHTML='';
-    document.getElementById('stats-row').innerHTML=
-      '<div class="no-data" style="grid-column:1/-1">No data yet for '+cfg.label+'. Data will appear as students use CUBE Marking Coach.</div>';
-    ['row1','row2','row3','row4'].forEach(function(id){document.getElementById(id).innerHTML='';});
-    return;
-  }
-  renderStats(rows, allRows, cfg);
-  renderRow1(allRows,cfg);
-  renderRow2(allRows,cfg);
-  renderRow3(allRows,cfg);
-  renderRow4(allRows,cfg);
-}
-
+function avg(a){return a.length?a.reduce(function(s,v){return s+v;},0)/a.length:0;}
+function pct(v){return Math.round((v||0)*100)+'%';}
+function groupBy(a,fn){return a.reduce(function(acc,i){const k=fn(i);if(!acc[k])acc[k]=[];acc[k].push(i);return acc;},{});}
 function colourCls(val, hi, mid) {
   if(val==null||isNaN(val)) return '';
   if(val>=hi) return 'clr-green';
   if(val>=mid) return 'clr-amber';
   return 'clr-red';
 }
-
-function rankList(students, valueFn, fmt, limit) {
-  limit = limit||8;
-  var map={};
-  students.forEach(function(r){
-    var s=r.Student; if(!s) return;
-    if(!map[s]) map[s]={name:s,vals:[]};
-    var v=valueFn(r); if(v!=null&&!isNaN(v)) map[s].vals.push(Number(v));
-  });
-  var ranked=Object.values(map)
-    .filter(function(s){return s.vals.length>0;})
-    .map(function(s){return{name:s.name,val:avg(s.vals)};})
-    .sort(function(a,b){return b.val-a.val;})
-    .slice(0,limit);
-  if(!ranked.length) return '<div style="font-size:0.68rem;color:var(--text-dim);padding-top:0.5rem">No data this week</div>';
-  return '<div class="rank-list">'+ranked.map(function(s,i){
-    return '<div class="rank-row"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+s.name+'">'+s.name+'</span><span class="rank-val">'+fmt(s)+'</span></div>';
-  }).join('')+'</div>';
+function mcIsCorrect(r){
+  var v = r['Correct (Y/N)']; if(v==null) v=r.Correct; if(v==null) v='';
+  v = String(v).trim().toLowerCase();
+  return v==='y' || v==='yes' || v==='true' || v==='1';
 }
-
-function rankListCount(students, limit) {
-  limit = limit||8;
-  var map={};
-  students.forEach(function(r){var s=r.Student; if(!s) return; map[s]=(map[s]||0)+1;});
-  var ranked=Object.entries(map).map(function(e){return{name:e[0],count:e[1]};}).sort(function(a,b){return b.count-a.count;}).slice(0,limit);
-  if(!ranked.length) return '<div style="font-size:0.68rem;color:var(--text-dim);padding-top:0.5rem">No submissions this week</div>';
-  return '<div class="rank-list">'+ranked.map(function(s,i){
-    return '<div class="rank-row"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+s.name+'">'+s.name+'</span><span class="rank-val">'+s.count+'</span></div>';
-  }).join('')+'</div>';
-}
-
-function renderStats(rows, allRows, cfg) {
-  var xpMap={};
-  rows.forEach(function(r){
-    var s=r.Student; if(!s) return;
-    var xp=Math.round(Number(r['Total XP'])||0);
-    xpMap[s]=(xpMap[s]||0)+xp;
-  });
-  var top3=Object.entries(xpMap).map(function(e){return{name:e[0],xp:e[1]};}).sort(function(a,b){return b.xp-a.xp;}).slice(0,3);
-  var medals=['&#127947;','&#129352;','&#129353;'];
-  document.getElementById('trophy-banner').innerHTML = top3.length ? (
-    '<div class="trophy-banner">'+
-      '<div class="trophy-title">&#127942; This Week\'s Top 3 &mdash; Total XP</div>'+
-      '<div class="trophy-row">'+top3.map(function(s,i){
-        return '<div class="trophy-card"><div class="trophy-medal">'+medals[i]+'</div><div><div class="trophy-name">'+s.name+'</div><div class="trophy-xp">'+s.xp+' XP</div></div></div>';
-      }).join('')+'</div>'+
-    '</div>'
-  ) : '<div class="trophy-banner" style="text-align:center;color:var(--text-dim);font-size:0.8rem;padding:0.8rem 1.25rem">No submissions this week yet.</div>';
-
-  var vm=rows.filter(function(r){return r['Mark %']!=null;});
-  var aM=vm.length?avg(vm.map(function(r){return r['Mark %'];})):null;
-  var aC=avg(rows.filter(function(r){return r['CUBE %']!=null;}).map(function(r){return r['CUBE %'];}));
-  var aW=avg(rows.filter(function(r){return r['Write %']!=null;}).map(function(r){return r['Write %'];}));
-  var stu=new Set(rows.map(function(r){return r.Student;})).size;
-  var totalXP=Object.values(xpMap).reduce(function(a,b){return a+b;},0);
-
-  document.getElementById('stats-row').innerHTML=
-    '<div class="stat-card '+cfg.cls+'">'+
-      '<div class="stat-label">Submissions</div>'+
-      '<div class="stat-value">'+rows.length+'</div>'+
-      '<div class="stat-sub">'+stu+' student'+(stu!==1?'s':'')+' this week</div>'+
-      rankListCount(rows)+
-    '</div>'+
-    '<div class="stat-card c-neutral">'+
-      '<div class="stat-label">Avg Mark</div>'+
-      '<div class="stat-value '+colourCls(aM,0.75,0.5)+'">'+(aM!=null?pct(aM):'&mdash;')+'</div>'+
-      '<div class="stat-sub">of available marks</div>'+
-      rankList(rows.filter(function(r){return r['Mark %']!=null;}), function(r){return r['Mark %'];}, function(s){return pct(s.val);})+
-    '</div>'+
-    '<div class="stat-card c-neutral">'+
-      '<div class="stat-label">CUBE Score</div>'+
-      '<div class="stat-value '+colourCls(aC,0.7,0.45)+'">'+(rows.length?pct(aC):'&mdash;')+'</div>'+
-      '<div class="stat-sub">question deconstruction</div>'+
-      rankList(rows.filter(function(r){return r['CUBE %']!=null;}), function(r){return r['CUBE %'];}, function(s){return pct(s.val);})+
-    '</div>'+
-    '<div class="stat-card c-neutral">'+
-      '<div class="stat-label">Writing Score</div>'+
-      '<div class="stat-value '+colourCls(aW,0.75,0.5)+'">'+(rows.length?pct(aW):'&mdash;')+'</div>'+
-      '<div class="stat-sub">literacy framework</div>'+
-      rankList(rows.filter(function(r){return r['Write %']!=null;}), function(r){return r['Write %'];}, function(s){return pct(s.val);})+
-    '</div>'+
-    '<div class="stat-card c-neutral">'+
-      '<div class="stat-label">Total XP</div>'+
-      '<div class="stat-value clr-green">'+(totalXP||'&mdash;')+'</div>'+
-      '<div class="stat-sub">class XP this week</div>'+
-      rankList(rows.filter(function(r){return r['Total XP']!=null;}), function(r){return Number(r['Total XP'])||0;}, function(s){return Math.round(s.val)+' XP';})+
-    '</div>';
-}
-
-function renderRow1(rows,cfg) {
-  // ── a. Avg mark by directive ──────────────────────────────────────────────
-  const byDir=groupBy(rows.filter(r=>r['Mark %']!=null),r=>r.Directive||'Unknown');
-  const dirs=Object.entries(byDir).map(([d,rs])=>({label:d,val:avg(rs.map(r=>r['Mark %'])),count:rs.length})).sort((a,b)=>b.val-a.val).slice(0,8);
-
-  // ── b. CUBE: % submissions where CUBE was attempted (CUBE XP > 0) ────────
-  const cubeRows=rows.filter(r=>r['CUBE XP']!=null);
-  const cubeAttempted=cubeRows.filter(r=>r['CUBE XP']>0).length;
-  const cubePctAttempt=cubeRows.length>0?cubeAttempted/cubeRows.length:0;
-  const cA=avg(rows.filter(r=>r['CUBE %']!=null).map(r=>r['CUBE %']));
-
-  // ── c. Annotations ────────────────────────────────────────────────────────
-  const aR=rows.filter(r=>r['Anno Ideas']!=null&&r['Anno Used']!=null);
-  const tI=aR.reduce((s,r)=>s+(r['Anno Ideas']||0),0);
-  const tU=aR.reduce((s,r)=>s+(r['Anno Used']||0),0);
-  const ar=tI>0?tU/tI:0;
-  const annoSubmissions=aR.filter(r=>(r['Anno Ideas']||0)>0).length; // submissions with any annotations
-
-  // ── d. Writing component scores — normalised using per-row max ────────────
-  function compPct(rows, scoreCol, maxCol) {
-    const valid = rows.filter(r => r[scoreCol] != null && !isNaN(r[scoreCol]));
-    if (!valid.length) return null;
-    return avg(valid.map(r => {
-      const mx = (r[maxCol] != null && !isNaN(r[maxCol]) && r[maxCol] > 0) ? r[maxCol] : 5;
-      return Math.min(r[scoreCol], mx) / mx;
-    }));
-  }
-  const wi=[
-    ['Causal Connectives',       compPct(rows,'W-Con','W-Con Max'),   '#4fc3f7'],
-    ['Complex Noun Groups',      compPct(rows,'W-Noun','W-Noun Max'), '#a78bfa'],
-    ['Modality',                 compPct(rows,'W-Mod','W-Mod Max'),   '#e8a030'],
-    ['Logical Flow & Structure', compPct(rows,'W-Flow','W-Flow Max'), '#43d9ad'],
-  ].filter(([,v])=>v!=null&&!isNaN(v));
-
-  // ── e. Literacy focus areas (4 core tools only) + legibility count separate
-  const mc={};
-  rows.forEach(r=>{const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
-  const FOCUS_ORDER=[
-    'Causal Connectives',
-    'Complex Noun Groups',
-    'Modality',
-    'Logical Flow & Structure',
-  ];
-  const me=FOCUS_ORDER.filter(k=>mc[k]>0).map(k=>[k,mc[k]]);
-  const maxM=me.length>0?Math.max(...me.map(e=>e[1])):1;
-  const legibilityCount=mc['Legibility of handwritten response']||0;
-
-  document.getElementById('row1').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Avg Mark % by HSC Directive <span>${dirs.length} directives</span></div>
-      <div class="bar-chart" style="margin-bottom:1.5rem">${dirs.map(d=>`
-        <div class="bar-row">
-          <div class="bar-label" title="${d.label}">${d.label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${d.val*100}%;background:${cfg.color}"></div></div>
-          <div class="bar-val">${pct(d.val)}</div>
-        </div>`).join('')}</div>
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Writing component scores (% of max)</div>
-      <div class="bar-chart" style="margin-bottom:1.25rem">${wi.length?wi.map(([label,val,color])=>`
-        <div class="bar-row">
-          <div class="bar-label">${label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
-          <div class="bar-val">${pct(val)}</div>
-        </div>`).join(''):'<div class="no-data" style="padding:0.5rem 0">No writing component data yet</div>'}</div>
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Literacy focus areas <span style="font-size:0.6rem;color:var(--text-dim);font-weight:400;letter-spacing:0">higher = more students needed coaching here</span></div>
-      ${me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data yet</div>':`
-      <div class="mission-freq">${me.map(([name,count])=>`
-        <div class="mission-row">
-          <div class="mission-name">${name}</div>
-          <div class="mission-bar-track"><div class="mission-bar-fill" style="width:${(count/maxM)*100}%;background:${MCOL[name]||'#6b7599'}"></div></div>
-          <div class="mission-count">${count}</div>
-        </div>`).join('')}
-      </div>`}
-    </div>
-    <div class="panel">
-      <div class="panel-title">Question Deconstruction with CUBE</div>
-
-      <div style="margin-bottom:1.25rem">
-        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">CUBE attempted</div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-          <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#4fc3f7">${Math.round(cubePctAttempt*100)}%</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of submissions<br>had CUBE markings</div>
-        </div>
-        <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${cubePctAttempt*100}%;background:#4fc3f7"></div></div>
-      </div>
-
-      <div style="margin-bottom:1.25rem">
-        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">CUBE effectiveness</div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-          <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#4fc3f7">${pct(cA)}</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">avg accuracy of<br>CUBE markings</div>
-        </div>
-        <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${cA*100}%;background:#4fc3f7"></div></div>
-      </div>
-
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.75rem">Question annotations</div>
-      ${aR.length===0?'<div class="no-data" style="padding:0.5rem 0">No annotation data available</div>':`
-        <div style="margin-bottom:1rem">
-          <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">Questions annotated</div>
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-            <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#c9a84c">${annoSubmissions}</div>
-            <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of ${aR.length} submissions<br>had planning notes</div>
-          </div>
-          <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${aR.length>0?(annoSubmissions/aR.length)*100:0}%;background:#c9a84c"></div></div>
-        </div>
-        <div style="margin-bottom:1.25rem">
-          <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace">Annotations used in response</div>
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
-            <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:#c9a84c">${pct(ar)}</div>
-            <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">of annotated ideas<br>used in written response</div>
-          </div>
-          <div class="bar-track" style="height:6px"><div class="bar-fill" style="width:${ar*100}%;background:#c9a84c"></div></div>
-        </div>
-      `}
-
-      <div class="panel-title" style="font-size:0.72rem;margin-bottom:0.5rem">Handwriting clarity</div>
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1.6rem;font-weight:800;color:${legibilityCount>0?'#ff6b6b':'#43d9ad'}">${legibilityCount}</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);line-height:1.4">${legibilityCount===0?'of '+rows.length+' submissions flagged —<br>good handwriting across the class':'of '+rows.length+' submissions flagged<br>as priority for improvement'}</div>
-      </div>
-
-    </div>`;
-}
-
-function renderRow2(rows,cfg) {
-  // ── HSC Band Distribution ────────────────────────────────────────────────
-  // Band-marked work (e.g. Visual Arts) is assessed holistically against NESA
-  // performance-band descriptors, so it is reported here as a distribution
-  // rather than folded into the Mark % averages (which are mark-based).
-  function bandLabel(v){
-    if(v==null) return null;
-    var s=String(v).trim();
-    if(/^E[1-4]$/i.test(s)) return 'Band '+s.toUpperCase();
-    var n=Number(s);
-    if(!isNaN(n) && Math.abs(n-Math.round(n))<1e-9){ n=Math.round(n); if(n>=1&&n<=6) return 'Band '+n; }
-    return null; // fractional / non-band values (e.g. a stray Mark %) are not bands
-  }
-  var counts={};
-  rows.forEach(function(r){ var b=bandLabel(r['Ind Band']); if(b) counts[b]=(counts[b]||0)+1; });
-  var labels=Object.keys(counts);
-  if(!labels.length){ document.getElementById('row2').innerHTML=''; return; }
-  var total=labels.reduce(function(a,k){return a+counts[k];},0);
-  function rank(l){ var m=l.replace('Band ',''); return /^E/i.test(m)?Number(m.slice(1)):Number(m); }
-  labels.sort(function(a,b){return rank(b)-rank(a);}); // highest band first
-  var maxC=Math.max.apply(null,labels.map(function(k){return counts[k];}));
-  document.getElementById('row2').innerHTML=
-    '<div class="panel">'+
-      '<div class="panel-title">HSC Band Distribution <span>'+total+' band-marked response'+(total!==1?'s':'')+'</span></div>'+
-      '<div class="bar-chart">'+labels.map(function(k){
-        var c=counts[k], p=Math.round(c/total*100);
-        return '<div class="bar-row">'+
-            '<div class="bar-label" title="'+k+'">'+k+'</div>'+
-            '<div class="bar-track"><div class="bar-fill" style="width:'+(c/maxC*100)+'%;background:'+cfg.color+'"></div></div>'+
-            '<div class="bar-val">'+c+' <span style="color:var(--text-dim)">('+p+'%)</span></div>'+
-          '</div>';
-      }).join('')+'</div>'+
-      '<div style="font-size:0.72rem;color:var(--text-dim);line-height:1.4;margin-top:0.85rem">'+
-        'Band-marked responses are assessed holistically against NESA performance-band descriptors, '+
-        'so they are shown as a distribution here and are <strong>not</strong> included in the Mark&nbsp;% averages above.'+
-      '</div>'+
-    '</div>';
-}
-
-function renderRow3(rows,cfg) {
-  const ex=rows.filter(r=>r['Student Phrase']&&r['Improved Version']&&!String(r['Student Phrase']).includes('illegible')&&r['Mission Category']).slice(0,6);
-  if(!ex.length){document.getElementById('row3').innerHTML='';return;}
-  const mCls=m=>{const n=(m||'').toLowerCase();if(n.includes('causal'))return'fix-causal';if(n.includes('noun'))return'fix-noun';if(n.includes('flow'))return'fix-flow';if(n.includes('modal'))return'fix-mod';return'fix-other';};
-  document.getElementById('row3').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Student Writing Improvements <span>AI-generated rewrites via CUBE framework</span></div>
-      <div class="example-grid">${ex.map(r=>`
-        <div class="example-card ${mCls(r['Mission Category'])}">
-          <div class="ex-label">${normM(r['Mission Category'])} · ${r['Directive']||''}</div>
-          <div class="ex-before">${r['Student Phrase']}</div>
-          <div class="ex-after">${r['Improved Version']}</div>
-          <div class="ex-kw">${r['Syllabus Kw']||''}</div>
-        </div>`).join('')}</div>
-    </div>`;
-}
-
-function renderRow4(rows,cfg) {
-  // A row counts as a submission if it has a mark-based result (Mark %) OR a
-  // band-based result (Ind Band). Band-marked subjects (e.g. Visual Arts) have
-  // no Mark %, so filtering on Mark % alone hid them entirely.
-  const hasBand=r=>r['Ind Band']!=null && String(r['Ind Band']).trim()!=='';
-  const tr=rows.filter(r=>r['Mark %']!=null||hasBand(r)).sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp)).slice(0,25);
-  const pill=p=>p>=0.85?'<span class="pill high">High</span>':p>=0.6?'<span class="pill mid">Mid</span>':'<span class="pill low">Low</span>';
-  const bandCell=r=>hasBand(r)?`<span class="pill">Band ${r['Ind Band']}</span>`:(r['Mark %']!=null?pill(r['Mark %']):'—');
-  document.getElementById('row4').innerHTML=`
-    <div class="panel">
-      <div class="panel-title">Submission Log <span>Most recent ${tr.length} entries</span></div>
-      <div style="overflow-x:auto"><table class="student-table">
-        <thead><tr><th>Student</th><th>Q No</th><th>Directive</th><th>Syllabus Keywords</th><th>Mark</th><th>Mark %</th><th>CUBE %</th><th>Write %</th><th>Literacy Focus</th><th>Band</th></tr></thead>
-        <tbody>${tr.map(r=>`
-          <tr>
-            <td style="font-weight:600">${r.Student}</td>
-            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem">${r['Q No']||'—'}</td>
-            <td>${r.Directive||'—'}</td>
-            <td style="font-size:0.7rem;color:#e8eaf0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['Syllabus Kw']||''}">${r['Syllabus Kw']||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Awd Mark']!=null?r['Awd Mark']:'—'}/${r['Q Marks']||'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Mark %']!=null?pct(r['Mark %']):'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['CUBE %']!=null?pct(r['CUBE %']):'—'}</td>
-            <td style="font-family:'IBM Plex Mono',monospace">${r['Write %']!=null?pct(r['Write %']):'—'}</td>
-            <td style="font-size:0.72rem;color:#e8eaf0">${normM(r['Mission Category'])}</td>
-            <td>${bandCell(r)}</td>
-          </tr>`).join('')}</tbody>
-      </table></div>
-    </div>`;
-}
-
-// ── UTILS ─────────────────────────────────────────────────
-function avg(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:0;}
-function pct(v){return Math.round((v||0)*100)+'%';}
-function groupBy(a,fn){return a.reduce((acc,i)=>{const k=fn(i);if(!acc[k])acc[k]=[];acc[k].push(i);return acc;},{});}
 function normM(m){
   if(!m)return'Other';
   const map={
-    // Raw AI outputs → clean display labels
     'complex noun groups':'Complex Noun Groups','complexnoungroups':'Complex Noun Groups',
-    'c — complex noun groups':'Complex Noun Groups',
+    'c \u2014 complex noun groups':'Complex Noun Groups',
     'logicalflow':'Logical Flow & Structure','logical flow':'Logical Flow & Structure',
-    'l — logical flow & structure':'Logical Flow & Structure','structure':'Logical Flow & Structure',
+    'l \u2014 logical flow & structure':'Logical Flow & Structure','structure':'Logical Flow & Structure',
     'modality':'Modality',
-    'm — modality':'Modality',
+    'm \u2014 modality':'Modality',
     'causalconnectives':'Causal Connectives','causal connectives':'Causal Connectives',
-    'b — because/but/so (causal connectives)':'Causal Connectives',
+    'b \u2014 because/but/so (causal connectives)':'Causal Connectives',
     'handwriting clarity':'Legibility of handwritten response',
     'legibility and precision':'Legibility of handwritten response',
     'legibility':'Legibility of handwritten response',
@@ -1403,28 +815,472 @@ function normM(m){
   };
   const hit = map[String(m).toLowerCase()];
   if(hit) return hit;
-  // Fallback: a bare camelCase code (e.g. "causalConnectives") → "Causal Connectives".
-  // Phrase-style categories (with spaces, e.g. Visual Arts frame descriptions) are left as-is.
   const s = String(m);
   if(/^[a-z]+([A-Z][a-z]+)+$/.test(s))
-    return s.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).trim();
+    return s.replace(/([A-Z])/g,' $1').replace(/^./,function(c){return c.toUpperCase();}).trim();
   return s;
 }
 
-// Startup. The registry is embedded below (SUBJECTS_FALLBACK) — we do NOT fetch
-// it at runtime, because the hosted URL is not reachable from school (DET)
-// networks. subjects.json still ships as the human-readable canonical copy and
-// for the server-side webhook to read; this dashboard uses the embedded copy.
-function boot(){
-  deriveFromRegistry();
-  buildSidebar();
+// ── RENDER ───────────────────────────────────────────────
+function renderAll(){
+  const s = subjEntry(activeSubj); if(!s) return;
+  const tgl = document.getElementById('view-toggle');
+  tgl.style.display = s.hasMC ? 'flex' : 'none';
+  if(!s.hasMC){ activeView='sa'; document.getElementById('sa-detail').style.display=''; document.getElementById('mc-detail').style.display='none'; }
+  renderHero(s);
+  if(activeView === 'sa'){
+    renderImprovements(s);
+    renderInsights(s);
+    renderBandAccordion(s);
+    renderLogAccordion(s);
+  } else {
+    renderMCDetail(s);
+  }
+}
+
+// 1 · THIS WEEK HERO — combined SA + MC usage --------------------------------
+function renderHero(s){
+  const saAll = saRowsAll(), mcAll = mcRowsAll();
+  const saWk = filterByWeek(saAll, weekOffset), mcWk = filterByWeek(mcAll, weekOffset);
+  const el = document.getElementById('hero');
+  const classLabel = activeClassTab==='ALL'
+    ? (s.classes.length>1 ? 'all classes' : (s.classes[0]&&s.classes[0].label)||'')
+    : ((s.classes.find(function(c){return c.tab===activeClassTab;})||{}).label||activeClassTab);
+
+  // Per-student weekly rollup: written count, MC count, combined XP, last active
+  const stu = {};
+  function ensure(n){ if(!stu[n]) stu[n]={name:n, sa:0, mc:0, xp:0, last:null}; return stu[n]; }
+  saWk.forEach(function(r){
+    if(!r.Student) return;
+    const o=ensure(r.Student); o.sa++;
+    o.xp += Math.round(Number(r['Total XP'])||0);
+    const ts=new Date(r.Timestamp); if(!o.last||ts>o.last) o.last=ts;
+  });
+  mcWk.forEach(function(r){
+    if(!r.Student) return;
+    const o=ensure(r.Student); o.mc++;
+    o.xp += Math.round(Number(r['XP Earned'])||0);
+    const ts=new Date(r.Timestamp); if(!isNaN(ts) && (!o.last||ts>o.last)) o.last=ts;
+  });
+  const active = Object.values(stu).sort(function(a,b){return b.xp-a.xp || (b.sa+b.mc)-(a.sa+a.mc);});
+  const everSeen = new Set(saAll.map(function(r){return r.Student;}).concat(mcAll.map(function(r){return r.Student;})).filter(Boolean));
+  const inactive = Math.max(0, everSeen.size - active.length);
+
+  // Trophy Top 3 by combined XP
+  const medals=['\ud83c\udfc6','\ud83e\udd48','\ud83e\udd49'];
+  const top3 = active.slice(0,3);
+  const trophy = top3.length ?
+    '<div class="trophy-banner">'+
+      '<div class="trophy-title">\ud83c\udfc6 This Week\u2019s Top 3 \u2014 '+esc(s.full)+' ('+esc(classLabel)+') \u00b7 XP from written + MC</div>'+
+      '<div class="trophy-row">'+top3.map(function(t,i){
+        return '<div class="trophy-card"><div class="trophy-medal">'+medals[i]+'</div><div><div class="trophy-name">'+esc(t.name)+'</div><div class="trophy-xp">'+t.xp+' XP \u00b7 '+t.sa+'\u270d '+t.mc+'MC</div></div></div>';
+      }).join('')+'</div>'+
+    '</div>' : '';
+
+  const dayName = function(d){ return d ? d.toLocaleDateString('en-AU',{weekday:'short',timeZone:'Australia/Sydney'}) : '\u2014'; };
+  const table = active.length ? (
+    '<div style="overflow-x:auto"><table class="student-table">'+
+      '<thead><tr><th>#</th><th>Student</th><th>\u270d\ufe0f Written</th><th>\ud83d\udccb MC</th><th>XP</th><th class="hide-xs">Last active</th></tr></thead>'+
+      '<tbody>'+active.map(function(t,i){
+        return '<tr><td class="mono" style="color:var(--text-dim)">'+(i+1)+'</td>'+
+          '<td style="font-weight:600">'+esc(t.name)+'</td>'+
+          '<td class="mono">'+(t.sa||'\u2014')+'</td>'+
+          '<td class="mono">'+(t.mc||'\u2014')+'</td>'+
+          '<td class="mono" style="color:var(--gold);font-weight:700">'+t.xp+'</td>'+
+          '<td class="hide-xs" style="font-size:0.7rem;color:var(--text-dim)">'+dayName(t.last)+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+
+    '<div class="usage-foot">'+active.length+' student'+(active.length!==1?'s':'')+' active this week \u00b7 '+
+      inactive+' student'+(inactive!==1?'s':'')+' seen previously with no activity this week</div>'
+  ) : '<div class="no-data">No activity this week for '+esc(s.full)+' ('+esc(classLabel)+'). Use \u2190 Prev to look at earlier weeks.</div>';
+
+  el.innerHTML =
+    trophy+
+    '<div class="panel">'+
+      '<div class="panel-title">This Week \u00b7 Who\u2019s Been Using CUBE <span>'+esc(s.full)+' \u00b7 '+esc(classLabel)+'</span></div>'+
+      table+
+    '</div>';
+}
+
+// 2 · STUDENT WRITING IMPROVEMENTS (said → recommended) ----------------------
+function renderImprovements(s){
+  const el = document.getElementById('improvements');
+  const pick = function(rows){
+    return rows.filter(function(r){
+      return r['Student Phrase'] && r['Improved Version'] &&
+        !String(r['Student Phrase']).includes('illegible') && r['Mission Category'];
+    }).sort(function(a,b){ return new Date(b.Timestamp)-new Date(a.Timestamp); }).slice(0,6);
+  };
+  let ex = pick(filterByWeek(saRowsAll(), weekOffset));
+  let scopeNote = 'this week';
+  if(!ex.length){ ex = pick(saRowsAll()); scopeNote = 'most recent (all time)'; }
+  if(!ex.length){ el.innerHTML=''; return; }
+  const mCls=function(m){const n=(m||'').toLowerCase();if(n.includes('causal'))return'fix-causal';if(n.includes('noun'))return'fix-noun';if(n.includes('flow'))return'fix-flow';if(n.includes('modal'))return'fix-mod';return'fix-other';};
+  el.innerHTML =
+    '<div class="panel">'+
+      '<div class="panel-title">Student Writing Improvements <span>what they wrote \u2192 what CUBE recommended \u00b7 '+scopeNote+'</span></div>'+
+      '<div class="example-grid">'+ex.map(function(r){
+        return '<div class="example-card '+mCls(r['Mission Category'])+'">'+
+          '<div class="ex-label">'+esc(normM(r['Mission Category']))+' \u00b7 '+esc(r['Directive']||'')+'</div>'+
+          '<div class="ex-before">'+esc(r['Student Phrase'])+'</div>'+
+          '<div class="ex-after">'+esc(r['Improved Version'])+'</div>'+
+          '<div class="ex-kw">'+esc(r['Syllabus Kw']||'')+'</div>'+
+        '</div>';
+      }).join('')+'</div>'+
+    '</div>';
+}
+
+// 3 · COACHING INSIGHTS — 5 headline tiles + expandable full detail ----------
+function renderInsights(s){
+  const el = document.getElementById('insights');
+  const rows = filterByWeek(saRowsAll(), weekOffset);
+  if(!rows.length){
+    el.innerHTML = '<div class="panel"><div class="panel-title">Coaching Insights <span>this week</span></div>'+
+      '<div class="no-data">No written submissions this week \u2014 insights will appear as students submit.</div></div>';
+    return;
+  }
+  // Avg mark
+  const vm = rows.filter(function(r){return r['Mark %']!=null;});
+  const aM = vm.length ? avg(vm.map(function(r){return r['Mark %'];})) : null;
+  // Weakest directive (lowest avg Mark % — prefer directives with ≥2 samples)
+  const byDir = groupBy(vm, function(r){return r.Directive||'Unknown';});
+  let dirStats = Object.entries(byDir).map(function(e){return {label:e[0], val:avg(e[1].map(function(r){return r['Mark %'];})), count:e[1].length};});
+  const multi = dirStats.filter(function(d){return d.count>=2;});
+  const weakest = (multi.length?multi:dirStats).sort(function(a,b){return a.val-b.val;})[0] || null;
+  // Top literacy focus area (most frequent coaching category, 4 core tools)
+  const FOCUS_ORDER=['Causal Connectives','Complex Noun Groups','Modality','Logical Flow & Structure'];
+  const mc={}; rows.forEach(function(r){const m=normM(r['Mission Category']);mc[m]=(mc[m]||0)+1;});
+  const focus = FOCUS_ORDER.filter(function(k){return mc[k]>0;})
+    .map(function(k){return {name:k,count:mc[k]};})
+    .sort(function(a,b){return b.count-a.count;})[0] || null;
+  // CUBE attempted / annotations used
+  const cubeRows = rows.filter(function(r){return r['CUBE XP']!=null;});
+  const cubeAttempted = cubeRows.filter(function(r){return r['CUBE XP']>0;}).length;
+  const cubePctAttempt = cubeRows.length>0 ? cubeAttempted/cubeRows.length : null;
+  const aR = rows.filter(function(r){return r['Anno Ideas']!=null && r['Anno Used']!=null;});
+  const tI = aR.reduce(function(sum,r){return sum+(r['Anno Ideas']||0);},0);
+  const tU = aR.reduce(function(sum,r){return sum+(r['Anno Used']||0);},0);
+  const ar = tI>0 ? tU/tI : null;
+
+  const tiles =
+    '<div class="insight-row">'+
+      '<div class="insight-tile"><div class="tile-label">Avg Mark</div>'+
+        '<div class="tile-value '+colourCls(aM,0.75,0.5)+'">'+(aM!=null?pct(aM):'\u2014')+'</div>'+
+        '<div class="tile-sub">'+vm.length+' marked submission'+(vm.length!==1?'s':'')+'</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">Weakest Directive</div>'+
+        '<div class="tile-value clr-red" style="font-size:1.05rem;line-height:1.2">'+(weakest?esc(weakest.label):'\u2014')+'</div>'+
+        '<div class="tile-sub">'+(weakest?pct(weakest.val)+' avg \u00b7 teach this verb next':'no marked work yet')+'</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">Top Literacy Focus</div>'+
+        '<div class="tile-value clr-amber" style="font-size:1.05rem;line-height:1.2">'+(focus?esc(focus.name):'\u2014')+'</div>'+
+        '<div class="tile-sub">'+(focus?focus.count+' student'+(focus.count!==1?'s':'')+' coached here':'no coaching data yet')+'</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">CUBE Attempted</div>'+
+        '<div class="tile-value '+colourCls(cubePctAttempt,0.7,0.45)+'">'+(cubePctAttempt!=null?pct(cubePctAttempt):'\u2014')+'</div>'+
+        '<div class="tile-sub">of submissions had CUBE markings</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">Annotations Used</div>'+
+        '<div class="tile-value '+colourCls(ar,0.7,0.45)+'">'+(ar!=null?pct(ar):'\u2014')+'</div>'+
+        '<div class="tile-sub">of annotated ideas made it into the response</div></div>'+
+    '</div>'+
+    '<button class="detail-toggle" onclick="toggleInsights()">'+(insightsExpanded?'Hide detail \u25b4':'Show full detail \u25be')+'</button>'+
+    (insightsExpanded ? renderInsightDetail(rows, s) : '');
+
+  el.innerHTML =
+    '<div class="panel">'+
+      '<div class="panel-title">Coaching Insights <span>this week \u00b7 headline view \u2014 expand for the full breakdown</span></div>'+
+      tiles+
+    '</div>';
+}
+function toggleInsights(){ insightsExpanded = !insightsExpanded; renderAll(); }
+
+// Expanded detail — the former "busy" panels, now opt-in and week-scoped.
+function renderInsightDetail(rows, s){
+  const cfg = {color:s.color};
+  const vm = rows.filter(function(r){return r['Mark %']!=null;});
+  const byDir = groupBy(vm, function(r){return r.Directive||'Unknown';});
+  const dirs = Object.entries(byDir).map(function(e){return {label:e[0], val:avg(e[1].map(function(r){return r['Mark %'];})), count:e[1].length};})
+    .sort(function(a,b){return a.val-b.val;}).slice(0,8);  // weakest first — teach these
+  function compPct(rows, scoreCol, maxCol) {
+    const valid = rows.filter(function(r){ return r[scoreCol] != null && !isNaN(r[scoreCol]); });
+    if (!valid.length) return null;
+    return avg(valid.map(function(r){
+      const mx = (r[maxCol] != null && !isNaN(r[maxCol]) && r[maxCol] > 0) ? r[maxCol] : 5;
+      return Math.min(r[scoreCol], mx) / mx;
+    }));
+  }
+  const wi=[
+    ['Causal Connectives',       compPct(rows,'W-Con','W-Con Max'),   '#4fc3f7'],
+    ['Complex Noun Groups',      compPct(rows,'W-Noun','W-Noun Max'), '#a78bfa'],
+    ['Modality',                 compPct(rows,'W-Mod','W-Mod Max'),   '#e8a030'],
+    ['Logical Flow & Structure', compPct(rows,'W-Flow','W-Flow Max'), '#43d9ad'],
+  ].filter(function(x){return x[1]!=null&&!isNaN(x[1]);});
+  const mcCounts={}; rows.forEach(function(r){const m=normM(r['Mission Category']);mcCounts[m]=(mcCounts[m]||0)+1;});
+  const FOCUS_ORDER=['Causal Connectives','Complex Noun Groups','Modality','Logical Flow & Structure'];
+  const me=FOCUS_ORDER.filter(function(k){return mcCounts[k]>0;}).map(function(k){return [k,mcCounts[k]];});
+  const maxM=me.length>0?Math.max.apply(null,me.map(function(e){return e[1];})):1;
+  const legibilityCount=mcCounts['Legibility of handwritten response']||0;
+  const cubeRows=rows.filter(function(r){return r['CUBE XP']!=null;});
+  const cubeAttempted=cubeRows.filter(function(r){return r['CUBE XP']>0;}).length;
+  const cubePctAttempt=cubeRows.length>0?cubeAttempted/cubeRows.length:0;
+  const cA=avg(rows.filter(function(r){return r['CUBE %']!=null;}).map(function(r){return r['CUBE %'];}));
+  const aR=rows.filter(function(r){return r['Anno Ideas']!=null&&r['Anno Used']!=null;});
+  const tI=aR.reduce(function(sum,r){return sum+(r['Anno Ideas']||0);},0);
+  const tU=aR.reduce(function(sum,r){return sum+(r['Anno Used']||0);},0);
+  const ar=tI>0?tU/tI:0;
+  const annoSubmissions=aR.filter(function(r){return (r['Anno Ideas']||0)>0;}).length;
+  const bigStat = function(label, value, sub, color){
+    return '<div style="margin-bottom:1rem">'+
+      '<div style="font-size:0.66rem;color:var(--text-dim);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.1em;font-family:\'IBM Plex Mono\',monospace">'+label+'</div>'+
+      '<div style="display:flex;align-items:center;gap:0.75rem"><div style="font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;font-size:1.4rem;font-weight:800;color:'+color+'">'+value+'</div>'+
+      '<div style="font-size:0.72rem;color:var(--text-dim);line-height:1.35">'+sub+'</div></div></div>';
+  };
+  return '<div class="grid-2" style="margin-top:1rem;margin-bottom:0">'+
+    '<div>'+
+      '<div class="panel-title" style="font-size:0.72rem">Avg Mark % by Directive <span>weakest first</span></div>'+
+      '<div class="bar-chart" style="margin-bottom:1.25rem">'+dirs.map(function(d){
+        return '<div class="bar-row"><div class="bar-label" title="'+esc(d.label)+'">'+esc(d.label)+'</div>'+
+          '<div class="bar-track"><div class="bar-fill" style="width:'+(d.val*100)+'%;background:'+cfg.color+'"></div></div>'+
+          '<div class="bar-val">'+pct(d.val)+' <span style="color:var(--text-dim);font-size:0.6rem">('+d.count+')</span></div></div>';
+      }).join('')+'</div>'+
+      '<div class="panel-title" style="font-size:0.72rem">Writing Components <span>% of max</span></div>'+
+      '<div class="bar-chart" style="margin-bottom:1.25rem">'+(wi.length?wi.map(function(x){
+        return '<div class="bar-row"><div class="bar-label">'+x[0]+'</div>'+
+          '<div class="bar-track"><div class="bar-fill" style="width:'+(x[1]*100)+'%;background:'+x[2]+'"></div></div>'+
+          '<div class="bar-val">'+pct(x[1])+'</div></div>';
+      }).join(''):'<div class="no-data" style="padding:0.5rem 0">No writing component data this week</div>')+'</div>'+
+      '<div class="panel-title" style="font-size:0.72rem">Literacy Focus Areas <span>higher = more coaching needed</span></div>'+
+      (me.length===0?'<div class="no-data" style="padding:0.5rem 0">No literacy focus data this week</div>':
+      '<div class="mission-freq">'+me.map(function(e){
+        return '<div class="mission-row"><div class="mission-name">'+e[0]+'</div>'+
+          '<div class="mission-bar-track"><div class="mission-bar-fill" style="width:'+((e[1]/maxM)*100)+'%;background:'+(MCOL[e[0]]||'#6b7599')+'"></div></div>'+
+          '<div class="mission-count">'+e[1]+'</div></div>';
+      }).join('')+'</div>')+
+    '</div>'+
+    '<div>'+
+      '<div class="panel-title" style="font-size:0.72rem">Question Deconstruction with CUBE</div>'+
+      bigStat('CUBE attempted', Math.round(cubePctAttempt*100)+'%', 'of submissions had CUBE markings', '#4fc3f7')+
+      bigStat('CUBE effectiveness', pct(cA), 'avg accuracy of CUBE markings', '#4fc3f7')+
+      (aR.length===0?'<div class="no-data" style="padding:0.5rem 0">No annotation data this week</div>':
+        bigStat('Questions annotated', annoSubmissions, 'of '+aR.length+' submissions had planning notes', '#c9a84c')+
+        bigStat('Annotations used', pct(ar), 'of annotated ideas used in the written response', '#c9a84c'))+
+      bigStat('Handwriting clarity', legibilityCount,
+        legibilityCount===0?'of '+rows.length+' submissions flagged \u2014 good handwriting across the class'
+                           :'of '+rows.length+' submissions flagged as priority for improvement',
+        legibilityCount>0?'#ff6b6b':'#43d9ad')+
+    '</div>'+
+  '</div>';
+}
+
+// 4 · ACCORDIONS — band distribution + submission log (default collapsed) ----
+function accordion(id, title, sub, bodyHtml, open){
+  return '<div class="accordion'+(open?' open':'')+'" id="'+id+'">'+
+    '<button class="acc-head" onclick="toggleAccordion(\''+id+'\')">'+title+
+      '<span class="acc-sub">'+sub+'</span><span class="acc-chev">\u25be</span></button>'+
+    '<div class="acc-body">'+bodyHtml+'</div></div>';
+}
+function toggleAccordion(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+function renderBandAccordion(s){
+  const el = document.getElementById('acc-band');
+  const rows = saRowsAll();  // cumulative — band attainment is not a weekly metric
+  function bandLabel(v){
+    if(v==null) return null;
+    var str=String(v).trim();
+    if(/^E[1-4]$/i.test(str)) return 'Band '+str.toUpperCase();
+    var n=Number(str);
+    if(!isNaN(n) && Math.abs(n-Math.round(n))<1e-9){ n=Math.round(n); if(n>=1&&n<=6) return 'Band '+n; }
+    return null;
+  }
+  var counts={};
+  rows.forEach(function(r){ var b=bandLabel(r['Ind Band']); if(b) counts[b]=(counts[b]||0)+1; });
+  var labels=Object.keys(counts);
+  if(!labels.length){ el.innerHTML=''; return; }
+  var total=labels.reduce(function(a,k){return a+counts[k];},0);
+  function rank(l){ var m=l.replace('Band ',''); return /^E/i.test(m)?Number(m.slice(1)):Number(m); }
+  labels.sort(function(a,b){return rank(b)-rank(a);});
+  var maxC=Math.max.apply(null,labels.map(function(k){return counts[k];}));
+  const body =
+    '<div class="bar-chart">'+labels.map(function(k){
+      var c=counts[k], p=Math.round(c/total*100);
+      return '<div class="bar-row"><div class="bar-label" title="'+k+'">'+k+'</div>'+
+        '<div class="bar-track"><div class="bar-fill" style="width:'+(c/maxC*100)+'%;background:'+s.color+'"></div></div>'+
+        '<div class="bar-val">'+c+' <span style="color:var(--text-dim)">('+p+'%)</span></div></div>';
+    }).join('')+'</div>'+
+    '<div style="font-size:0.72rem;color:var(--text-dim);line-height:1.4;margin-top:0.85rem">'+
+      'Band-marked responses are assessed holistically against NESA performance-band descriptors, '+
+      'so they are shown as a distribution here and are <strong>not</strong> included in the Mark&nbsp;% averages above.'+
+    '</div>';
+  const wasOpen = el.querySelector('.accordion.open') !== null;
+  el.innerHTML = accordion('band-acc', 'HSC Band Distribution', total+' band-marked response'+(total!==1?'s':'')+' \u00b7 all time', body, wasOpen);
+}
+
+function renderLogAccordion(s){
+  const el = document.getElementById('acc-log');
+  const hasBand=function(r){return r['Ind Band']!=null && String(r['Ind Band']).trim()!=='';};
+  const all = saRowsAll().filter(function(r){return r['Mark %']!=null||hasBand(r);})
+    .sort(function(a,b){return new Date(b.Timestamp)-new Date(a.Timestamp);});
+  if(!all.length){ el.innerHTML=''; return; }
+  const tr = logExpanded ? all.slice(0,100) : all.slice(0,10);
+  const pill=function(p){return p>=0.85?'<span class="pill high">High</span>':p>=0.6?'<span class="pill mid">Mid</span>':'<span class="pill low">Low</span>';};
+  const bandCell=function(r){return hasBand(r)?'<span class="pill">Band '+esc(r['Ind Band'])+'</span>':(r['Mark %']!=null?pill(r['Mark %']):'\u2014');};
+  const body =
+    '<div style="overflow-x:auto"><table class="student-table">'+
+      '<thead><tr><th>Student</th><th class="hide-xs">Q No</th><th>Directive</th><th class="hide-xs">Syllabus Keywords</th><th>Mark</th><th class="hide-xs">CUBE %</th><th class="hide-xs">Write %</th><th class="hide-xs">Literacy Focus</th><th>Band</th></tr></thead>'+
+      '<tbody>'+tr.map(function(r){
+        return '<tr><td style="font-weight:600">'+esc(r.Student)+'</td>'+
+          '<td class="mono hide-xs" style="font-size:0.7rem">'+esc(r['Q No']||'\u2014')+'</td>'+
+          '<td>'+esc(r.Directive||'\u2014')+'</td>'+
+          '<td class="hide-xs" style="font-size:0.7rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(r['Syllabus Kw']||'')+'">'+esc(r['Syllabus Kw']||'\u2014')+'</td>'+
+          '<td class="mono">'+(r['Awd Mark']!=null?esc(r['Awd Mark']):'\u2014')+'/'+esc(r['Q Marks']||'\u2014')+'</td>'+
+          '<td class="mono hide-xs">'+(r['CUBE %']!=null?pct(r['CUBE %']):'\u2014')+'</td>'+
+          '<td class="mono hide-xs">'+(r['Write %']!=null?pct(r['Write %']):'\u2014')+'</td>'+
+          '<td class="hide-xs" style="font-size:0.72rem">'+esc(normM(r['Mission Category']))+'</td>'+
+          '<td>'+bandCell(r)+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+
+    (all.length>10 ? '<button class="show-all-btn" onclick="toggleLog()">'+(logExpanded?'Show recent 10 only':'Show all '+Math.min(all.length,100)+' entries')+'</button>' : '');
+  const wasOpen = el.querySelector('.accordion.open') !== null;
+  el.innerHTML = accordion('log-acc', 'Submission Log', 'most recent '+tr.length+' of '+all.length+' \u00b7 all time', body, wasOpen);
+}
+function toggleLog(){
+  logExpanded = !logExpanded;
+  const s = subjEntry(activeSubj); if(!s) return;
+  renderLogAccordion(s);
+  const acc=document.getElementById('log-acc'); if(acc) acc.classList.add('open');
+}
+
+// 5 · MC DETAIL (behind the toggle) ------------------------------------------
+function renderMCDetail(s){
+  const panel = document.getElementById('mc-detail');
+  const weekRows = filterByWeek(mcRowsAll(), weekOffset);
+  if(!weekRows.length){
+    panel.innerHTML = '<div class="panel" style="text-align:center;padding:2rem"><div style="color:var(--text-dim);font-size:0.85rem">No MC data this week for '+esc(s.full)+'.<br>Data will appear as students complete MC sessions.</div></div>';
+    return;
+  }
+  var total    = weekRows.length;
+  var correct  = weekRows.filter(function(r){return mcIsCorrect(r);}).length;
+  var accuracy = total ? correct/total : 0;
+  var students = Object.keys(groupBy(weekRows.filter(function(r){return r.Student;}), function(r){return r.Student;})).length;
+  var totalXP  = weekRows.reduce(function(sum,r){return sum+(Number(r['XP Earned'])||0);},0);
+  var byMod = {};
+  weekRows.forEach(function(r){
+    var m = r.Module || r.module || '\u2014';
+    if(!byMod[m]) byMod[m] = {total:0,correct:0};
+    byMod[m].total++;
+    if(mcIsCorrect(r)) byMod[m].correct++;
+  });
+  var modStats = Object.entries(byMod).map(function(e){
+    return {module:e[0],total:e[1].total,correct:e[1].correct,acc:e[1].total?e[1].correct/e[1].total:0};
+  }).sort(function(a,b){return a.acc-b.acc;});
+  var refCounts = {guessed:0,misread:0,noknowledge:0};
+  weekRows.forEach(function(r){
+    var rt = String(r['Reflection Type']||r.reflectionType||'').toLowerCase();
+    if(rt==='guessed') refCounts.guessed++;
+    else if(rt==='misread') refCounts.misread++;
+    else if(rt==='noknowledge') refCounts.noknowledge++;
+  });
+  var wrongTotal = refCounts.guessed + refCounts.misread + refCounts.noknowledge;
+  var qMiss = {};
+  weekRows.forEach(function(r){
+    if(mcIsCorrect(r)) return;
+    var id = r['Question ID']||r.questionId||'\u2014';
+    var txt = r['Question Text']||r.questionText||id;
+    if(!qMiss[id]) qMiss[id]={id:id,text:txt,count:0};
+    qMiss[id].count++;
+  });
+  var missedQ = Object.values(qMiss).sort(function(a,b){return b.count-a.count;}).slice(0,8);
+  var errBar = function(icon,label,count,color){
+    return '<div class="bar-row"><div class="bar-label">'+icon+' '+label+'</div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+(wrongTotal?count/wrongTotal*100:0)+'%;background:'+color+'"></div></div>'+
+      '<div class="bar-val">'+count+'</div></div>';
+  };
+  var logRows = weekRows.slice().reverse();
+  var shown = mcLogExpanded ? logRows.slice(0,100) : logRows.slice(0,10);
+  var logBody =
+    '<div style="overflow-x:auto"><table class="student-table">'+
+      '<thead><tr><th>Student</th><th class="hide-xs">Module</th><th class="hide-xs">Year</th><th>Question</th><th>Ans</th><th>\u2713/\u2717</th><th class="hide-xs">Reflection</th><th>XP</th></tr></thead>'+
+      '<tbody>'+shown.map(function(r){
+        var ok = mcIsCorrect(r);
+        var qt = String(r['Question Text']||'\u2014');
+        return '<tr><td style="font-weight:600">'+esc(r.Student||'\u2014')+'</td>'+
+          '<td class="mono hide-xs" style="font-size:0.7rem">'+esc(r.Module||r.module||'\u2014')+'</td>'+
+          '<td class="hide-xs" style="font-size:0.7rem">'+esc(r.Year||r.year||'\u2014')+'</td>'+
+          '<td style="font-size:0.68rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(qt)+'">'+esc(qt.slice(0,60))+(qt.length>60?'\u2026':'')+'</td>'+
+          '<td class="mono">'+esc(r['Student Answer']||r.studentAnswer||'\u2014')+'</td>'+
+          '<td style="color:'+(ok?'var(--green)':'var(--red)')+';font-weight:700">'+(ok?'\u2713':'\u2717')+'</td>'+
+          '<td class="hide-xs" style="font-size:0.68rem">'+esc(r['Reflection Type']||r.reflectionType||'\u2014')+'</td>'+
+          '<td class="mono">'+esc(r['XP Earned']||'0')+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+
+    (logRows.length>10 ? '<button class="show-all-btn" onclick="toggleMCLog()">'+(mcLogExpanded?'Show recent 10 only':'Show all '+Math.min(logRows.length,100)+' entries')+'</button>' : '');
+
+  panel.innerHTML =
+    '<div class="insight-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.25rem">'+
+      '<div class="insight-tile"><div class="tile-label">MC Attempts</div><div class="tile-value">'+total+'</div>'+
+        '<div class="tile-sub">'+students+' student'+(students!==1?'s':'')+' this week</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">Accuracy</div>'+
+        '<div class="tile-value '+(accuracy>=0.75?'clr-green':accuracy>=0.5?'clr-amber':'clr-red')+'">'+pct(accuracy)+'</div>'+
+        '<div class="tile-sub">'+correct+' of '+total+' correct</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">MC XP Earned</div><div class="tile-value clr-green">'+totalXP+'</div>'+
+        '<div class="tile-sub">this week</div></div>'+
+      '<div class="insight-tile"><div class="tile-label">Guessing Rate</div>'+
+        '<div class="tile-value '+(wrongTotal>0?'clr-amber':'clr-green')+'">'+(wrongTotal>0?pct(refCounts.guessed/wrongTotal):'\u2014')+'</div>'+
+        '<div class="tile-sub">of wrong answers were guesses</div></div>'+
+    '</div>'+
+    '<div class="grid-2 mb">'+
+      '<div class="panel">'+
+        '<div class="panel-title">Accuracy by Module <span>lowest first \u2014 focus teaching here</span></div>'+
+        '<div class="bar-chart">'+modStats.map(function(m){
+          return '<div class="bar-row"><div class="bar-label">'+esc(m.module)+'</div>'+
+            '<div class="bar-track"><div class="bar-fill" style="width:'+(m.acc*100)+'%;background:'+(m.acc<0.5?'#ff6b6b':m.acc<0.75?'#e8a030':s.color)+'"></div></div>'+
+            '<div class="bar-val">'+pct(m.acc)+' <span style="color:var(--text-dim);font-size:0.65rem">('+m.total+')</span></div></div>';
+        }).join('')+'</div>'+
+        '<div class="panel-title" style="font-size:0.72rem;margin-top:1.25rem;margin-bottom:0.75rem">Error patterns (wrong answers only)</div>'+
+        (wrongTotal===0?'<div class="no-data">No wrong answers this week</div>':
+        '<div class="bar-chart">'+
+          errBar('\ud83c\udfb2','Guessing',refCounts.guessed,'#e8a030')+
+          errBar('\ud83d\udcda','Didn\u2019t know',refCounts.noknowledge,'#ff6b6b')+
+          errBar('\ud83d\udc41','Misread',refCounts.misread,'#a78bfa')+
+        '</div>')+
+      '</div>'+
+      '<div class="panel">'+
+        '<div class="panel-title">Most Missed Questions <span>this week</span></div>'+
+        (missedQ.length===0?'<div class="no-data">No missed questions this week</div>':
+        '<div style="display:flex;flex-direction:column;gap:0.5rem">'+missedQ.map(function(q,i){
+          var t = String(q.text);
+          return '<div style="display:flex;gap:0.5rem;align-items:flex-start">'+
+            '<span class="mono" style="font-size:0.6rem;color:var(--text-dim);flex-shrink:0;padding-top:0.15rem">'+(i+1)+'</span>'+
+            '<span style="font-size:0.7rem;line-height:1.4;flex:1" title="'+esc(t)+'">'+esc(t.slice(0,80))+(t.length>80?'\u2026':'')+'</span>'+
+            '<span class="mono" style="font-size:0.68rem;color:#ff6b6b;flex-shrink:0;font-weight:700">'+q.count+' wrong</span></div>';
+        }).join('')+'</div>')+
+      '</div>'+
+    '</div>'+
+    accordion('mc-log-acc','MC Attempt Log','most recent '+shown.length+' of '+logRows.length+' \u00b7 this week',logBody,mcLogExpanded);
+}
+function toggleMCLog(){
+  mcLogExpanded = !mcLogExpanded;
+  const s = subjEntry(activeSubj); if(!s) return;
+  renderMCDetail(s);
+  const acc=document.getElementById('mc-log-acc'); if(acc) acc.classList.add('open');
+}
+
+// ── STARTUP ──────────────────────────────────────────────
+async function boot(){
   showScreen('loading');
-  loadSheets();
+  try {
+    SCOPE = await fetchScope();
+    applyScope();
+    if(!VISIBLE.length){
+      throw new Error('Your key\u2019s subjects are not in this dashboard\u2019s registry \u2014 contact the CUBE administrator.');
+    }
+    await loadSheets();
+  } catch(e){
+    setDot('err', e.message);
+    document.getElementById('errmsg').textContent = e.message;
+    showScreen('error');
+  }
 }
 boot();
 </script>
-<!-- Phase 1b — readable (white) build stamp, fixed bottom-right -->
-<div id="build-stamp" style="position:fixed;bottom:6px;right:10px;z-index:9999;pointer-events:none;font:11px/1.4 ui-monospace,Menlo,Consolas,monospace;color:#ffffff;opacity:0.65;text-shadow:0 1px 2px rgba(0,0,0,0.6);">CUBE dashboard · build <span id="bs-build"></span> · <span id="bs-loaded"></span></div>
+<div id="build-stamp" style="position:fixed;bottom:6px;right:10px;z-index:9999;pointer-events:none;font:11px/1.4 ui-monospace,Menlo,Consolas,monospace;color:#ffffff;opacity:0.65;text-shadow:0 1px 2px rgba(0,0,0,0.6);">CUBE dashboard &middot; build <span id="bs-build"></span> &middot; <span id="bs-loaded"></span></div>
 <script>
   (function(){
     var b = document.getElementById('bs-build');
