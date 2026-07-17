@@ -150,8 +150,12 @@ main { padding: 1.5rem 2.5rem; }
 .error-msg { font-size:0.82rem; color:var(--text-dim); line-height:1.7; }
 #dashboard { display:none; }
 
+/* CONTROLS ROW — mode buttons + week nav share one line on desktop; the week
+   nav drops to its own full-width line on mobile (html.mobile-ui) */
+.controls-row{display:flex;align-items:center;gap:0.75rem 1rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+
 /* WEEK NAV */
-.week-nav{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:0.7rem 1.2rem;}
+.week-nav{display:flex;align-items:center;gap:1rem;flex:1 1 320px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:0.7rem 1.2rem;}
 .week-nav-btn{background:rgba(201,168,76,0.18);border:2px solid rgba(201,168,76,0.55);color:var(--gold-light);border-radius:8px;padding:0.4rem 1rem;cursor:pointer;font-size:1.1rem;font-weight:900;transition:all 0.15s;line-height:1;letter-spacing:0.05em;}
 .week-nav-btn:hover{background:rgba(201,168,76,0.35);border-color:var(--gold-light);color:#fff;}
 .week-nav-btn:disabled{opacity:0.25;cursor:default;}
@@ -174,17 +178,31 @@ main { padding: 1.5rem 2.5rem; }
 .mb { margin-bottom:1.25rem; }
 .no-data { text-align:center; padding:1.5rem; color:var(--text-dim); font-size:0.82rem; font-style:italic; }
 
-/* TROPHIES */
+/* TROPHIES — plain 1/2/3 rank numerals (no cup/medal emoji), counts in subject
+   colour, weekly/total XP as the big line */
 .trophy-banner{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
 .trophy-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
 .trophy-row{display:flex;gap:0.75rem;flex-wrap:wrap;}
-.trophy-card{flex:1;min-width:140px;display:flex;align-items:center;gap:0.6rem;background:rgba(0,0,0,0.2);border-radius:8px;padding:0.6rem 0.9rem;border:1px solid rgba(255,255,255,0.07);}
-.trophy-medal{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.trophy-card{flex:1;min-width:200px;display:flex;align-items:center;gap:0.75rem;background:rgba(0,0,0,0.2);border-radius:8px;padding:0.6rem 0.9rem;border:1px solid rgba(255,255,255,0.07);}
+.trophy-rank{width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900;font-size:1.15rem;line-height:1;flex-shrink:0;border:2px solid;}
+.trophy-rank.r1{color:#ffd700;border-color:#ffd700;background:rgba(255,215,0,0.12);}
+.trophy-rank.r2{color:#c5cede;border-color:#c5cede;background:rgba(197,206,222,0.12);}
+.trophy-rank.r3{color:#d08a4e;border-color:#d08a4e;background:rgba(208,138,78,0.12);}
+.trophy-line1{display:flex;align-items:baseline;gap:0.55rem;flex-wrap:wrap;min-width:0;}
 .trophy-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:0.85rem;color:#fff;}
-.trophy-xp{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--gold);margin-top:0.1rem;}
+.trophy-counts{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.trophy-counts .tc-dim{opacity:0.55;font-weight:400;}
+.trophy-xp{font-family:'IBM Plex Mono',monospace;font-size:1.05rem;font-weight:800;color:var(--gold);margin-top:0.2rem;line-height:1.2;}
+.trophy-xp .txp-wk{color:var(--gold-light);}
+.trophy-xp .txp-sep{color:var(--text-dim);font-weight:400;font-size:0.8rem;}
+/* (mobile rules for the classes above live in the html.mobile-ui block below) */
 
 /* HERO USAGE TABLE */
 .student-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+/* .compact — usage table hugs its content so columns sit close together */
+.student-table.compact { width:auto; }
+.student-table.compact th, .student-table.compact td { padding:0.45rem 0.65rem; white-space:nowrap; }
+.td-dim { color:var(--text-dim); font-weight:400; }
 .student-table th { font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:#e8eaf0; text-align:left; padding:0.45rem 0.7rem; border-bottom:1px solid var(--border); font-weight:700; }
 .student-table td { padding:0.5rem 0.7rem; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
 .student-table tr:last-child td { border-bottom:none; }
@@ -260,7 +278,7 @@ main { padding: 1.5rem 2.5rem; }
 .pill.high { background:rgba(67,217,173,0.15); color:var(--green);  border-color:rgba(67,217,173,0.3); }
 .pill.mid  { background:rgba(201,168,76,0.15);  color:var(--gold);   border-color:rgba(201,168,76,0.3); }
 .pill.low  { background:rgba(255,107,107,0.15); color:var(--red);    border-color:rgba(255,107,107,0.3); }
-.view-toggle { display:flex; gap:10px; margin-bottom:1.25rem; }
+.view-toggle { display:flex; gap:10px; }
 .view-btn {
   padding:8px 20px; border-radius:8px; border:1.5px solid var(--border); background:transparent; color:var(--text-dim);
   font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
@@ -273,47 +291,82 @@ main { padding: 1.5rem 2.5rem; }
 }
 .show-all-btn:hover { color:var(--gold); border-color:var(--border-gold); }
 
-/* ── MOBILE ── standalone GitHub Pages (NOT the Google Sites iframe), so plain
-   media queries are reliable here. */
-@media(max-width:768px){
-  body{ overflow-x:hidden; }
-  header{ padding:0.9rem 1rem; }
-  .btn-refresh, .btn-research{ padding:0.45rem 0.8rem; font-size:0.6rem; }
-  .panel{ padding:1rem; }
-  .acc-head{ padding:0.8rem 1rem; font-size:0.72rem; }
-  h1{ font-size:1.25rem; }
-  .header-right{ align-items:flex-start; width:100%; }
-  #scope-banner{ padding:0.9rem 1rem; }
-  .sb-title{ font-size:1.3rem; }
-  .sb-stats{ gap:1.25rem; }
-  .sb-num{ font-size:1.3rem; }
-  .sb-stat{ text-align:left; }
-  #subject-bar, #class-bar{ padding-left:1rem; padding-right:1rem; }
-  .fac-grid{ grid-template-columns:repeat(2,1fr); }
-  .fac-counts{ font-size:0.74rem; }
-  main{ padding:1rem; }
-  .insight-row, .insight-row-4{ grid-template-columns:repeat(2,1fr); gap:0.7rem; }
-  .grid-2{ grid-template-columns:1fr; }
-  .week-nav{ padding:0.55rem 0.7rem; gap:0.5rem; }
-  .week-label{ font-size:0.78rem; }
-  .week-nav-btn{ padding:0.35rem 0.7rem; font-size:0.9rem; }
-  .trophy-card{ min-width:110px; padding:0.5rem 0.7rem; }
-  .student-table{ font-size:0.72rem; }
-  .student-table th, .student-table td{ padding:0.4rem 0.45rem; }
-  .bar-label{ width:110px; font-size:0.72rem; }
-  .mission-name{ width:120px; font-size:0.72rem; }
-}
-@media(max-width:480px){
-  .fac-grid{ grid-template-columns:1fr; }
-  .example-grid{ grid-template-columns:1fr; }
-  .tile-value{ font-size:1.25rem; }
-  .sb-stats{ gap:1rem; }
-  .fac-desc{ display:none; }
-  .hide-xs{ display:none; }
-  .week-badge{ display:none; }
-  .trophy-row{ flex-direction:column; }
-}
+/* ── MOBILE ── class-driven, NOT media queries. Plain media queries flip back
+   to the desktop layout whenever innerWidth crosses 768px — phone rotation,
+   the URL bar collapsing, or a webview reporting a desktop width ("sometimes
+   reverts to desktop view"). The detector script in <head> sets html.mobile-ui
+   / html.mobile-xs instead: UA-mobile devices are LATCHED (the class is never
+   removed for them), while desktop browsers still toggle on window resize. */
+html.mobile-ui body{ overflow-x:hidden; }
+html.mobile-ui header{ padding:0.9rem 1rem; }
+html.mobile-ui .btn-refresh, html.mobile-ui .btn-research{ padding:0.45rem 0.8rem; font-size:0.6rem; }
+html.mobile-ui .panel{ padding:1rem; }
+html.mobile-ui .acc-head{ padding:0.8rem 1rem; font-size:0.72rem; }
+html.mobile-ui h1{ font-size:1.25rem; }
+html.mobile-ui .header-right{ align-items:flex-start; width:100%; }
+html.mobile-ui #scope-banner{ padding:0.9rem 1rem; }
+html.mobile-ui .sb-title{ font-size:1.3rem; }
+html.mobile-ui .sb-stats{ gap:1.25rem; }
+html.mobile-ui .sb-num{ font-size:1.3rem; }
+html.mobile-ui .sb-stat{ text-align:left; }
+html.mobile-ui #subject-bar, html.mobile-ui #class-bar{ padding-left:1rem; padding-right:1rem; }
+html.mobile-ui .fac-grid{ grid-template-columns:repeat(2,1fr); }
+html.mobile-ui .fac-counts{ font-size:0.74rem; }
+html.mobile-ui main{ padding:1rem; }
+html.mobile-ui .insight-row, html.mobile-ui .insight-row-4{ grid-template-columns:repeat(2,1fr); gap:0.7rem; }
+html.mobile-ui .grid-2{ grid-template-columns:1fr; }
+html.mobile-ui .controls-row{ flex-direction:column; align-items:stretch; }
+html.mobile-ui .view-toggle .view-btn{ flex:1; }
+html.mobile-ui .week-nav{ padding:0.55rem 0.7rem; gap:0.5rem; }
+html.mobile-ui .week-label{ font-size:0.78rem; }
+html.mobile-ui .week-nav-btn{ padding:0.35rem 0.7rem; font-size:0.9rem; }
+html.mobile-ui .trophy-card{ min-width:160px; padding:0.5rem 0.7rem; }
+html.mobile-ui .student-table{ font-size:0.72rem; }
+html.mobile-ui .student-table th, html.mobile-ui .student-table td{ padding:0.4rem 0.45rem; }
+html.mobile-ui .bar-label{ width:110px; font-size:0.72rem; }
+html.mobile-ui .mission-name{ width:120px; font-size:0.72rem; }
+
+html.mobile-xs .fac-grid{ grid-template-columns:1fr; }
+html.mobile-xs .example-grid{ grid-template-columns:1fr; }
+html.mobile-xs .tile-value{ font-size:1.25rem; }
+html.mobile-xs .sb-stats{ gap:1rem; }
+html.mobile-xs .fac-desc{ display:none; }
+html.mobile-xs .hide-xs{ display:none; }
+html.mobile-xs .week-badge{ display:none; }
+html.mobile-xs .trophy-row{ flex-direction:column; }
 </style>
+<script>
+// ── MOBILE DETECTOR (mobile-latch-v1) ────────────────────────────────────────
+// Sets html.mobile-ui / html.mobile-xs before first paint. UA-mobile devices
+// are LATCHED: once mobile, always mobile — rotation, URL-bar resizes and
+// webviews reporting desktop innerWidths can no longer flip the layout back
+// to desktop mid-session. Desktop browsers keep normal responsive behaviour
+// (classes toggle with window width on resize).
+(function(){
+  var d = document.documentElement;
+  var ua = navigator.userAgent || '';
+  var uaMobile = /Android|iPhone|iPod|iPad|Mobile|Silk/i.test(ua) ||
+    (/(Macintosh|MacIntel)/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS reports as Mac
+  // Rotation-stable device width: smaller of the two screen dimensions.
+  var devW = 9999;
+  try {
+    if (window.screen && screen.width) devW = Math.min(screen.width, screen.height || screen.width);
+  } catch(_){}
+  function apply(){
+    var iw = window.innerWidth || 9999;
+    if (uaMobile){
+      d.classList.add('mobile-ui');                    // latched — never removed
+      d.classList.toggle('mobile-xs', devW <= 480);    // phone vs tablet, rotation-stable
+    } else {
+      d.classList.toggle('mobile-ui', iw <= 768);      // desktop window resize
+      d.classList.toggle('mobile-xs', iw <= 480);
+    }
+  }
+  apply();
+  window.addEventListener('resize', apply);
+  window.addEventListener('orientationchange', apply);
+})();
+</script>
 </head>
 <body>
 
@@ -359,27 +412,30 @@ main { padding: 1.5rem 2.5rem; }
     </div>
   </div>
   <div id="dashboard">
-    <div class="week-nav">
-      <button class="week-nav-btn" id="btn-week-prev" onclick="changeWeek(-1)">&#8592; Prev</button>
-      <span class="week-label" id="week-label">Loading...</span>
-      <span class="week-badge" id="week-badge">This week</span>
-      <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>Next &#8594;</button>
+    <!-- Mode buttons + week nav — same line on desktop; week nav drops to its
+         own line on mobile (html.mobile-ui .controls-row rules) -->
+    <div class="controls-row">
+      <div class="view-toggle" id="view-toggle" style="display:none">
+        <button id="btn-view-sa" class="view-btn active" onclick="switchView('sa')">&#9997;&#65039; Written Response</button>
+        <button id="btn-view-mc" class="view-btn" onclick="switchView('mc')">&#128203; Multiple Choice</button>
+      </div>
+      <div class="week-nav">
+        <button class="week-nav-btn" id="btn-week-prev" onclick="changeWeek(-1)">&#8592; Prev</button>
+        <span class="week-label" id="week-label">Loading...</span>
+        <span class="week-badge" id="week-badge">This week</span>
+        <button class="week-nav-btn" id="btn-week-next" onclick="changeWeek(1)" disabled>Next &#8594;</button>
+      </div>
     </div>
 
-    <!-- 1 · THIS WEEK HERO — combined SA + MC usage, Top 3, active students -->
+    <!-- THIS WEEK HERO — Top 3 + Who's Been Using CUBE (written + MC combined) -->
     <div id="hero" class="mb"></div>
 
-    <!-- SA / MC detail toggle (shown only for subjects with an MC bank) -->
-    <div class="view-toggle" id="view-toggle" style="display:none">
-      <button id="btn-view-sa" class="view-btn active" onclick="switchView('sa')">&#9997;&#65039; Short Answer</button>
-      <button id="btn-view-mc" class="view-btn" onclick="switchView('mc')">&#128203; Multiple Choice</button>
-    </div>
-
-    <!-- SA DETAIL — band distribution ABOVE improvements (pt 7) -->
+    <!-- SA DETAIL — natural flow: Coaching Insights → Band Distribution →
+         Writing Improvements (collapsed by default) → Submission Log -->
     <div id="sa-detail">
-      <div id="acc-band"></div>
-      <div class="mb" id="improvements"></div>
       <div class="mb" id="insights"></div>
+      <div id="acc-band"></div>
+      <div id="improvements"></div>
       <div id="acc-log"></div>
     </div>
 
@@ -392,7 +448,7 @@ main { padding: 1.5rem 2.5rem; }
 // Tab data comes through the Worker /sheet endpoint (owner-executed Apps
 // Script) — the private spreadsheet's ID is not present in this public file.
 const WORKER_BASE = 'https://cube-proxy.alan-3e2.workers.dev';
-const BUILD = 'v3.2 \u00b7 2026-07-13 \u00b7 mobile scaling fixes';
+const BUILD = 'v3.3 \u00b7 2026-07-17 \u00b7 layout reorder \u00b7 top-3 & usage table \u00b7 mobile-ui latch';
 
 // ── SUBJECT REGISTRY — SINGLE SOURCE OF TRUTH ──────────────────────────────
 // One entry PER SUBJECT, class tabs nested. 'label' = what teachers see on the
@@ -1024,9 +1080,9 @@ function renderAll(){
   if(!s.hasMC){ activeView='sa'; document.getElementById('sa-detail').style.display=''; document.getElementById('mc-detail').style.display='none'; }
   renderHero(s);
   if(activeView === 'sa'){
+    renderInsights(s);
     renderBandAccordion(s);
     renderImprovements(s);
-    renderInsights(s);
     renderLogAccordion(s);
   } else {
     renderMCDetail(s);
@@ -1042,7 +1098,7 @@ function renderHero(s){
     ? (s.classes.length>1 ? 'all classes' : (s.classes[0]&&s.classes[0].label)||'')
     : ((s.classes.find(function(c){return c.tab===activeClassTab;})||{}).label||activeClassTab);
 
-  // Per-student weekly rollup: written count, MC count, combined XP, last active
+  // Per-student weekly rollup: written count, MC count, combined XP, last used
   const stu = {};
   function ensure(n){ if(!stu[n]) stu[n]={name:n, sa:0, mc:0, xp:0, last:null}; return stu[n]; }
   saWk.forEach(function(r){
@@ -1061,31 +1117,58 @@ function renderHero(s){
   const everSeen = new Set(saAll.map(function(r){return r.Student;}).concat(mcAll.map(function(r){return r.Student;})).filter(Boolean));
   const inactive = Math.max(0, everSeen.size - active.length);
 
-  // Trophy Top 3 by combined XP
-  const medals=['\ud83c\udfc6','\ud83e\udd48','\ud83e\udd49'];
+  // Per-student ALL-TIME rollup — the "/total" half of every wk/total figure
+  const allTot = {};
+  function ensureTot(n){ if(!allTot[n]) allTot[n]={sa:0, mc:0, xp:0}; return allTot[n]; }
+  saAll.forEach(function(r){
+    if(!r.Student) return;
+    const o=ensureTot(r.Student); o.sa++;
+    o.xp += Math.round(Number(r['Total XP'])||0);
+  });
+  mcAll.forEach(function(r){
+    if(!r.Student) return;
+    const o=ensureTot(r.Student); o.mc++;
+    o.xp += Math.round(Number(r['XP Earned'])||0);
+  });
+
+  // wk<dim>/total</dim>, or \u2014 when the student has no history at all
+  const wkTot = function(wk, at, dimCls){ return at>0 ? wk+'<span class="'+dimCls+'">/'+at+'</span>' : '\u2014'; };
+
+  // Top 3 by combined weekly XP — plain 1/2/3 ranks (no cup/medal emoji),
+  // \u270d wk/total \u00b7 MC wk/total in the subject colour, weekly/total XP big
   const top3 = active.slice(0,3);
   const trophy = top3.length ?
     '<div class="trophy-banner">'+
-      '<div class="trophy-title">\ud83c\udfc6 This Week\u2019s Top 3 \u2014 '+esc(s.full)+' ('+esc(classLabel)+') \u00b7 XP from written + MC</div>'+
+      '<div class="trophy-title">This Week\u2019s Top 3 \u2014 '+esc(s.full)+' ('+esc(classLabel)+') \u00b7 XP from written + MC</div>'+
       '<div class="trophy-row">'+top3.map(function(t,i){
-        return '<div class="trophy-card"><div class="trophy-medal">'+medals[i]+'</div><div><div class="trophy-name">'+esc(t.name)+'</div><div class="trophy-xp">'+t.xp+' XP \u00b7 '+t.sa+'\u270d '+t.mc+'MC</div></div></div>';
+        const a = allTot[t.name]||{sa:0,mc:0,xp:0};
+        const counts = '\u270d '+wkTot(t.sa, a.sa, 'tc-dim')+
+          (s.hasMC ? ' \u00b7 MC '+wkTot(t.mc, a.mc, 'tc-dim') : '');
+        return '<div class="trophy-card"><div class="trophy-rank r'+(i+1)+'">'+(i+1)+'</div>'+
+          '<div style="min-width:0">'+
+            '<div class="trophy-line1"><span class="trophy-name">'+esc(t.name)+'</span>'+
+              '<span class="trophy-counts" style="color:'+s.color+'">'+counts+'</span></div>'+
+            '<div class="trophy-xp"><span class="txp-wk">'+t.xp+'</span><span class="txp-sep"> / </span>'+a.xp+' XP</div>'+
+          '</div></div>';
       }).join('')+'</div>'+
     '</div>' : '';
 
   const dayName = function(d){ return d ? d.toLocaleDateString('en-AU',{weekday:'short',timeZone:'Australia/Sydney'}) : '\u2014'; };
+  const mcTH = s.hasMC ? '<th>MC</th>' : '';
   const table = active.length ? (
-    '<div style="overflow-x:auto"><table class="student-table">'+
-      '<thead><tr><th>#</th><th>Student</th><th>\u270d\ufe0f Written</th><th>\ud83d\udccb MC</th><th>XP</th><th class="hide-xs">Last active</th></tr></thead>'+
+    '<div style="overflow-x:auto"><table class="student-table compact">'+
+      '<thead><tr><th>#</th><th class="hide-xs">Last Used</th><th>Student</th>'+mcTH+'<th>Written</th><th>XP</th></tr></thead>'+
       '<tbody>'+active.map(function(t,i){
+        const a = allTot[t.name]||{sa:0,mc:0,xp:0};
         return '<tr><td class="mono" style="color:var(--text-dim)">'+(i+1)+'</td>'+
+          '<td class="hide-xs" style="font-size:0.7rem;color:var(--text-dim)">'+dayName(t.last)+'</td>'+
           '<td style="font-weight:600">'+esc(t.name)+'</td>'+
-          '<td class="mono">'+(t.sa||'\u2014')+'</td>'+
-          '<td class="mono">'+(t.mc||'\u2014')+'</td>'+
-          '<td class="mono" style="color:var(--gold);font-weight:700">'+t.xp+'</td>'+
-          '<td class="hide-xs" style="font-size:0.7rem;color:var(--text-dim)">'+dayName(t.last)+'</td></tr>';
+          (s.hasMC ? '<td class="mono">'+wkTot(t.mc, a.mc, 'td-dim')+'</td>' : '')+
+          '<td class="mono">'+wkTot(t.sa, a.sa, 'td-dim')+'</td>'+
+          '<td class="mono" style="color:var(--gold);font-weight:700">'+t.xp+'</td></tr>';
       }).join('')+'</tbody></table></div>'+
     '<div class="usage-foot">'+active.length+' student'+(active.length!==1?'s':'')+' active this week \u00b7 '+
-      inactive+' student'+(inactive!==1?'s':'')+' seen previously with no activity this week</div>'
+      inactive+' student'+(inactive!==1?'s':'')+' seen previously with no activity this week \u00b7 counts are week/all-time</div>'
   ) : '<div class="no-data">No activity this week for '+esc(s.full)+' ('+esc(classLabel)+'). Use \u2190 Prev to look at earlier weeks.</div>';
 
   el.innerHTML =
@@ -1097,6 +1180,7 @@ function renderHero(s){
 }
 
 // 2 · STUDENT WRITING IMPROVEMENTS (said → recommended) ----------------------
+// Collapsed by default — accordion, matching Band Distribution / Submission Log.
 function renderImprovements(s){
   const el = document.getElementById('improvements');
   const pick = function(rows){
@@ -1110,18 +1194,18 @@ function renderImprovements(s){
   if(!ex.length){ ex = pick(saRowsAll()); scopeNote = 'most recent (all time)'; }
   if(!ex.length){ el.innerHTML=''; return; }
   const mCls=function(m){const n=(m||'').toLowerCase();if(n.includes('causal'))return'fix-causal';if(n.includes('noun'))return'fix-noun';if(n.includes('flow'))return'fix-flow';if(n.includes('modal'))return'fix-mod';return'fix-other';};
-  el.innerHTML =
-    '<div class="panel">'+
-      '<div class="panel-title">Student Writing Improvements <span>what they wrote \u2192 what CUBE recommended \u00b7 '+scopeNote+'</span></div>'+
-      '<div class="example-grid">'+ex.map(function(r){
-        return '<div class="example-card '+mCls(r['Mission Category'])+'">'+
-          '<div class="ex-label">'+esc(normM(r['Mission Category']))+' \u00b7 '+esc(r['Directive']||'')+'</div>'+
-          '<div class="ex-before">'+esc(r['Student Phrase'])+'</div>'+
-          '<div class="ex-after">'+esc(r['Improved Version'])+'</div>'+
-          '<div class="ex-kw">'+esc(r['Syllabus Kw']||'')+'</div>'+
-        '</div>';
-      }).join('')+'</div>'+
-    '</div>';
+  const body =
+    '<div class="example-grid">'+ex.map(function(r){
+      return '<div class="example-card '+mCls(r['Mission Category'])+'">'+
+        '<div class="ex-label">'+esc(normM(r['Mission Category']))+' \u00b7 '+esc(r['Directive']||'')+'</div>'+
+        '<div class="ex-before">'+esc(r['Student Phrase'])+'</div>'+
+        '<div class="ex-after">'+esc(r['Improved Version'])+'</div>'+
+        '<div class="ex-kw">'+esc(r['Syllabus Kw']||'')+'</div>'+
+      '</div>';
+    }).join('')+'</div>';
+  const wasOpen = el.querySelector('.accordion.open') !== null;
+  el.innerHTML = accordion('imp-acc', 'Student Writing Improvements',
+    'what they wrote \u2192 what CUBE recommended \u00b7 '+scopeNote, body, wasOpen);
 }
 
 // 3 · COACHING INSIGHTS — 5 headline tiles + expandable full detail ----------
